@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New SpellCard", menuName = "SpellCard")]
-public class SpellCard : ScriptableObject
+public abstract class SpellCard : ScriptableObject
 {
     public enum rarity
     {

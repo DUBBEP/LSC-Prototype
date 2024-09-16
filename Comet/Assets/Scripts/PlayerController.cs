@@ -4,11 +4,12 @@ using UnityEngine;
 
 
 // from https://www.youtube.com/@StringCodeStudios
-public class PlayerMovementController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     // [SerializeField] float movementSpeed = 1f;
 
     bool playerIsMoving = false;
+    bool playerIsCasting = false;
 
     List<Tile> TravelRange = new List<Tile>();
     Vector2Int[] searchOrder = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
@@ -42,16 +43,23 @@ public class PlayerMovementController : MonoBehaviour
                             (int)transform.position.y) / gridManager.UnityGridSize;
 
                         transform.position = new Vector3(targetCords.x, transform.position.y, targetCords.y);
-                    }
-                }
 
-                if (hit.transform.tag == "Player")
-                {
-                    Debug.Log("Tagged Player");
-                    playerIsMoving = true;
+                        playerIsMoving = false;
+                    }
                 }
             }
         }
+    }
+
+    public void OnMove()
+    {
+        playerIsMoving = true;
+
+    }
+
+    public void OnCast()
+    {
+        playerIsCasting = true;
     }
 
 
