@@ -27,6 +27,27 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
+    public void SetTileColors(List<Tile> tiles)
+    {
+        foreach (Tile x in tiles)
+        {
+            MeshRenderer tileMaterial = GameObject.Find(x.cords.ToString()).GetComponentInChildren<MeshRenderer>();
+
+            if (x.walkable)
+                tileMaterial.material.color = Color.green;
+            else
+                tileMaterial.material.color = Color.red;
+        }
+    }
+    public void revertTileColors(List<Tile> tiles)
+    {
+        foreach (Tile x in tiles)
+        {
+            MeshRenderer tileMaterial = GameObject.Find(x.cords.ToString()).GetComponentInChildren<MeshRenderer>();
+            tileMaterial.material.color = Color.white;
+        }
+    }
+
     public void BlockTile(Vector2Int coordinates)
     {
         if (grid.ContainsKey(coordinates))
@@ -34,8 +55,15 @@ public class GridManager : MonoBehaviour
             grid[coordinates].walkable = false;
         }
     }
+    public void ClearTile(Vector2Int coordinates)
+    {
+        if (grid.ContainsKey(coordinates))
+        {
+            grid[coordinates].walkable = true;
+        }
+    }
 
-    public void resetNodes()
+    public void resetTiles()
     {
         foreach (KeyValuePair<Vector2Int, Tile> entry in grid)
         {

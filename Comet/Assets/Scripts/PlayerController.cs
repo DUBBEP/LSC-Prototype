@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -9,19 +10,30 @@ public class PlayerController : MonoBehaviour
     // [SerializeField] float movementSpeed = 1f;
 
     bool playerIsMoving = false;
-    bool playerIsCasting = false;
+    bool preparingCast = false;
 
-    List<Tile> TravelRange = new List<Tile>();
     Vector2Int[] searchOrder = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
+    List<Tile> travelRange = new List<Tile>();
     GridManager gridManager;
+    PlayerBehavior playerBehavior;
+    SpellCard selectedCard;
 
     private void Start()
     {
         gridManager = FindObjectOfType<GridManager>();
+        playerBehavior = GetComponent<PlayerBehavior>();
     }
 
     private void Update()
     {
+        if (preparingCast)
+        {
+            playerBehavior.PrepareCast(selectedCard);
+            // if a player is preparing a cast then keep track of their mouse position
+            // if a spell has directional aim then check if the mouse is in the direction
+            // that they want to cast relative to the player
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -31,19 +43,26 @@ public class PlayerController : MonoBehaviour
 
             if (hasHit)
             {
-                Debug.Log("Raycast hit");
                 if(hit.transform.tag == "Tile")
                 {
-                    Debug.Log("Tagged Tile");
                     if (playerIsMoving)
                     {
-                        Debug.Log("Player is moving");
+                        Tile selectedTile = gridManager.Grid[hit.transform.gameObject.GetComponent<Labeller>().cords];
+
+                        if (!selectedTile.walkable)
+                            return;
+
+                        if (!travelRange.Contains(selectedTile))
+                            return;
+
                         Vector2Int targetCords = hit.transform.GetComponent<Labeller>().cords;
                         Vector2 startCords = new Vector2Int((int)transform.position.x,
                             (int)transform.position.y) / gridManager.UnityGridSize;
 
                         transform.position = new Vector3(targetCords.x, transform.position.y, targetCords.y);
+                        playerBehavior.UpdateCords(targetCords);
 
+                        gridManager.revertTileColors(travelRange);
                         playerIsMoving = false;
                     }
                 }
@@ -51,15 +70,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    
     public void OnMove()
     {
-        playerIsMoving = true;
+        if (playerIsMoving)
+            return;
 
+        playerIsMoving = true;
+        HighlightMovementRange(playerBehavior.MovementRange);
     }
 
-    public void OnCast()
+
+    public void OnPrepareCast(SpellCard card)
     {
-        playerIsCasting = true;
+        preparingCast = true;
+        selectedCard = card;
     }
 
 
@@ -72,5 +97,49 @@ public class PlayerController : MonoBehaviour
         // then check the cardinal directions of the newly added spaces and add tiles
         // next to those ones. Repeat this process for however many times the passed range
         // value indicates.
+
+        List<Tile> exploreRange = new List<Tile>();
+
+        travelRange.Clear();
+        travelRange.Add(gridManager.Grid[playerBehavior.PlayerCords]);
+        exploreRange.Add(gridManager.Grid[playerBehavior.PlayerCords]);
+
+        // Get every tile in player movement radius
+        for (int i = 0; i < playerBehavior.MovementRange; ++i)
+        {
+
+            foreach (Tile x in exploreRange)
+            {
+                ExploreNeighbors(x);
+            }
+
+            foreach (Tile y in travelRange)
+            {
+                if (exploreRange.Contains(y))
+                    exploreRange.Remove(y);
+                else
+                    exploreRange.Add(y);
+            }
+        }
+
+        gridManager.SetTileColors(travelRange);
+
+    }
+
+
+
+    void ExploreNeighbors(Tile tile)
+    {
+        foreach (Vector2Int direction in searchOrder)
+        {
+            Vector2Int neighborCords = tile.cords + direction;
+            if (gridManager.Grid.ContainsKey(neighborCords))
+            {
+                if (!travelRange.Contains(gridManager.Grid[neighborCords]))
+                {
+                    travelRange.Add(gridManager.Grid[neighborCords]);
+                }
+            }
+        }
     }
 }

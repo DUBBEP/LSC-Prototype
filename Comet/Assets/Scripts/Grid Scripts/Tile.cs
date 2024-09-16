@@ -4,7 +4,7 @@ using UnityEngine;
 // from https://www.youtube.com/@StringCodeStudios
 public class Tile
 {
-    public Vector2Int Coordinates;
+    public Vector2Int cords;
     public bool walkable;
     public bool explored;
     public bool path;
@@ -12,7 +12,7 @@ public class Tile
 
     public Tile(Vector2Int Coordinates, bool walkable)
     {
-        this.Coordinates = Coordinates;
+        this.cords = Coordinates;
         this.walkable = walkable;
     }
 }

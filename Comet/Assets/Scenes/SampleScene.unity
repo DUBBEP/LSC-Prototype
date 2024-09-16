@@ -406,8 +406,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 772, y: -228}
-  m_SizeDelta: {x: 326.6663, y: 111.1597}
+  m_AnchoredPosition: {x: 382.99997, y: -149.28056}
+  m_SizeDelta: {x: 210.6935, y: 72.2695}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &162848808
 MonoBehaviour:
@@ -855,8 +855,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 772, y: -366}
-  m_SizeDelta: {x: 326.6663, y: 111.1597}
+  m_AnchoredPosition: {x: 383, y: -239}
+  m_SizeDelta: {x: 210.6935, y: 72.2695}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &277069067
 MonoBehaviour:
@@ -2147,12 +2147,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 65
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2710,9 +2710,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1041622826}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1, y: 1, z: 2}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.49999997, y: 0.49999997, z: 0.49999997}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -2741,6 +2741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd08827871b12e44c8e66604531a0127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementRange: 3
 --- !u!1001 &1079731488
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3387,8 +3388,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 101.33
-  m_fontSizeBase: 101.33
+  m_fontSize: 60.6
+  m_fontSizeBase: 60.6
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4203,8 +4204,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 101.33
-  m_fontSizeBase: 101.33
+  m_fontSize: 60.6
+  m_fontSizeBase: 60.6
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4429,9 +4430,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 963194228}
   - {fileID: 705507995}
-  - {fileID: 808096685}
-  - {fileID: 225865847}
+  - {fileID: 1041622830}
   - {fileID: 2093980975}
   - {fileID: 565558126}
   - {fileID: 613972652}
-  - {fileID: 1041622830}
+  - {fileID: 808096685}
+  - {fileID: 225865847}
