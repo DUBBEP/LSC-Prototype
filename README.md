@@ -5,7 +5,7 @@ Build Link:  https://dubbep.github.io/LSC-Prototype/
 # Prototype 1 Objectives Status:
 
 
-## Spell card Scriptable Object: ** In progress **
+## Spell card Scriptable Object: **In progress**
 
 ### What's going well
 
@@ -30,14 +30,14 @@ Non attack spells need to be able to implement their unique functionality too su
 
 spells also need to keep track of and play their visual effects.
 
-## Event Queue Turn System: ** Not Started **
+## Event Queue Turn System: **Not Started**
 
 ### What needs to be done
 The game has a turn system where each player takes an action (moving, cast spell etc.) which needs to be put into a queue or list and then executed in the scene according to the delay of the action such that the action with the shortest delay will be executed first. Once all actions are executed the round ends, a new round begins, and players take actions once more.
 
 Additional implementation such as attacks being interrupted and thus being removed from the queue, actions playing at a reasonable speed rather than being executed instantaneously etc.
 
-## Player Characters: ** In progress ** 
+## Player Characters: **In progress**
 ### What's been going well
 I’ve largely Identified the information that players need to hold and what methods they need to have to function. These methods just need to be implemented.
 What needs to be done
@@ -45,7 +45,7 @@ The methods which need to be implemented are:
 PrepareCast();
 CastSpell();
 
-## Game UI: ** In progress **
+## Game UI: **In progress**
 What's been going well
 What needs to be done
 Movement System: In progress
