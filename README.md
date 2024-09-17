@@ -40,16 +40,20 @@ Additional implementation such as attacks being interrupted and thus being remov
 ## Player Characters: **In progress**
 ### What's been going well
 I’ve largely Identified the information that players need to hold and what methods they need to have to function. These methods just need to be implemented.
-What needs to be done
-The methods which need to be implemented are:
+
+### What needs to be done
+The most important methods which need to be implemented are:
 PrepareCast();
 CastSpell();
 
 ## Game UI: **In progress**
-What's been going well
-What needs to be done
-Movement System: In progress
-What's been going well
-What needs to be done
-Create chest card gacha system: Not Started
+### What's been going well
+### What needs to be done
+## Movement System: **In progress**
+### What's been going well
+
+
+### What needs to be done
+
+### Create chest card gacha system: Not Started
 What needs to be done
