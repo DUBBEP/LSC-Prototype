@@ -100,7 +100,9 @@ public class GridManager : MonoBehaviour
             for (int y = 0; y < gridSize.y; y++)
             {
                 Vector2Int cords = new Vector2Int(x, y);
-                grid.Add(cords, new Tile(cords, true));
+
+                if (GameObject.Find(cords.ToString()))
+                    grid.Add(cords, new Tile(cords, true));
             }
         }
     }
