@@ -13,7 +13,7 @@ The scriptable object template has been created.
 
 The template holds all of the basic information that a card needs.
 
-There is a display script that takes the Card information and displays it on a UI game object in the scene.
+There is a display script that takes the Card information and displays it on a UI game object in the scene. (Not in current build)
 
 ### What’s needs to be done
 The cards need to have behaviors that execute their functionality. 
@@ -24,7 +24,7 @@ Most cards will need a effect range which encompasses a certain number of board 
 
 Each Card that has an effect range needs a unique algorithm to build out those effect ranges. The cards also need a function for their actual effects.
 
-This information has to be sent to a queue which holds all player actions for the round and orders them by their delay value and executes them in that order.
+This information has to be sent to a queue which holds all player actions for the round. The queue orders them by their delay value and executes them in that order.
 
 Non attack spells need to be able to implement their unique functionality too such as altering player health or movement range.
 
@@ -75,9 +75,9 @@ Movement range has also been highlighted so that players can see the spaces they
 
 ### What needs to be done
 
-Farther into development the grid will need to be compatible with a unique cards functionality that allows players to travers walls. The grid will need to hide certain grid spaces on top of walls until a player activates this ability, and hide these spaces once it is no longer in use.
-
 A breadth first search system needs to be implemented so that characters will calculate the routes to their travel destination through the grid. This will allow for player to animate their movement rather than teleport.
+
+(Optional) Farther into development the grid will need to be compatible with a unique cards functionality which allows players to travers walls. The grid will need to hide certain grid spaces on top of walls until a player activates this ability, and hide these spaces once it is no longer in use.
 
 ## Create chest card gacha system: **Not Started**
 What needs to be done
