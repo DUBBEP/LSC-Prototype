@@ -30,7 +30,6 @@ Non attack spells need to be able to implement their unique functionality too su
 
 spells also need to keep track of and play their visual effects.
 
-
 ## Event Queue Turn System: ** Not Started **
 
 ### What needs to be done
@@ -39,7 +38,7 @@ The game has a turn system where each player takes an action (moving, cast spell
 Additional implementation such as attacks being interrupted and thus being removed from the queue, actions playing at a reasonable speed rather than being executed instantaneously etc.
 
 ## Player Characters: ** In progress ** 
-What's been going well
+### What's been going well
 I’ve largely Identified the information that players need to hold and what methods they need to have to function. These methods just need to be implemented.
 What needs to be done
 The methods which need to be implemented are:
