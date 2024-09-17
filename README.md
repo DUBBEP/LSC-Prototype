@@ -1,4 +1,6 @@
 # LSC-Prototype
+
+Build Link:  https://dubbep.github.io/LSC-Prototype/
  
 # Prototype 1 Objectives Status:
 
@@ -9,7 +11,7 @@
 
 The scriptable object template has been created. 
 
-The template holds all of the basic information that the cards needs.
+The template holds all of the basic information that a card needs.
 
 There is a display script that takes the Card information and displays it on a UI game object in the scene.
 
