@@ -79,7 +79,7 @@ Farther into development the grid will need to be compatible with a unique cards
 
 A breadth first search system needs to be implemented so that characters will calculate the routes to their travel destination through the grid. This will allow for player to animate their movement rather than teleport.
 
-### Create chest card gacha system: Not Started
+## Create chest card gacha system: **Not Started**
 What needs to be done
 
 Playeres need to be able to interact with chest objects which occupy certain spaces on the board.
