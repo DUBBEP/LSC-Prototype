@@ -106,5 +106,4 @@ public class PlayerBehavior : MonoBehaviour
                 spellCards.Remove(x);
         }
     }
-
 }

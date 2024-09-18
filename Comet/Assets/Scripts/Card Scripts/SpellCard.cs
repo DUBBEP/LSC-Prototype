@@ -18,6 +18,11 @@ public abstract class SpellCard : ScriptableObject
         special
     }
 
+    public enum rangeType
+    {
+
+    }
+
     public string spellName;
     public string description;
 
@@ -27,12 +32,7 @@ public abstract class SpellCard : ScriptableObject
     public int coolDown;
     public rarity cardRarity;
     public type cardType;
+    
+    public rangeType cardRangeType;
 
-    public List<Tile> BuildCardRange(Vector2Int cords)
-    {
-        // This function will take the given coordinates to build
-        // out a set spell effect range dependent on the current players positon.
-
-        return null;
-    }
 }   

@@ -9,28 +9,27 @@ public class PlayerController : MonoBehaviour
     // [SerializeField] float movementSpeed = 1f;
 
     bool playerIsMoving = false;
-    bool preparingCast = false;
+    bool directionalCast = false;
 
     Vector2Int[] searchOrder = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
     List<Tile> travelRange = new List<Tile>();
     GridManager gridManager;
     PlayerBehavior playerBehavior;
+    SpellRangeGenerator spellRangeGenerator;
     SpellCard selectedCard;
 
     private void Start()
     {
         gridManager = FindObjectOfType<GridManager>();
         playerBehavior = GetComponent<PlayerBehavior>();
+        spellRangeGenerator = FindObjectOfType<SpellRangeGenerator>();
     }
 
     private void Update()
     {
-        if (preparingCast)
+        if (directionalCast)
         {
-            playerBehavior.PrepareCast(selectedCard);
-            // if a player is preparing a cast then keep track of their mouse position
-            // if a spell has directional aim then check if the mouse is in the direction
-            // that they want to cast relative to the player
+            // track mouse position here 
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -61,7 +60,7 @@ public class PlayerController : MonoBehaviour
                         transform.position = new Vector3(targetCords.x, transform.position.y, targetCords.y);
                         playerBehavior.UpdateCords(targetCords);
 
-                        gridManager.revertTileColors(travelRange);
+                        gridManager.SetTileColor(travelRange, Color.white);
                         playerIsMoving = false;
                     }
                 }
@@ -70,7 +69,7 @@ public class PlayerController : MonoBehaviour
     }
 
     
-    public void OnMove()
+    public void OnMoveButton()
     {
         if (playerIsMoving)
             return;
@@ -79,12 +78,28 @@ public class PlayerController : MonoBehaviour
         HighlightMovementRange(playerBehavior.MovementRange);
     }
 
+    public void OnCastButton()
+    {
+        // display the Players list of cards to the screen
+    }
+
 
     public void OnPrepareCast(SpellCard card)
     {
-        preparingCast = true;
+        directionalCast = true;
+        selectedCard = card;
+        gridManager.SetTileColor(spellRangeGenerator.GenerateEffectRange(card.cardRangeType), Color.red);
+    }
+    public void OnPepareDirectionalCast(SpellCard card)
+    {
+        directionalCast = true;
         selectedCard = card;
     }
+    public void SetCastDirection(Vector2Int direction)
+    {
+        directionalCast = true;
+    }
+
 
 
     void HighlightMovementRange(int range)
@@ -112,6 +127,8 @@ public class PlayerController : MonoBehaviour
                 ExploreNeighbors(x);
             }
 
+
+            // This loop does not lead to the intended effect and must be changed
             foreach (Tile y in travelRange)
             {
                 if (exploreRange.Contains(y))
@@ -121,7 +138,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        gridManager.SetTileColors(travelRange);
+        gridManager.SetMoveTileColors(travelRange);
 
     }
 

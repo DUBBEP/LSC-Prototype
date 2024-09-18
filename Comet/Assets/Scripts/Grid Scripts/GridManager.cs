@@ -7,6 +7,7 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] Vector2Int gridSize;
     [SerializeField] int unityGridSize;
+
     public int UnityGridSize { get {  return unityGridSize; } }
 
     Dictionary<Vector2Int, Tile> grid = new Dictionary<Vector2Int, Tile>();
@@ -26,7 +27,7 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-    public void SetTileColors(List<Tile> tiles)
+    public void SetMoveTileColors(List<Tile> tiles)
     {
         foreach (Tile x in tiles)
         {
@@ -38,12 +39,12 @@ public class GridManager : MonoBehaviour
                 tileMaterial.material.color = Color.red;
         }
     }
-    public void revertTileColors(List<Tile> tiles)
+    public void SetTileColor(List<Tile> tiles, Color color)
     {
         foreach (Tile x in tiles)
         {
             MeshRenderer tileMaterial = GameObject.Find(x.cords.ToString()).GetComponentInChildren<MeshRenderer>();
-            tileMaterial.material.color = Color.white;
+            tileMaterial.material.color = color;
         }
     }
 
