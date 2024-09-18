@@ -64,6 +64,8 @@ public class PlayerBehavior : MonoBehaviour
         playerCords = new Vector2Int(Mathf.RoundToInt(transform.position.x / gridManager.UnityGridSize), 
                                      Mathf.RoundToInt(transform.position.z / gridManager.UnityGridSize));
         gridManager.BlockTile(playerCords);
+
+        Debug.Log("PlayerBehavior Active");
     }
 
     // Update is called once per frame
