@@ -8,7 +8,8 @@ public class SpellCardDisplay : MonoBehaviour
 {
     public SpellCard spellCard;
 
-    public TextMeshProUGUI spellName;
+    [Header("DisplayComponents")]
+    public TextMeshProUGUI spellNameText;
     public TextMeshProUGUI cardDelayText;
     public TextMeshProUGUI coolDownText;
     public TextMeshProUGUI useCountText;
@@ -19,7 +20,7 @@ public class SpellCardDisplay : MonoBehaviour
 
     void Start()
     {
-        spellName.text = spellCard.spellName;
+        spellNameText.text = spellCard.spellName;
         cardDelayText.text = spellCard.castDelay.ToString();
         coolDownText.text = spellCard.coolDown.ToString();
         useCountText.text = spellCard.numberOfUses.ToString();

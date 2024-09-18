@@ -29,8 +29,8 @@ public class PlayerBehavior : MonoBehaviour
     public Player photonPlayer;
 
 
-    /*
-    [PunRPC]
+    
+    // [PunRPC]
     public void Initialize(Player player)
     {
         id = player.ActorNumber;
@@ -41,20 +41,7 @@ public class PlayerBehavior : MonoBehaviour
 
 
         // is this not our local player?
-        
-        /*
-        if (!photonView.IsMine)
-        {
-            GetComponentInChildren<Camera>().gameObject.SetActive(false);
-            rig.isKinematic = true;
-        }
-        else
-        {
-            GameUI.instance.Initialize(this);
-        }
-        
     }
-    */
 
     // Start is called before the first frame update
     void Start()
@@ -65,7 +52,6 @@ public class PlayerBehavior : MonoBehaviour
                                      Mathf.RoundToInt(transform.position.z / gridManager.UnityGridSize));
         gridManager.BlockTile(playerCords);
 
-        Debug.Log("PlayerBehavior Active");
     }
 
     // Update is called once per frame
@@ -81,24 +67,6 @@ public class PlayerBehavior : MonoBehaviour
         gridManager.BlockTile(playerCords);
     }
 
-    public void PrepareCast(SpellCard card)
-    {
-        // This function will primarily serve to draw the spell range
-        // so that the player may see what targets the spell will hit
-        // before casting.
-    }
-
-    public void CastSpell(SpellCard card)
-    {
-        // This fuction is called when a player confirms a cast
-        // on a spell that that they have already armed
-
-        // This function will likely be queued by the turn manager and
-        // executed in turn with the other players casts.
-
-        // apply cards effect to the spaces within its effective range,
-        // display spell visual effects. Check if 
-    }
 
 
     // pass damage value in and subtrack from player health
@@ -110,7 +78,6 @@ public class PlayerBehavior : MonoBehaviour
 
         if (curHp <= 0)
             Die();
-
         StartCoroutine(DamageFlash());
     }
 

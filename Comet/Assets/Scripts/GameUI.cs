@@ -1,19 +1,11 @@
 using UnityEngine.UI;
 using UnityEngine;
+using TMPro;
 
 public class GameUI : MonoBehaviour
 {
-    GameObject spellHandUI;
-
-
-    // instance
-    public static GameUI instance;
-
-    private void Awake()
-    {
-        instance = this;
-    }
-
+    public GameObject spellHandUI;
+    public GameObject submitCast;
 
     // Start is called before the first frame update
     void Start()
@@ -31,4 +23,11 @@ public class GameUI : MonoBehaviour
     {
         spellHandUI.SetActive(!spellHandUI.activeSelf);
     }
+
+    public void SetConfirmCastButton(bool toggle)
+    {
+        submitCast.SetActive(toggle);
+    }
+
+
 }

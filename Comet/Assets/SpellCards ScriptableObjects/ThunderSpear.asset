@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e79e4feb8fb9a44e9923a7e0babcf47, type: 3}
-  m_Name: Thunder Spear
+  m_Name: ThunderSpear
   m_EditorClassIdentifier: 
-  spellName: Thunder Spear
-  description: Hurl a Spear of lightning. Can pierce through opponents.
-  numberOfUses: 4
+  spellName: ThunderSpear
+  description: Hurl Lightning at opponent
+  numberOfUses: 10
   power: 3
   castDelay: 3
   coolDown: 1
   cardRarity: 0
   cardType: 0
+  cardRangeType: 0

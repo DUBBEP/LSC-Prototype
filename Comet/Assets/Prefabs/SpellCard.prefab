@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 3674877209109374239}
   - component: {fileID: 5478607569541482386}
   m_Layer: 5
-  m_Name: SpellCard Name
+  m_Name: SpellCard Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -671,7 +671,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4917324885311571399}
-  - component: {fileID: 1207733106371226768}
+  - component: {fileID: 7481328522223884188}
   m_Layer: 5
   m_Name: SpellCard
   m_TagString: Untagged
@@ -708,7 +708,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1207733106371226768
+--- !u!114 &7481328522223884188
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -717,11 +717,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7168942554893348458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d21f24c939829df40bd36f862725d4d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 73ca8d46208d10141b96dc846297f0c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spellCard: {fileID: 0}
-  spellName: {fileID: 5478607569541482386}
+  spellNameText: {fileID: 5478607569541482386}
   cardDelayText: {fileID: 2532783546371184281}
   coolDownText: {fileID: 3342247554824801906}
   useCountText: {fileID: 5932912195789991808}
