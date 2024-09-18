@@ -1,22 +1,60 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
-    private int health;
-    private int castingCrystals;
+    [Header("Info")]
+    public int id;
+    private int curAttackerId;
+    private Vector2Int playerCords;
+    public Vector2Int PlayerCords { get { return playerCords; } }
+    private List<SpellCard> spellCards;
 
+
+    [Header("Stats")]
+    private int castingCrystals;
+    public int curHp;
+    public int maxHp;
+    public bool dead;
     [SerializeField]
     private int movementRange = 3;
     public int MovementRange { get { return movementRange; }}
 
-    private Vector2Int playerCords;
-    public Vector2Int PlayerCords { get { return playerCords; }}
 
-    private List<SpellCard> spellCards;
-
+    [Header("Components")]
     GridManager gridManager;
+    public Player photonPlayer;
+
+
+    /*
+    [PunRPC]
+    public void Initialize(Player player)
+    {
+        id = player.ActorNumber;
+        photonPlayer = player;
+
+
+        // GameManager.instance.players[id - 1] = this;
+
+
+        // is this not our local player?
+        
+        /*
+        if (!photonView.IsMine)
+        {
+            GetComponentInChildren<Camera>().gameObject.SetActive(false);
+            rig.isKinematic = true;
+        }
+        else
+        {
+            GameUI.instance.Initialize(this);
+        }
+        
+    }
+    */
 
     // Start is called before the first frame update
     void Start()
@@ -66,9 +104,9 @@ public class PlayerBehavior : MonoBehaviour
     public void TakeDamage(int damage)
     {
 
-        health -= damage;
+        curHp -= damage;
 
-        if (health <= 0)
+        if (curHp <= 0)
             Die();
 
         StartCoroutine(DamageFlash());
@@ -85,7 +123,7 @@ public class PlayerBehavior : MonoBehaviour
     // set health to zero and move player off screen.
     public void Die()
     {
-        health = 0;
+        curHp = 0;
 
         transform.position = new Vector3(1000f, 1000f, 1000f);
     }
