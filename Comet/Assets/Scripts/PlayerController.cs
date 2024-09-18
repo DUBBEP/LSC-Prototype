@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     GridManager gridManager;
     PlayerBehavior playerBehavior;
     SpellRangeGenerator spellRangeGenerator;
+    GameUI gameUI;
+
     SpellCard selectedCard;
 
     private void Start()
@@ -81,12 +83,11 @@ public class PlayerController : MonoBehaviour
     public void OnCastButton()
     {
         // display the Players list of cards to the screen
+        gameUI.ToggleHandUI();
     }
-
 
     public void OnPrepareCast(SpellCard card)
     {
-        directionalCast = true;
         selectedCard = card;
         gridManager.SetTileColor(spellRangeGenerator.GenerateEffectRange(card.cardRangeType), Color.red);
     }
@@ -94,10 +95,6 @@ public class PlayerController : MonoBehaviour
     {
         directionalCast = true;
         selectedCard = card;
-    }
-    public void SetCastDirection(Vector2Int direction)
-    {
-        directionalCast = true;
     }
 
 
