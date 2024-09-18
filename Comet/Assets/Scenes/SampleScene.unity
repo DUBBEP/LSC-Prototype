@@ -5310,6 +5310,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd08827871b12e44c8e66604531a0127, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
+  curHp: 0
+  maxHp: 0
+  dead: 0
   movementRange: 3
 --- !u!1001 &1064932193
 PrefabInstance:
