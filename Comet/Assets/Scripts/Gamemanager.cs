@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviourPun
     public Transform[] spawnPoints;
     public bool playersSpawned = false;
 
+    [SerializeField]
+    private float postGameTime;
+
 
     private int playersInGame;
 
@@ -24,7 +27,10 @@ public class GameManager : MonoBehaviourPun
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            gameObject.SetActive(false);
     }
 
     private void Start()
@@ -65,6 +71,47 @@ public class GameManager : MonoBehaviourPun
         }
         return null;
     }
+
+    public PlayerBehavior GetPlayer(GameObject playerObject)
+    {
+        foreach (PlayerBehavior player in players)
+        {
+            if (player != null && player.gameObject == playerObject)
+                return player;
+        }
+        return null;
+    }
+
+
+    public void CheckWinCondition()
+    {
+        if (alivePlayers == 1)
+        {
+            photonView.RPC("WinGame", RpcTarget.All, players.First(x => !x.dead).id);
+        }
+    }
+
+    [PunRPC]
+    void WinGame(int winningPlayer)
+    {
+        // set the UI win text
+        GameUI.instance.SetWinText(GetPlayer(winningPlayer).photonPlayer.NickName);
+
+        Invoke("GoBackToMenu", postGameTime);
+    }
+
+    void GoBackToMenu()
+    {
+        Destroy(NetworkManager.instance.gameObject);
+        NetworkManager.instance.ChangeScene("Menu");
+    }
+
+    void SetSpawnedTrue()
+    {
+        playersSpawned = true;
+    }
+
+
 
     // Update is called once per frame
     void Update()

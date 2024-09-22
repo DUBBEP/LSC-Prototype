@@ -12,12 +12,14 @@ public class PlayerBehavior : MonoBehaviourPun
     private Vector2Int playerCords;
     public Vector2Int PlayerCords { get { return playerCords; } }
     private List<SpellCard> spellCards;
+    private bool flashingDamage;
 
 
     [Header("Stats")]
     private int castingCrystals;
     public int curHp;
     public int maxHp;
+    public int kills;
     public bool dead;
     [SerializeField]
     private int movementRange = 3;
@@ -27,10 +29,11 @@ public class PlayerBehavior : MonoBehaviourPun
     [Header("Components")]
     GridManager gridManager;
     public Player photonPlayer;
+    public MeshRenderer mr;
 
 
-    
-    // [PunRPC]
+
+    [PunRPC]
     public void Initialize(Player player)
     {
         id = player.ActorNumber;
@@ -41,6 +44,14 @@ public class PlayerBehavior : MonoBehaviourPun
 
 
         // is this not our local player?
+        if (!photonView.IsMine)
+        {
+            GetComponentInChildren<Camera>().gameObject.SetActive(false);
+        }
+        else
+        {
+            GameUI.instance.Initialize(this);
+        }
     }
 
     // Start is called before the first frame update
@@ -71,22 +82,51 @@ public class PlayerBehavior : MonoBehaviourPun
 
     // pass damage value in and subtrack from player health
     // play any other effects like color flash or ragdoll activation.
-    public void TakeDamage(int damage)
+    [PunRPC]
+    public void TakeDamage(int attackerId, int damage)
     {
+        if (dead)
+            return;
 
         curHp -= damage;
+        curAttackerId = attackerId;
 
+        // flash the player red
+        photonView.RPC("DamageFlash", RpcTarget.Others);
+        // update the health bar UI
+        GameUI.instance.UpdateHealthBar();
+        // die if no health left
         if (curHp <= 0)
-            Die();
-        StartCoroutine(DamageFlash());
+            photonView.RPC("Die", RpcTarget.All);
+
     }
 
-    IEnumerator DamageFlash()
+    [PunRPC]
+    void DamageFlash()
     {
-        Material mat = GetComponent<Material>();
-        mat.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        mat.color = Color.white;
+        if (flashingDamage)
+            return;
+
+        StartCoroutine(DamageFlashCoRoutine());
+
+        IEnumerator DamageFlashCoRoutine()
+        {
+            flashingDamage = true;
+
+            Color defaultColor = mr.material.color;
+            mr.material.color = Color.red;
+
+            Debug.Log("Flash on");
+
+
+            yield return new WaitForSeconds(0.05f);
+
+            mr.material.color = defaultColor;
+            flashingDamage = false;
+
+            Debug.Log("Flash Off");
+
+        }
     }
 
     // set health to zero and move player off screen.
@@ -101,6 +141,15 @@ public class PlayerBehavior : MonoBehaviourPun
     public void AquireSpell(SpellCard card)
     {
         spellCards.Add(card);
+    }
+
+    [PunRPC]
+    public void AddKill()
+    {
+        kills++;
+
+        // update the UI
+        GameUI.instance.UpdatePlayerInfoText();
     }
 
 

@@ -10,13 +10,14 @@ public class PlayerController : MonoBehaviour
 
     bool playerIsMoving = false;
     bool directionalCast = false;
+    bool preparingCast = false;
+
 
     Vector2Int[] searchOrder = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
     List<Tile> travelRange = new List<Tile>();
     GridManager gridManager;
     PlayerBehavior playerBehavior;
     SpellRangeGenerator spellRangeGenerator;
-    GameUI gameUI;
 
     SpellCard selectedCard = null;
 
@@ -24,7 +25,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         gridManager = FindObjectOfType<GridManager>();
-        gameUI = FindObjectOfType<GameUI>();
         playerBehavior = GetComponent<PlayerBehavior>();
         spellRangeGenerator = FindObjectOfType<SpellRangeGenerator>();
     }
@@ -72,8 +72,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    
-    public void OnMoveButton()
+    #region Move Functions
+    public void OnMove()
     {
         if (playerIsMoving)
         {
@@ -82,67 +82,12 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (selectedCard != null)
+        if (preparingCast)
             CancelCast();
 
-        playerIsMoving = true;
+            playerIsMoving = true;
         HighlightMovementRange(playerBehavior.MovementRange);
     }
-
-    public void OnCastButton()
-    {
-        // display the Players list of cards to the screen
-        if (selectedCard != null)
-        {
-            CancelCast();
-            return;
-        }
-
-        if (playerIsMoving)
-        {
-            playerIsMoving = false;
-            gridManager.SetTileColor(travelRange, Color.white);
-        }
-
-
-        gameUI.ToggleHandUI();
-    }
-
-    private void CancelCast()
-    {
-        gameUI.SetConfirmCastButton(false);
-        gameUI.ToggleHandUI();
-        gridManager.SetTileColor(spellRangeGenerator.GenerateEffectRange(
-                selectedCard.cardRangeType, playerBehavior.PlayerCords), Color.white);
-        selectedCard = null;
-        directionalCast = false;
-    }
-
-    public void OnConfirmCast()
-    {
-        SendCastToQueue();
-        CancelCast();
-    }
-
-    public void OnPrepareCast(SpellCard card)
-    {
-        selectedCard = card;
-        gridManager.SetTileColor(spellRangeGenerator.GenerateEffectRange(
-            card.cardRangeType, playerBehavior.PlayerCords), Color.red);
-        gameUI.SetConfirmCastButton(true);
-    }
-    public void OnPepareDirectionalCast(SpellCard card)
-    {
-        directionalCast = true;
-        selectedCard = card;
-        gameUI.SetConfirmCastButton(true);
-    }
-
-
-
-
-
-
 
     void HighlightMovementRange(int range)
     {
@@ -199,8 +144,69 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Cast Functions
+    public void OnCast()
+    {
+        // display the Players list of cards to the screen
+        if (preparingCast)
+        {
+            CancelCast();
+            return;
+        }
+
+        if (playerIsMoving)
+        {
+            playerIsMoving = false;
+            gridManager.SetTileColor(travelRange, Color.white);
+        }
+
+        preparingCast = true;
+        GameUI.instance.SetHandUI(true);
+    }
+
+    public void OnPrepareCast(SpellCard card)
+    {
+        selectedCard = card;
+        gridManager.SetTileColor(spellRangeGenerator.GenerateEffectRange(
+            card.cardRangeType, playerBehavior.PlayerCords), Color.red);
+        GameUI.instance.SetConfirmCastButton(true);
+    }
+    public void OnPepareDirectionalCast(SpellCard card)
+    {
+        directionalCast = true;
+        selectedCard = card;
+        GameUI.instance.SetConfirmCastButton(true);
+    }
+
+    public void OnConfirmCast()
+    {
+        SendCastToQueue();
+        CancelCast();
+    }
+
     public void SendCastToQueue()
     {
         return;
     }
+
+    private void CancelCast()
+    {
+        GameUI.instance.SetConfirmCastButton(false);
+        GameUI.instance.SetHandUI(false);
+
+        if (selectedCard != null)
+            gridManager.SetTileColor(spellRangeGenerator.GenerateEffectRange(
+                selectedCard.cardRangeType, playerBehavior.PlayerCords), Color.white);
+
+        selectedCard = null;
+        directionalCast = false;
+        preparingCast = false;
+    }
+
+    #endregion
+
+
+
 }

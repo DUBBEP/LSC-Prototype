@@ -30,7 +30,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     private List<GameObject> roomButtons = new List<GameObject>();
     private List<RoomInfo> roomList = new List<RoomInfo>();
 
-    void Start()
+    void Start ()
     {
         // disable the menu buttons at start
         createRoomButton.interactable = false;
@@ -40,7 +40,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         Cursor.lockState = CursorLockMode.None;
 
         // are we in a game?
-        if (PhotonNetwork.InRoom)
+        if(PhotonNetwork.InRoom)
         {
             // go to the lobby
             SetScreen(lobbyScreen);
@@ -52,7 +52,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
     }
 
-    void SetScreen(GameObject screen)
+    void SetScreen (GameObject screen)
     {
         // diable all other screns
         mainScreen.SetActive(false);
@@ -68,14 +68,14 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
 
     // called when the back button is pressed
-    public void OnBackButton()
+    public void OnBackButton ()
     {
         SetScreen(mainScreen);
     }
 
-    // MAIN SCREEN
+        // MAIN SCREEN
 
-    public void OnPlayerNameValueChanged(TMP_InputField playerNameInput)
+    public void OnPlayerNameValueChanged (TMP_InputField playerNameInput)
     {
         PhotonNetwork.NickName = playerNameInput.text;
     }
@@ -86,26 +86,26 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         findRoomButton.interactable = true;
     }
 
-    public void OnCreateRoomButton()
+    public void OnCreateRoomButton ()
     {
         SetScreen(createRoomScreen);
     }
 
-    public void OnFindRoomButton()
+    public void OnFindRoomButton ()
     {
         SetScreen(lobbyBrowserScreen);
     }
 
-    // CREATE ROOM SCREEN
+        // CREATE ROOM SCREEN
 
-    public void OnCreateButton(TMP_InputField roomNameInput)
+    public void OnCreateButton (TMP_InputField roomNameInput)
     {
         NetworkManager.instance.CreateRoom(roomNameInput.text);
     }
 
-    // LOBBY SCREEN
+        // LOBBY SCREEN
 
-    public override void OnJoinedRoom()
+    public override void OnJoinedRoom ()
     {
         SetScreen(lobbyScreen);
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
@@ -117,7 +117,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
 
     [PunRPC]
-    void UpdateLobbyUI()
+    void UpdateLobbyUI ()
     {
         // enable or disable the start game button depending on if we're the host
         startGameButton.interactable = PhotonNetwork.IsMasterClient;
@@ -125,7 +125,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         // display all the players
         playerListText.text = "";
 
-        foreach (Player player in PhotonNetwork.PlayerList)
+        foreach(Player player in PhotonNetwork.PlayerList)
             playerListText.text += player.NickName + "\n";
 
         // set the room info text
@@ -139,10 +139,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
         // tell everyone to load into the Game Scene
-        NetworkManager.instance.photonView.RPC("ChangeScene", RpcTarget.All, "Game");
+        NetworkManager.instance.photonView.RPC("ChangeScene", RpcTarget.All, "GameScene");
     }
 
-    public void OnLeaveLobbyButton()
+    public void OnLeaveLobbyButton ()
     {
         PhotonNetwork.LeaveRoom();
         SetScreen(mainScreen);
@@ -158,10 +158,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         return buttonObj;
     }
 
-    void UpdateLobbyBrowserUI()
+    void UpdateLobbyBrowserUI ()
     {
         // disable all room buttons
-        foreach (GameObject button in roomButtons)
+        foreach(GameObject button in roomButtons)
             button.SetActive(false);
 
         // display all current rooms in the master server
@@ -186,17 +186,17 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
     }
 
-    public void OnJoinRoomButton(string roomName)
+    public void OnJoinRoomButton (string roomName)
     {
         NetworkManager.instance.JoinRoom(roomName);
     }
 
-    public void OnRefreshButton()
+    public void OnRefreshButton ()
     {
         UpdateLobbyBrowserUI();
     }
 
-    public override void OnRoomListUpdate(List<RoomInfo> allRooms)
+    public override void OnRoomListUpdate (List<RoomInfo> allRooms)
     {
         roomList = allRooms;
     }
