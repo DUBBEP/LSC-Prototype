@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBehavior : MonoBehaviour
+public class PlayerBehavior : MonoBehaviourPun
 {
     [Header("Info")]
     public int id;
@@ -37,7 +37,7 @@ public class PlayerBehavior : MonoBehaviour
         photonPlayer = player;
 
 
-        // GameManager.instance.players[id - 1] = this;
+        GameManager.instance.players[id - 1] = this;
 
 
         // is this not our local player?
