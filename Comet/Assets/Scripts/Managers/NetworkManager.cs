@@ -13,7 +13,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            gameObject.SetActive(false);
+
         DontDestroyOnLoad(gameObject);
     }
 

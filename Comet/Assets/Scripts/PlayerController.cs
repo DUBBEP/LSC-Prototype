@@ -6,20 +6,20 @@ using UnityEngine;
 // from https://www.youtube.com/@StringCodeStudios
 public class PlayerController : MonoBehaviour
 {
-    // [SerializeField] float movementSpeed = 1f;
-
     bool playerIsMoving = false;
     bool directionalCast = false;
     bool preparingCast = false;
-
-
+    
     Vector2Int[] searchOrder = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
     List<Tile> travelRange = new List<Tile>();
+    SpellCard selectedCard = null;
+    Action myAction = new Action(null, null, -1);
+
     GridManager gridManager;
     PlayerBehavior playerBehavior;
     SpellRangeGenerator spellRangeGenerator;
 
-    SpellCard selectedCard = null;
+
 
 
     private void Start()
@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
         playerBehavior = GetComponent<PlayerBehavior>();
         spellRangeGenerator = FindObjectOfType<SpellRangeGenerator>();
+
+        myAction.playerId = playerBehavior.id;
     }
 
     private void Update()
@@ -169,8 +171,8 @@ public class PlayerController : MonoBehaviour
     public void OnPrepareCast(SpellCard card)
     {
         selectedCard = card;
-        gridManager.SetTileColor(spellRangeGenerator.GenerateEffectRange(
-            card.cardRangeType, playerBehavior.PlayerCords), Color.red);
+        myAction.effectRange = spellRangeGenerator.GenerateEffectRange(card.cardRangeType, playerBehavior.PlayerCords);
+        gridManager.SetTileColor(myAction.effectRange, Color.red);
         GameUI.instance.SetConfirmCastButton(true);
     }
     public void OnPepareDirectionalCast(SpellCard card)
@@ -182,15 +184,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnConfirmCast()
     {
-        SendCastToQueue();
+        RoundManager.instance.roundActions.Enqueue(myAction);
         CancelCast();
+        playerBehavior.turnCompleted = true;
     }
-
-    public void SendCastToQueue()
-    {
-        return;
-    }
-
     private void CancelCast()
     {
         GameUI.instance.SetConfirmCastButton(false);

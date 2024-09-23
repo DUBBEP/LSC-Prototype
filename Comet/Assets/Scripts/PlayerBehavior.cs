@@ -13,6 +13,8 @@ public class PlayerBehavior : MonoBehaviourPun
     public Vector2Int PlayerCords { get { return playerCords; } }
     private List<SpellCard> spellCards;
     private bool flashingDamage;
+    public bool turnCompleted = false;
+
 
 
     [Header("Stats")]

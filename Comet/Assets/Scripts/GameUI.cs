@@ -84,6 +84,4 @@ public class GameUI : MonoBehaviour
     {
         confirmCast.SetActive(toggle);
     }
-
-
 }
