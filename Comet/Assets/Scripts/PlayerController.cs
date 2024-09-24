@@ -209,7 +209,7 @@ public class PlayerController : MonoBehaviourPun
         player.playerBehavior.turnCompleted = true;
         RoundManager.instance.CheckForUnreadyPlayers();
     }
-    private void CancelCast()
+    public void CancelCast()
     {
         GameUI.instance.SetConfirmCastButton(false);
         GameUI.instance.SetHandUI(false);

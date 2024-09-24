@@ -63,6 +63,8 @@ public class GameUI : MonoBehaviour
     public void OnConfirmCastButton()
     {
         playerController.photonView.RPC("OnConfirmCast", Photon.Pun.RpcTarget.All, player.id);
+        playerController.CancelCast();
+        playerController.TogglePlayerControls(false);
     }
 
 
