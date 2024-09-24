@@ -69,6 +69,8 @@ public class PlayerController : MonoBehaviourPun
                         playerIsMoving = false;
                         gridManager.SetTileColor(travelRange, Color.white);
                         photonView.RPC("OnConfirmCast", RpcTarget.All, playerBehavior.id);
+                        CancelCast();
+                        TogglePlayerControls(false);
                     }
                 }
             }
@@ -203,17 +205,6 @@ public class PlayerController : MonoBehaviourPun
     {
         PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
         RoundManager.instance.roundActions.Add(player.myAction);
-
-        Debug.Log("Passed Id: " + id);
-
-        Debug.Log("My Id:" + this.playerBehavior.id);
-
-        if (id == this.playerBehavior.id)
-        {
-            Debug.Log("Clearing UI");
-            CancelCast();
-            TogglePlayerControls(false);
-        }
 
         player.playerBehavior.turnCompleted = true;
         RoundManager.instance.CheckForUnreadyPlayers();
