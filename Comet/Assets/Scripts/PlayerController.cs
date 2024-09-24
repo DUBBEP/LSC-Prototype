@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviourPun
     
     Vector2Int[] searchOrder = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
     List<Tile> travelRange = new List<Tile>();
-    SpellCard selectedCard = null;
     public Action myAction = new Action(null, null, -1);
     public Vector2Int targetCords;
 
@@ -69,8 +68,6 @@ public class PlayerController : MonoBehaviourPun
                         playerIsMoving = false;
                         gridManager.SetTileColor(travelRange, Color.white);
                         photonView.RPC("OnConfirmCast", RpcTarget.All, playerBehavior.id);
-                        CancelCast();
-                        TogglePlayerControls(false);
                     }
                 }
             }
@@ -79,8 +76,20 @@ public class PlayerController : MonoBehaviourPun
 
 
     #region Move Functions
-    public void OnMove(SpellCard card)
+
+    [PunRPC]
+    public void OnMove(int id)
     {
+        if (!photonView.IsMine)
+        {
+            PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
+            player.HighlightMovementRange(playerBehavior.MovementRange);
+            player.myAction.effectRange = travelRange;
+            gridManager.SetTileColor(travelRange, Color.white);
+            player.myAction.card = spellRangeGenerator.CardLibrary["Move"];
+            return;
+        }
+
         if (playerIsMoving)
         {
             playerIsMoving = false;
@@ -92,9 +101,9 @@ public class PlayerController : MonoBehaviourPun
             CancelCast();
 
         playerIsMoving = true;
-        myAction.card = card;
         HighlightMovementRange(playerBehavior.MovementRange);
         myAction.effectRange = travelRange;
+        myAction.card = spellRangeGenerator.CardLibrary["Move"];
     }
 
     public void MovePlayer()
@@ -185,41 +194,54 @@ public class PlayerController : MonoBehaviourPun
         GameUI.instance.SetHandUI(true);
     }
 
-    public void OnPrepareCast(SpellCard card)
+    [PunRPC]
+    public void OnPrepareCast(int id, string cardName)
     {
-        selectedCard = card;
-        myAction.effectRange = spellRangeGenerator.GenerateEffectRange(card.cardRangeType, playerBehavior.PlayerCords);
-        myAction.card = selectedCard;
-        gridManager.SetTileColor(myAction.effectRange, Color.red);
-        GameUI.instance.SetConfirmCastButton(true);
+        SpellCard card = spellRangeGenerator.CardLibrary[cardName];
+        PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
+        
+        player.myAction.effectRange = spellRangeGenerator.GenerateEffectRange(card.cardRangeType, playerBehavior.PlayerCords);
+        player.myAction.card = card;
+
+        if (photonView.IsMine)
+        {
+            GameUI.instance.SetConfirmCastButton(true);
+            gridManager.SetTileColor(myAction.effectRange, Color.red);
+        }
     }
     public void OnPepareDirectionalCast(SpellCard card)
     {
         directionalCast = true;
-        selectedCard = card;
         GameUI.instance.SetConfirmCastButton(true);
     }
 
     [PunRPC]
     public void OnConfirmCast(int id)
     {
+        Debug.Log("Sending Action to roundmanager");
         PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
         RoundManager.instance.roundActions.Add(player.myAction);
+
+        if (photonView.IsMine)
+        {
+            CancelCast();
+            TogglePlayerControls(false);
+        }
 
         player.playerBehavior.turnCompleted = true;
         RoundManager.instance.CheckForUnreadyPlayers();
     }
+
     public void CancelCast()
     {
         GameUI.instance.SetConfirmCastButton(false);
         GameUI.instance.SetHandUI(false);
 
-        if (selectedCard != null)
+        if (myAction.card != null)
             gridManager.SetTileColor(myAction.effectRange, Color.white);
 
         myAction.card = null;
         myAction.effectRange = null;
-        selectedCard = null;
         directionalCast = false;
         preparingCast = false;
     }

@@ -141,14 +141,12 @@ public class RoundManager : MonoBehaviour
         if (action.card.cardRangeType == SpellCard.rangeType.none)
             return;
         
-
-
         foreach (PlayerBehavior player in GameManager.instance.players)
         {
             Tile playerTile = GridManager.instance.Grid[player.PlayerCords];
             if (action.effectRange.Contains(playerTile))
             {
-                player.TakeDamage(action.playerId, action.card.power);
+                player.photonView.RPC("TakeDamage", player.photonPlayer, action.playerId, action.card.power);
             }
         }
     }

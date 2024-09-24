@@ -50,9 +50,9 @@ public class GameUI : MonoBehaviour
         winText.text = winnerName + " wins";
     }
 
-    public void OnMoveButton(SpellCard card)
+    public void OnMoveButton()
     {
-        playerController.OnMove(card);
+        playerController.photonView.RPC("OnMove", Photon.Pun.RpcTarget.All, player.id);
     }
 
     public void OnCastButton()
@@ -63,14 +63,13 @@ public class GameUI : MonoBehaviour
     public void OnConfirmCastButton()
     {
         playerController.photonView.RPC("OnConfirmCast", Photon.Pun.RpcTarget.All, player.id);
-        playerController.CancelCast();
-        playerController.TogglePlayerControls(false);
     }
 
 
-    public void OnCardSelected(SpellCard card)
+    public void OnCardSelected(string cardName)
     {
-        playerController.OnPrepareCast(card);
+        playerController.photonView.RPC("OnPrepareCast", Photon.Pun.RpcTarget.All, player.id, cardName);
+
     }
 
     public void OnDirectionalCardSelected(SpellCard card)
