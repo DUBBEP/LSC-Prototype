@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 public struct Action
 {
@@ -27,7 +29,7 @@ public class RoundManager : MonoBehaviour
         roundEnd
     }
 
-    public Queue<Action> roundActions = new Queue<Action>();
+    public List<Action> roundActions = new List<Action>();
 
     private RoundState state;
     public RoundState State { get { return state; } }
@@ -72,18 +74,58 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    #region State Implementation
+    #region State Implementations
     void SetUpRound()
     {
         foreach (PlayerBehavior x in GameManager.instance.players)
         {
+            if (x == null)
+                return;
+
             x.turnCompleted = false;
+            x.GetComponent<PlayerController>().TogglePlayerControls(true);
         }
 
         state = RoundState.waitForPlayerActions;
     }
 
     void WaitForPlayers()
+    {
+        return;
+    }
+
+    void ExecuteActions()
+    {
+        Debug.Log("EXECUTING ACTIONS");
+        foreach (Action c in roundActions)
+            Debug.Log("roundAction #1: " + c.card.castDelay.ToString());
+
+        roundActions = roundActions.OrderBy(x => x.card.castDelay).ToList();
+
+        foreach (Action c in roundActions)
+            Debug.Log("roundAction delay #1: " + c.card.castDelay.ToString());
+
+        foreach (Action action in roundActions)
+        {
+            if (action.card.name == "MoveCard")
+                GameManager.instance.GetPlayer(action.playerId).Move();
+
+            DamagePlayersInRange(action);
+        }
+
+        state = RoundState.roundEnd;
+    }
+
+
+    void EndRound()
+    {
+        roundActions.Clear();
+        state = RoundState.roundStart;
+    }
+    #endregion
+
+
+    public void CheckForUnreadyPlayers()
     {
         foreach (PlayerBehavior x in GameManager.instance.players)
         {
@@ -94,15 +136,20 @@ public class RoundManager : MonoBehaviour
         state = RoundState.executePlayerActions;
     }
 
-    void ExecuteActions()
+    private void DamagePlayersInRange(Action action)
     {
+        if (action.card.cardRangeType == SpellCard.rangeType.none)
+            return;
+        
 
+
+        foreach (PlayerBehavior player in GameManager.instance.players)
+        {
+            Tile playerTile = GridManager.instance.Grid[player.PlayerCords];
+            if (action.effectRange.Contains(playerTile))
+            {
+                player.TakeDamage(action.playerId, action.card.power);
+            }
+        }
     }
-
-    void EndRound()
-    {
-        roundActions.Clear();
-    }
-    #endregion
-
 }

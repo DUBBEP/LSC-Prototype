@@ -7,6 +7,8 @@ public class GameUI : MonoBehaviour
 {
     public GameObject spellHandUI;
     public GameObject confirmCast;
+    public GameObject playerControls;
+
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI castingCrystalText;
     public TextMeshProUGUI playerInfoText;
@@ -29,7 +31,7 @@ public class GameUI : MonoBehaviour
 
     public void UpdateHealthBar()
     {
-        healthText.text = player.curHp.ToString();
+        healthText.text = "<b>Health: </b>" + player.curHp.ToString();
     }
     public void UpdatePlayerInfoText()
     {
@@ -48,9 +50,9 @@ public class GameUI : MonoBehaviour
         winText.text = winnerName + " wins";
     }
 
-    public void OnMoveButton()
+    public void OnMoveButton(SpellCard card)
     {
-        playerController.OnMove();
+        playerController.OnMove(card);
     }
 
     public void OnCastButton()
@@ -60,7 +62,7 @@ public class GameUI : MonoBehaviour
 
     public void OnConfirmCastButton()
     {
-        playerController.OnConfirmCast();
+        playerController.photonView.RPC("OnConfirmCast", Photon.Pun.RpcTarget.All, player.id);
     }
 
 

@@ -13,10 +13,17 @@ public class GridManager : MonoBehaviour
     Dictionary<Vector2Int, Tile> grid = new Dictionary<Vector2Int, Tile>();
     public Dictionary<Vector2Int, Tile> Grid { get { return grid; } }
 
+    public static GridManager instance;
 
     private void Awake()
     {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            gameObject.SetActive(false);
+
         CreateGrid();
+
     }
 
     public Tile GetTile (Vector2Int coordinates)
@@ -41,6 +48,9 @@ public class GridManager : MonoBehaviour
     }
     public void SetTileColor(List<Tile> tiles, Color color)
     {
+        if (tiles == null)
+            return;
+
         foreach (Tile x in tiles)
         {
             MeshRenderer tileMaterial = GameObject.Find(x.cords.ToString()).GetComponentInChildren<MeshRenderer>();

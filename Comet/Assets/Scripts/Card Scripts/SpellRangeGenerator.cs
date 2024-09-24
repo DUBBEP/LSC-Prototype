@@ -17,6 +17,8 @@ public class SpellRangeGenerator : MonoBehaviour
     {
         switch (rangeType)
         {
+            case SpellCard.rangeType.none:
+                return null;
             case SpellCard.rangeType.cross:
                 return GenerateCrossPattern(playerCords);
         }

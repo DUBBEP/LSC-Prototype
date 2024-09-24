@@ -20,4 +20,4 @@ MonoBehaviour:
   coolDown: 1
   cardRarity: 0
   cardType: 0
-  cardRangeType: 0
+  cardRangeType: 1

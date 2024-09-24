@@ -20,6 +20,7 @@ public class SpellCard : ScriptableObject
 
     public enum rangeType
     {
+        none,
         directionalLine,
         cross,
         star,
