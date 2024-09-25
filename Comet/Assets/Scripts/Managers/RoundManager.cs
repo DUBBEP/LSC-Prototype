@@ -143,9 +143,11 @@ public class RoundManager : MonoBehaviour
         
         foreach (PlayerBehavior player in GameManager.instance.players)
         {
+            Debug.Log("Player id: " + player.id + "Being compared for damage");
             Tile playerTile = GridManager.instance.Grid[player.PlayerCords];
             if (action.effectRange.Contains(playerTile))
             {
+                Debug.Log("Player id: " + player.id + " taking damage");
                 player.photonView.RPC("TakeDamage", player.photonPlayer, action.playerId, action.card.power);
             }
         }
