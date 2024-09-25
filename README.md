@@ -107,7 +107,7 @@ The cards are implemented with the round manager to effectively create a system 
 
 ### What’s needs to be done
 
-More cards need to be implemented to create move variety in player actions. Cards also need to have different effect types depending on if the card is an
+More cards need to be implemented to create move variety in player actions. Cards also need to have different effect types depending on if the card is an attack spell, or passive spell, or buff spell.
 
 ## Action Queue & Turn System: **Implemented**
 
