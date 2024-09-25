@@ -13,6 +13,8 @@ public class PlayerBehavior : MonoBehaviourPun
     public Vector2Int PlayerCords { get { return playerCords; } }
     private List<SpellCard> spellCards;
     private bool flashingDamage;
+    public bool turnCompleted = false;
+
 
 
     [Header("Stats")]
@@ -78,6 +80,10 @@ public class PlayerBehavior : MonoBehaviourPun
         gridManager.BlockTile(playerCords);
     }
 
+    public void Move()
+    {
+        GetComponent<PlayerController>().MovePlayer();
+    }
 
 
     // pass damage value in and subtrack from player health
@@ -92,7 +98,7 @@ public class PlayerBehavior : MonoBehaviourPun
         curAttackerId = attackerId;
 
         // flash the player red
-        photonView.RPC("DamageFlash", RpcTarget.Others);
+        photonView.RPC("DamageFlash", RpcTarget.All);
         // update the health bar UI
         GameUI.instance.UpdateHealthBar();
         // die if no health left
@@ -130,12 +136,22 @@ public class PlayerBehavior : MonoBehaviourPun
     }
 
     // set health to zero and move player off screen.
+    [PunRPC]
     public void Die()
     {
         curHp = 0;
-
+        dead = true;
+        GetComponent<PlayerController>().TogglePlayerControls(false);
+        
+        if (PhotonNetwork.IsMasterClient)
+            GameManager.instance.CheckWinCondition();
+        
         transform.position = new Vector3(1000f, 1000f, 1000f);
-    }
+
+        if (photonView.IsMine)
+            if (curAttackerId != 0)
+                GameManager.instance.GetPlayer(curAttackerId).photonView.RPC("AddKill", RpcTarget.All);
+        }
 
     // adds selected spell card to cards this character holds
     public void AquireSpell(SpellCard card)

@@ -8,15 +8,28 @@ public class SpellRangeGenerator : MonoBehaviour
     Vector2Int[] cardinalDirections = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
     GridManager gridManager;
 
+    Dictionary<string, SpellCard> cardLibrary = new Dictionary<string, SpellCard>();
+    public Dictionary<string, SpellCard> CardLibrary { get { return cardLibrary; } }
+
+
+    public SpellCard move, blazingCross;
+
+
+
     void Start()
     {
         gridManager = FindObjectOfType<GridManager>();
+
+        cardLibrary.Add("Move", move);
+        cardLibrary.Add("BlazingCross", blazingCross);
     }
 
     public List<Tile> GenerateEffectRange(SpellCard.rangeType rangeType, Vector2Int playerCords)
     {
         switch (rangeType)
         {
+            case SpellCard.rangeType.none:
+                return null;
             case SpellCard.rangeType.cross:
                 return GenerateCrossPattern(playerCords);
         }

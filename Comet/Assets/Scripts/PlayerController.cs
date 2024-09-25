@@ -1,25 +1,27 @@
+using Photon.Pun;
 using System.Collections;
+using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 // from https://www.youtube.com/@StringCodeStudios
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviourPun
 {
-    // [SerializeField] float movementSpeed = 1f;
-
     bool playerIsMoving = false;
     bool directionalCast = false;
     bool preparingCast = false;
-
-
+    
     Vector2Int[] searchOrder = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
     List<Tile> travelRange = new List<Tile>();
+    public Action myAction = new Action(null, null, -1);
+    public Vector2Int targetCords;
+
     GridManager gridManager;
     PlayerBehavior playerBehavior;
     SpellRangeGenerator spellRangeGenerator;
 
-    SpellCard selectedCard = null;
+
 
 
     private void Start()
@@ -27,6 +29,8 @@ public class PlayerController : MonoBehaviour
         gridManager = FindObjectOfType<GridManager>();
         playerBehavior = GetComponent<PlayerBehavior>();
         spellRangeGenerator = FindObjectOfType<SpellRangeGenerator>();
+
+        myAction.playerId = playerBehavior.id;
     }
 
     private void Update()
@@ -57,24 +61,35 @@ public class PlayerController : MonoBehaviour
                         if (!travelRange.Contains(selectedTile))
                             return;
 
-                        Vector2Int targetCords = hit.transform.GetComponent<Labeller>().cords;
-                        Vector2 startCords = new Vector2Int((int)transform.position.x,
-                            (int)transform.position.y) / gridManager.UnityGridSize;
+                        targetCords = hit.transform.GetComponent<Labeller>().cords;
+                        // Vector2 startCords = new Vector2Int((int)transform.position.x,
+                        //     (int)transform.position.y) / gridManager.UnityGridSize;
 
-                        transform.position = new Vector3(targetCords.x, transform.position.y, targetCords.y);
-                        playerBehavior.UpdateCords(targetCords);
-
-                        gridManager.SetTileColor(travelRange, Color.white);
                         playerIsMoving = false;
+                        gridManager.SetTileColor(travelRange, Color.white);
+                        photonView.RPC("OnConfirmCast", RpcTarget.All, playerBehavior.id);
                     }
                 }
             }
         }
     }
 
+
     #region Move Functions
-    public void OnMove()
+
+    [PunRPC]
+    public void OnMove(int id)
     {
+        if (!photonView.IsMine)
+        {
+            PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
+            player.HighlightMovementRange(playerBehavior.MovementRange);
+            player.myAction.effectRange = travelRange;
+            gridManager.SetTileColor(travelRange, Color.white);
+            player.myAction.card = spellRangeGenerator.CardLibrary["Move"];
+            return;
+        }
+
         if (playerIsMoving)
         {
             playerIsMoving = false;
@@ -85,8 +100,16 @@ public class PlayerController : MonoBehaviour
         if (preparingCast)
             CancelCast();
 
-            playerIsMoving = true;
+        playerIsMoving = true;
         HighlightMovementRange(playerBehavior.MovementRange);
+        myAction.effectRange = travelRange;
+        myAction.card = spellRangeGenerator.CardLibrary["Move"];
+    }
+
+    public void MovePlayer()
+    {
+        transform.position = new Vector3(targetCords.x, transform.position.y, targetCords.y);
+        playerBehavior.UpdateCords(targetCords);
     }
 
     void HighlightMovementRange(int range)
@@ -127,7 +150,12 @@ public class PlayerController : MonoBehaviour
 
         gridManager.SetMoveTileColors(travelRange);
 
+
     }
+
+
+
+
 
     void ExploreNeighbors(Tile tile)
     {
@@ -166,41 +194,54 @@ public class PlayerController : MonoBehaviour
         GameUI.instance.SetHandUI(true);
     }
 
-    public void OnPrepareCast(SpellCard card)
+    [PunRPC]
+    public void OnPrepareCast(int id, string cardName)
     {
-        selectedCard = card;
-        gridManager.SetTileColor(spellRangeGenerator.GenerateEffectRange(
-            card.cardRangeType, playerBehavior.PlayerCords), Color.red);
-        GameUI.instance.SetConfirmCastButton(true);
+        SpellCard card = spellRangeGenerator.CardLibrary[cardName];
+        PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
+        
+        player.myAction.effectRange = spellRangeGenerator.GenerateEffectRange(card.cardRangeType, playerBehavior.PlayerCords);
+        player.myAction.card = card;
+
+        if (photonView.IsMine)
+        {
+            GameUI.instance.SetConfirmCastButton(true);
+            gridManager.SetTileColor(myAction.effectRange, Color.red);
+        }
     }
     public void OnPepareDirectionalCast(SpellCard card)
     {
         directionalCast = true;
-        selectedCard = card;
         GameUI.instance.SetConfirmCastButton(true);
     }
 
-    public void OnConfirmCast()
+    [PunRPC]
+    public void OnConfirmCast(int id)
     {
-        SendCastToQueue();
-        CancelCast();
+        Debug.Log("Sending Action to roundmanager");
+        PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
+        RoundManager.instance.roundActions.Add(player.myAction);
+
+        if (photonView.IsMine)
+        {
+            CancelCast();
+            TogglePlayerControls(false);
+        }
+
+        player.playerBehavior.turnCompleted = true;
+        RoundManager.instance.CheckForUnreadyPlayers();
     }
 
-    public void SendCastToQueue()
-    {
-        return;
-    }
-
-    private void CancelCast()
+    public void CancelCast()
     {
         GameUI.instance.SetConfirmCastButton(false);
         GameUI.instance.SetHandUI(false);
 
-        if (selectedCard != null)
-            gridManager.SetTileColor(spellRangeGenerator.GenerateEffectRange(
-                selectedCard.cardRangeType, playerBehavior.PlayerCords), Color.white);
+        if (myAction.card != null)
+            gridManager.SetTileColor(myAction.effectRange, Color.white);
 
-        selectedCard = null;
+        myAction.card = null;
+        myAction.effectRange = null;
         directionalCast = false;
         preparingCast = false;
     }
@@ -209,4 +250,8 @@ public class PlayerController : MonoBehaviour
 
 
 
+    public void TogglePlayerControls(bool toggle)
+    {
+        GameUI.instance.playerControls.SetActive(toggle);
+    }
 }

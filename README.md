@@ -1,6 +1,10 @@
 # LSC-Prototype
 
 Build Link:  https://dubbep.github.io/LSC-Prototype/
+
+<details>
+
+<summary>Prototype Week 1</summary>
  
 # Prototype 1 Objectives Status:
 
@@ -86,4 +90,82 @@ Playeres need to be able to interact with chest objects which occupy certain spa
 
 A card gacha system needs to be implemented such that when a chest is opened a random card is returned. This system needs to weigh cards by their rarity to produce expected card drop rates.
 
+</details>
+
+
+<details>
+
+<summary>Prototype Week 2</summary>
+ 
+# Prototype 2 Objectives Status:
+
+
+## Spell card Scriptable Object: **Implemented**
+
+### What's been going well
+The cards are implemented with the round manager to effectively create a system that can be expanded with relative ease
+
+### What’s needs to be done
+
+More cards need to be implemented to create move variety in player actions. Cards also need to have different effect types depending on if the card is an attack spell, or passive spell, or buff spell.
+
+## Action Queue & Turn System: **Implemented**
+
+### What's been going well
+
+The turn systems seems to be functioning as intended with no immediate issues being presented. The code is implemented with the photon unity network such that it is online multiplayer capable.
+
+### What needs to be done
+
+There is no pacing in the execution of player actions. Player actions are meant to take place simultaneously but as it exists now they all complete instantaneously.
+
+There needs to be implementation to show the order which players must act and to show who is acting and what effect their action had on other players.
+
+## Player Characters: **implemented**
+### What's been going well
+
+players are fully capable of moving, attacking, taking damage, and dying. All of the basic functionality of players is implemented
+
+### What needs to be done
+
+Players now need to be able to pickup casting crystals which act as a resource for casting spells and attacking.
+
+players need to have expandable hands of spells which change throughout playtime.
+
+## Game UI: **In progress**
+
+### What's been going well
+
+the most integral functions of the ui such as health and the player controls are functional.
+
+### What needs to be done
+
+The ui needs to be cleaned up a little bit.
+
+When directional casting is implemented there needs to be UI created to choose the direction of the cast.
+
+## Movement System: **Implemented**
+
+### What's been going well
+
+Players can move in turn and their movement range is properly displayed.
+
+### What needs to be done
+
+A breadth first search system still needs to be implemented.
+
+players need to be able to pickup casting crystals that will be placed on the board.
+
+player must be able to interact with chest objects which occupy certain spaces on the board.
+
+(Optional) Farther into development the grid will need to be compatible with a unique cards functionality which allows players to travers walls. The grid will need to hide certain grid spaces on top of walls until a player activates this ability, and hide these spaces once it is no longer in use.
+
+## Create chest card gacha system: **Not Started**
+What needs to be done
+
+Playeres need to be able to interact with chest objects which occupy certain spaces on the board.
+
+A card gacha system needs to be implemented such that when a chest is opened a random card is returned. This system needs to weigh cards by their rarity to produce expected card drop rates.
+
+</details>
 
