@@ -2,7 +2,9 @@
 
 Build Link:  https://dubbep.github.io/LSC-Prototype/
 
-<Prototype week 1>
+<details>
+
+<summary>Prototype Week 1</summary>
  
 # Prototype 1 Objectives Status:
 
@@ -88,5 +90,5 @@ Playeres need to be able to interact with chest objects which occupy certain spa
 
 A card gacha system needs to be implemented such that when a chest is opened a random card is returned. This system needs to weigh cards by their rarity to produce expected card drop rates.
 
-</prototype Week 1>
+</details>
 
