@@ -76,12 +76,16 @@ public class RoundManager : MonoBehaviour
 
     void ExecuteActions()
     {
+        Debug.Log("EXECUTE ACTIONS");
+
         roundActions = roundActions.OrderBy(x => x.card.castDelay).ToList();
         foreach (Action c in roundActions)
-            Debug.Log("roundAction delay #1: " + c.card.castDelay.ToString());
+            Debug.Log("roundAction Delay value #1: " + c.card.castDelay.ToString());
 
         foreach (Action action in roundActions)
         {
+            Debug.Log("Action Player Id: " + action.playerId);
+            StartCoroutine(PauseforSeconds(1));
             if (action.card.name == "MoveCard")
                 GameManager.instance.GetPlayer(action.playerId).Move();
 
@@ -89,6 +93,7 @@ public class RoundManager : MonoBehaviour
         }
 
         state = RoundState.roundEnd;
+        EndRound();
     }
 
 
@@ -96,6 +101,7 @@ public class RoundManager : MonoBehaviour
     {
         roundActions.Clear();
         state = RoundState.roundStart;
+        SetUpRound();
     }
     #endregion
 
@@ -109,6 +115,7 @@ public class RoundManager : MonoBehaviour
         }
 
         state = RoundState.executePlayerActions;
+        ExecuteActions();
     }
 
     private void DamagePlayersInRange(Action action)
@@ -136,5 +143,10 @@ public class RoundManager : MonoBehaviour
             Debug.Log("Round Action Effect Range Size: " + c.effectRange.Count);
             Debug.Log("Round Action card Name: " + c.card.name);
         }
+    }
+
+    IEnumerator PauseforSeconds(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
     }
 }
