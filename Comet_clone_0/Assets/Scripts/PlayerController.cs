@@ -29,8 +29,6 @@ public class PlayerController : MonoBehaviourPun
         gridManager = FindObjectOfType<GridManager>();
         playerBehavior = GetComponent<PlayerBehavior>();
         spellRangeGenerator = FindObjectOfType<SpellRangeGenerator>();
-
-        myAction.playerId = playerBehavior.id;
     }
 
     private void Update()
@@ -54,6 +52,7 @@ public class PlayerController : MonoBehaviourPun
                     if (playerIsMoving)
                     {
                         Tile selectedTile = gridManager.Grid[hit.transform.gameObject.GetComponent<Labeller>().cords];
+                        Vector2Int cords = selectedTile.cords;
 
                         if (!selectedTile.walkable)
                             return;
@@ -61,12 +60,14 @@ public class PlayerController : MonoBehaviourPun
                         if (!travelRange.Contains(selectedTile))
                             return;
 
-                        targetCords = hit.transform.GetComponent<Labeller>().cords;
+
+                        photonView.RPC("RecordTargetCords", RpcTarget.All, cords.x, cords.y);
+
                         // Vector2 startCords = new Vector2Int((int)transform.position.x,
                         //     (int)transform.position.y) / gridManager.UnityGridSize;
 
                         playerIsMoving = false;
-                        gridManager.SetTileColor(travelRange, Color.white);
+                        gridManager.SetAttackTileColor(travelRange, Color.white);
                         photonView.RPC("OnConfirmCast", RpcTarget.All, playerBehavior.id);
                     }
                 }
@@ -83,9 +84,8 @@ public class PlayerController : MonoBehaviourPun
         if (!photonView.IsMine)
         {
             PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
-            player.HighlightMovementRange(playerBehavior.MovementRange);
+            player.GenerateTravelRange(playerBehavior.MovementRange);
             player.myAction.effectRange = travelRange;
-            gridManager.SetTileColor(travelRange, Color.white);
             player.myAction.card = spellRangeGenerator.CardLibrary["Move"];
             return;
         }
@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviourPun
         if (playerIsMoving)
         {
             playerIsMoving = false;
-            gridManager.SetTileColor(travelRange, Color.white);
+            gridManager.SetAttackTileColor(travelRange, Color.white);
             return;
         }
 
@@ -101,18 +101,27 @@ public class PlayerController : MonoBehaviourPun
             CancelCast();
 
         playerIsMoving = true;
-        HighlightMovementRange(playerBehavior.MovementRange);
+        GenerateTravelRange(playerBehavior.MovementRange);
+        gridManager.SetMoveTileColors(travelRange);
         myAction.effectRange = travelRange;
         myAction.card = spellRangeGenerator.CardLibrary["Move"];
     }
 
-    public void MovePlayer()
+    [PunRPC]
+    void RecordTargetCords(int x, int y)
+    {
+        targetCords.x = x;
+        targetCords.y = y;
+    }
+
+    [PunRPC]
+    void MovePlayer()
     {
         transform.position = new Vector3(targetCords.x, transform.position.y, targetCords.y);
         playerBehavior.UpdateCords(targetCords);
     }
 
-    void HighlightMovementRange(int range)
+    void GenerateTravelRange(int range)
     {
         // take the passed range value to build the characters movement range
         // start with the players current position and check for available spots
@@ -148,7 +157,7 @@ public class PlayerController : MonoBehaviourPun
             }
         }
 
-        gridManager.SetMoveTileColors(travelRange);
+
 
 
     }
@@ -187,7 +196,7 @@ public class PlayerController : MonoBehaviourPun
         if (playerIsMoving)
         {
             playerIsMoving = false;
-            gridManager.SetTileColor(travelRange, Color.white);
+            gridManager.SetAttackTileColor(travelRange, Color.white);
         }
 
         preparingCast = true;
@@ -206,26 +215,55 @@ public class PlayerController : MonoBehaviourPun
         if (photonView.IsMine)
         {
             GameUI.instance.SetConfirmCastButton(true);
-            gridManager.SetTileColor(myAction.effectRange, Color.red);
+            gridManager.SetAttackTileColor(myAction.effectRange, Color.red);
         }
     }
-    public void OnPepareDirectionalCast(SpellCard card)
+
+    [PunRPC]
+    public void OnPrepareDirectionalCast(int id, string cardName, int dir)
     {
-        directionalCast = true;
-        GameUI.instance.SetConfirmCastButton(true);
+        Vector2Int direction = SetDirectionByInt(dir);
+        SpellCard card = spellRangeGenerator.CardLibrary[cardName];
+        PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
+
+        player.myAction.effectRange = spellRangeGenerator.GenerateEffectRange(card.cardRangeType, playerBehavior.PlayerCords, direction);
+        player.myAction.card = card;
+
+        if (photonView.IsMine)
+        {
+            GameUI.instance.SetConfirmCastButton(true);
+            gridManager.SetAttackTileColor(myAction.effectRange, Color.red);
+        }
     }
+    [PunRPC]
+    public void SetNewDirectionOfCast(int id, int dir)
+    {
+        if (photonView.IsMine)
+            gridManager.SetAttackTileColor(myAction.effectRange, Color.white);
+
+        Vector2Int direction = SetDirectionByInt(dir);
+
+        PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
+
+        player.myAction.effectRange = spellRangeGenerator.GenerateEffectRange(myAction.card.cardRangeType, playerBehavior.PlayerCords, direction);
+
+        if (photonView.IsMine)
+            gridManager.SetAttackTileColor(myAction.effectRange, Color.red);
+    }
+
 
     [PunRPC]
     public void OnConfirmCast(int id)
     {
         Debug.Log("Sending Action to roundmanager");
         PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
+
         RoundManager.instance.roundActions.Add(player.myAction);
 
         if (photonView.IsMine)
         {
             CancelCast();
-            TogglePlayerControls(false);
+            GameUI.instance.SetPlayerControls(false);
         }
 
         player.playerBehavior.turnCompleted = true;
@@ -236,10 +274,11 @@ public class PlayerController : MonoBehaviourPun
     public void CancelCast()
     {
         GameUI.instance.SetConfirmCastButton(false);
+        GameUI.instance.SetDirectionControls(false);
         GameUI.instance.SetHandUI(false);
 
         if (myAction.card != null)
-            gridManager.SetTileColor(myAction.effectRange, Color.white);
+            gridManager.SetAttackTileColor(myAction.effectRange, Color.white);
 
         myAction.card = null;
         myAction.effectRange = null;
@@ -250,9 +289,21 @@ public class PlayerController : MonoBehaviourPun
     #endregion
 
 
-
-    public void TogglePlayerControls(bool toggle)
+    Vector2Int SetDirectionByInt(int dir)
     {
-        GameUI.instance.playerControls.SetActive(toggle);
+
+        switch (dir)
+        {
+            case 1:
+                return Vector2Int.up;
+            case 2:
+                return Vector2Int.right;
+            case 3:
+                return Vector2Int.down;
+            case 4:
+                return Vector2Int.left;
+
+        }
+        return Vector2Int.right;
     }
 }

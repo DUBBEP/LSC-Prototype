@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class SpellRangeGenerator : MonoBehaviour
 {
     Vector2Int[] cardinalDirections = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
@@ -12,7 +14,7 @@ public class SpellRangeGenerator : MonoBehaviour
     public Dictionary<string, SpellCard> CardLibrary { get { return cardLibrary; } }
 
 
-    public SpellCard move, blazingCross;
+    public SpellCard move, blazingCross, thunderSpear;
 
 
 
@@ -22,6 +24,7 @@ public class SpellRangeGenerator : MonoBehaviour
 
         cardLibrary.Add("Move", move);
         cardLibrary.Add("BlazingCross", blazingCross);
+        cardLibrary.Add("ThunderSpear", thunderSpear);
     }
 
     public List<Tile> GenerateEffectRange(SpellCard.rangeType rangeType, Vector2Int playerCords)
@@ -75,7 +78,17 @@ public class SpellRangeGenerator : MonoBehaviour
 
     List<Tile> GenerateDirectionalLinePattern(Vector2Int playerCords, Vector2Int direction)
     {
-        return new List<Tile>();
+        List<Tile> result = new List<Tile>();
+        for (int i = 1; i < 5; ++i)
+        {
+            Vector2Int lineCords = playerCords + (direction*i);
+
+            if (gridManager.Grid.ContainsKey(lineCords))
+                result.Add(gridManager.Grid[lineCords]);
+            else if (!gridManager.Grid.ContainsKey(lineCords))
+                break;
+        }
+        return result;
     }
 
     List<Tile> GenerateCirclepattern()

@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     void SpawnPlayer()
     {
-        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
+        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].position, Quaternion.identity);
 
         // initialize the player for all other players
         playerObj.GetComponent<PlayerBehavior>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
@@ -109,13 +109,5 @@ public class GameManager : MonoBehaviourPun
     void SetSpawnedTrue()
     {
         playersSpawned = true;
-    }
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

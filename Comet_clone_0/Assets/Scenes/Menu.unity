@@ -559,6 +559,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8897586470421295909, guid: 7c02a7a1b7bde66418aa477ddf543267, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1323854295}
+    - target: {fileID: 8897586470421295909, guid: 7c02a7a1b7bde66418aa477ddf543267, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPlayerNameValueChanged
+      objectReference: {fileID: 0}
     - target: {fileID: 8897586470438058032, guid: 7c02a7a1b7bde66418aa477ddf543267, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

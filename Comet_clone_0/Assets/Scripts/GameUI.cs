@@ -8,6 +8,7 @@ public class GameUI : MonoBehaviour
     public GameObject spellHandUI;
     public GameObject confirmCast;
     public GameObject playerControls;
+    public GameObject DirectionControls;
 
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI castingCrystalText;
@@ -24,14 +25,20 @@ public class GameUI : MonoBehaviour
 
     public static GameUI instance;
 
+
+
     private void Awake()
     {
         instance = this;
     }
 
-    public void UpdateHealthBar()
+    public void UpdateHealthText()
     {
         healthText.text = "<b>Health: </b>" + player.curHp.ToString();
+    }
+    public void UpdateCastingCrystalText()
+    {
+        castingCrystalText.text = "<b>Crystals: </b>" + player.castingCrystals.ToString();
     }
     public void UpdatePlayerInfoText()
     {
@@ -65,18 +72,22 @@ public class GameUI : MonoBehaviour
         playerController.photonView.RPC("OnConfirmCast", Photon.Pun.RpcTarget.All, player.id);
     }
 
-
     public void OnCardSelected(string cardName)
     {
         playerController.photonView.RPC("OnPrepareCast", Photon.Pun.RpcTarget.All, player.id, cardName);
-
+        SetDirectionControls(false);
     }
 
-    public void OnDirectionalCardSelected(SpellCard card)
+    public void OnDirectionalCardSelected(string cardName)
     {
-        playerController.OnPepareDirectionalCast(card);
+        playerController.photonView.RPC("OnPrepareDirectionalCast", Photon.Pun.RpcTarget.All, player.id, cardName, 2);
+        SetDirectionControls(true);
     }
 
+    public void OnDirectionSet(int dir)
+    {
+        playerController.photonView.RPC("SetNewDirectionOfCast", Photon.Pun.RpcTarget.All, player.id, dir);
+    }
 
     public void SetHandUI(bool toggle)
     {
@@ -87,4 +98,15 @@ public class GameUI : MonoBehaviour
     {
         confirmCast.SetActive(toggle);
     }
+
+    public void SetPlayerControls(bool toggle)
+    {
+        playerControls.SetActive(toggle);
+    }
+
+    public void SetDirectionControls(bool toggle)
+    {
+        DirectionControls.SetActive(toggle);
+    }
+
 }

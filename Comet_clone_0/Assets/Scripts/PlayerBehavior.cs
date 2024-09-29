@@ -18,11 +18,11 @@ public class PlayerBehavior : MonoBehaviourPun
 
 
     [Header("Stats")]
-    private int castingCrystals;
+    public int castingCrystals;
     public int curHp;
     public int maxHp;
     public int kills;
-    public bool dead;
+    public bool dead ;
     [SerializeField]
     private int movementRange = 3;
     public int MovementRange { get { return movementRange; }}
@@ -32,6 +32,7 @@ public class PlayerBehavior : MonoBehaviourPun
     GridManager gridManager;
     public Player photonPlayer;
     public MeshRenderer mr;
+    PlayerController playerController;
 
 
 
@@ -41,6 +42,8 @@ public class PlayerBehavior : MonoBehaviourPun
         id = player.ActorNumber;
         photonPlayer = player;
 
+        playerController = GetComponent<PlayerController>();
+        playerController.myAction.playerId = id;
 
         GameManager.instance.players[id - 1] = this;
 
@@ -65,6 +68,10 @@ public class PlayerBehavior : MonoBehaviourPun
                                      Mathf.RoundToInt(transform.position.z / gridManager.UnityGridSize));
         gridManager.BlockTile(playerCords);
 
+        GameUI.instance.UpdateHealthText();
+        GameUI.instance.UpdateCastingCrystalText();
+        GameUI.instance.UpdatePlayerInfoText();
+
     }
 
     // Update is called once per frame
@@ -80,12 +87,6 @@ public class PlayerBehavior : MonoBehaviourPun
         gridManager.BlockTile(playerCords);
     }
 
-    public void Move()
-    {
-        GetComponent<PlayerController>().MovePlayer();
-    }
-
-
     // pass damage value in and subtrack from player health
     // play any other effects like color flash or ragdoll activation.
     [PunRPC]
@@ -100,7 +101,7 @@ public class PlayerBehavior : MonoBehaviourPun
         // flash the player red
         photonView.RPC("DamageFlash", RpcTarget.All);
         // update the health bar UI
-        GameUI.instance.UpdateHealthBar();
+        GameUI.instance.UpdateHealthText();
         // die if no health left
         if (curHp <= 0)
             photonView.RPC("Die", RpcTarget.All);
@@ -141,12 +142,15 @@ public class PlayerBehavior : MonoBehaviourPun
     {
         curHp = 0;
         dead = true;
-        GetComponent<PlayerController>().TogglePlayerControls(false);
-        
+        GameManager.instance.alivePlayers--;
+
+        playerController.photonView.RPC("RecordTargetCords", RpcTarget.All, -100, -100);
+        playerController.photonView.RPC("MovePlayer", RpcTarget.All);
+
+
         if (PhotonNetwork.IsMasterClient)
             GameManager.instance.CheckWinCondition();
         
-        transform.position = new Vector3(1000f, 1000f, 1000f);
 
         if (photonView.IsMine)
             if (curAttackerId != 0)

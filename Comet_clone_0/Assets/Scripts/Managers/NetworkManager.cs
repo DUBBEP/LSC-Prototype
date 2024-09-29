@@ -58,7 +58,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("Menu");
     }
 
-    /* needs game manager implementation
+
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         GameManager.instance.alivePlayers--;
@@ -68,5 +68,4 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             GameManager.instance.CheckWinCondition();
         }
     }
-    */
 }

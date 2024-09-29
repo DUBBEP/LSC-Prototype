@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-
+using Photon.Pun;
 
 public struct Action
 {
     public SpellCard card;
     public List<Tile> effectRange;
     public int playerId;
-
+    public bool interrupted;
 
     public Action(SpellCard card, List<Tile> effectRange, int playerId)
     {
         this.card = card;
         this.effectRange = effectRange;
         this.playerId = playerId;
+        this.interrupted = false;
     }
 };
 
@@ -37,6 +38,7 @@ public class RoundManager : MonoBehaviour
 
     public static RoundManager instance;
 
+    private int readyPlayers;
 
 
 
@@ -51,7 +53,7 @@ public class RoundManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        state = RoundState.roundStart;
+        SetUpRound();
     }
 
     #region State Implementations
@@ -60,12 +62,28 @@ public class RoundManager : MonoBehaviour
         foreach (PlayerBehavior x in GameManager.instance.players)
         {
             if (x == null)
-                return;
+                continue;
+
+            if (x.dead)
+            {
+                Debug.Log(x.id + " is dead!");
+
+                x.turnCompleted = true;
+
+                if (x.photonView.IsMine)
+                   GameUI.instance.SetPlayerControls(false);
+
+                continue;
+            }
 
             x.turnCompleted = false;
-            x.GetComponent<PlayerController>().TogglePlayerControls(true);
+            x.GetComponent<PlayerController>().myAction.interrupted = false;
+
+            if (x.photonView.IsMine)
+                GameUI.instance.SetPlayerControls(true);
         }
 
+        readyPlayers = 0;
         state = RoundState.waitForPlayerActions;
     }
 
@@ -74,28 +92,29 @@ public class RoundManager : MonoBehaviour
         return;
     }
 
-    void ExecuteActions()
+    IEnumerator ExecuteActions()
     {
         Debug.Log("EXECUTE ACTIONS");
 
         roundActions = roundActions.OrderBy(x => x.card.castDelay).ToList();
-        foreach (Action c in roundActions)
-            Debug.Log("roundAction Delay value #1: " + c.card.castDelay.ToString());
 
         foreach (Action action in roundActions)
         {
-            Debug.Log("Action Player Id: " + action.playerId);
-            StartCoroutine(PauseforSeconds(1));
-            if (action.card.name == "MoveCard")
-                GameManager.instance.GetPlayer(action.playerId).Move();
+            if (action.interrupted) continue;
 
-            DamagePlayersInRange(action);
+
+
+            Debug.Log("Waiting for a second");
+            yield return new WaitForSecondsRealtime(1);
+            if (action.card.name == "MoveCard")
+                MovePlayer(action.playerId);
+            else
+                DamagePlayersInRange(action);
         }
 
         state = RoundState.roundEnd;
         EndRound();
     }
-
 
     void EndRound()
     {
@@ -106,16 +125,32 @@ public class RoundManager : MonoBehaviour
     #endregion
 
 
+    void MovePlayer(int playerId)
+    {
+        PlayerController player = GameManager.instance.GetPlayer(playerId).GetComponent<PlayerController>();
+        player.photonView.RPC("MovePlayer", RpcTarget.All);
+
+    }
+
     public void CheckForUnreadyPlayers()
     {
         foreach (PlayerBehavior x in GameManager.instance.players)
         {
-            if (x.turnCompleted == false)
-                return;
+            if (x.turnCompleted == true || x.dead)
+            {
+                readyPlayers++;
+            }
         }
 
+        if (readyPlayers < GameManager.instance.players.Length)
+        {
+            readyPlayers = 0;
+            return;
+        }
+
+
         state = RoundState.executePlayerActions;
-        ExecuteActions();
+        StartCoroutine(ExecuteActions());
     }
 
     private void DamagePlayersInRange(Action action)
@@ -125,14 +160,38 @@ public class RoundManager : MonoBehaviour
         
         foreach (PlayerBehavior player in GameManager.instance.players)
         {
-            Debug.Log("Player id: " + player.id + "Being compared for damage");
+            if (player.dead)
+                continue;
+
+            if (!player.photonView.IsMine)
+                continue;
+
             Tile playerTile = GridManager.instance.Grid[player.PlayerCords];
             if (action.effectRange.Contains(playerTile))
             {
                 Debug.Log("Player id: " + player.id + " taking damage");
                 player.photonView.RPC("TakeDamage", player.photonPlayer, action.playerId, action.card.power);
+                CheckForInterruptions(player.id);
+                
             }
         }
+    }
+
+    private void CheckForInterruptions(int playerId)
+    {
+        foreach (Action action in roundActions)
+        {
+            if (playerId == action.playerId)
+                InterruptAction(action);
+        }
+    }
+
+    private void InterruptAction(Action action)
+    {
+        action.interrupted = true;
+
+        // display that the action was interrupted to screen
+        // play any other effects related to an interrupted action
     }
 
     public void DisplayAllActionInformation()
@@ -145,8 +204,5 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    IEnumerator PauseforSeconds(int seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-    }
+
 }

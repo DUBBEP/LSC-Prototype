@@ -46,7 +46,7 @@ public class GridManager : MonoBehaviour
                 tileMaterial.material.color = Color.red;
         }
     }
-    public void SetTileColor(List<Tile> tiles, Color color)
+    public void SetAttackTileColor(List<Tile> tiles, Color color)
     {
         if (tiles == null)
             return;

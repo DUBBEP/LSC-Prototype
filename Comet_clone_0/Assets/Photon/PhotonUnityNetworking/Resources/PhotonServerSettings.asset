@@ -50,6 +50,13 @@ MonoBehaviour:
   - OnPrepareCast
   - CancelCast
   - OnMove
+  - MovePlayer
+  - RecordTargetCords
+  - SetStartLocations
+  - OnPepareDirectionalCast
+  - OnPrepareDirectionalCast
+  - SetDirectionOfCast
+  - SetNewDirectionOfCast
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
