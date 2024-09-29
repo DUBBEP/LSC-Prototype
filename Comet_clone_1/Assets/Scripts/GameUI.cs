@@ -59,11 +59,13 @@ public class GameUI : MonoBehaviour
 
     public void OnMoveButton()
     {
+        player.cam.StartFollowing(player.transform);
         playerController.photonView.RPC("OnMove", Photon.Pun.RpcTarget.All, player.id);
     }
 
     public void OnCastButton()
     {
+        player.cam.StartFollowing(player.transform);
         playerController.OnCast();
     }
 

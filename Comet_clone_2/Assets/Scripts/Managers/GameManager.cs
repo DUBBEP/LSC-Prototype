@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviourPun
     public Transform[] spawnPoints;
     public bool playersSpawned = false;
 
+    public Vector3 camDefaultPos;
+
     [SerializeField]
     private float postGameTime;
 

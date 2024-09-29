@@ -57,6 +57,7 @@ MonoBehaviour:
   - OnPrepareDirectionalCast
   - SetDirectionOfCast
   - SetNewDirectionOfCast
+  - UpdateHealthBar
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

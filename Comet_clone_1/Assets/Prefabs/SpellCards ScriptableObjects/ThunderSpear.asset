@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Hurl Lightning at opponent
   numberOfUses: 10
   power: 3
-  castDelay: 3
+  castDelay: 2
   coolDown: 1
   cardRarity: 0
   cardType: 0

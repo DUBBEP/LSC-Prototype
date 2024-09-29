@@ -29,11 +29,11 @@ public class PlayerBehavior : MonoBehaviourPun
 
 
     [Header("Components")]
-    GridManager gridManager;
     public Player photonPlayer;
     public MeshRenderer mr;
-    PlayerController playerController;
-
+    private PlayerController playerController;
+    public CameraBehavior cam;
+    public HeaderInfo headerInfo;
 
 
     [PunRPC]
@@ -44,6 +44,8 @@ public class PlayerBehavior : MonoBehaviourPun
 
         playerController = GetComponent<PlayerController>();
         playerController.myAction.playerId = id;
+
+        headerInfo.Initialize(player.NickName, maxHp);
 
         GameManager.instance.players[id - 1] = this;
 
@@ -56,17 +58,18 @@ public class PlayerBehavior : MonoBehaviourPun
         else
         {
             GameUI.instance.Initialize(this);
+            cam = GetComponentInChildren<CameraBehavior>();
+            cam.transform.parent = null;
+            cam.transform.position = GameManager.instance.camDefaultPos;
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        gridManager = FindObjectOfType<GridManager>();
-
-        playerCords = new Vector2Int(Mathf.RoundToInt(transform.position.x / gridManager.UnityGridSize), 
-                                     Mathf.RoundToInt(transform.position.z / gridManager.UnityGridSize));
-        gridManager.BlockTile(playerCords);
+        playerCords = new Vector2Int(Mathf.RoundToInt(transform.position.x / GridManager.instance.UnityGridSize), 
+                                     Mathf.RoundToInt(transform.position.z / GridManager.instance.UnityGridSize));
+        GridManager.instance.BlockTile(playerCords);
 
         GameUI.instance.UpdateHealthText();
         GameUI.instance.UpdateCastingCrystalText();
@@ -74,17 +77,11 @@ public class PlayerBehavior : MonoBehaviourPun
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void UpdateCords(Vector2Int cords)
     {
-        gridManager.ClearTile(playerCords);
+        GridManager.instance.ClearTile(playerCords);
         playerCords = cords;
-        gridManager.BlockTile(playerCords);
+        GridManager.instance.BlockTile(playerCords);
     }
 
     // pass damage value in and subtrack from player health
@@ -97,6 +94,11 @@ public class PlayerBehavior : MonoBehaviourPun
 
         curHp -= damage;
         curAttackerId = attackerId;
+
+        // Update HealthBar and text
+        headerInfo.photonView.RPC("UpdateHealthBar", RpcTarget.All, curHp);
+        GameUI.instance.UpdateHealthText();
+
 
         // flash the player red
         photonView.RPC("DamageFlash", RpcTarget.All);
@@ -126,7 +128,7 @@ public class PlayerBehavior : MonoBehaviourPun
             Debug.Log("Flash on");
 
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.1f);
 
             mr.material.color = defaultColor;
             flashingDamage = false;
@@ -182,4 +184,5 @@ public class PlayerBehavior : MonoBehaviourPun
                 spellCards.Remove(x);
         }
     }
+
 }

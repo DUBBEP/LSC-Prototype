@@ -92,13 +92,17 @@ public class PlayerController : MonoBehaviourPun
 
         if (playerIsMoving)
         {
+            playerBehavior.cam.StopFollowing();
             playerIsMoving = false;
             gridManager.SetAttackTileColor(travelRange, Color.white);
             return;
         }
 
         if (preparingCast)
+        {
             CancelCast();
+            playerBehavior.cam.StartFollowing(this.transform);
+        }
 
         playerIsMoving = true;
         GenerateTravelRange(playerBehavior.MovementRange);
@@ -206,9 +210,15 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void OnPrepareCast(int id, string cardName)
     {
+        if (photonView.IsMine)
+        {
+            gridManager.SetAttackTileColor(myAction.effectRange, Color.white);
+        }
+
         SpellCard card = spellRangeGenerator.CardLibrary[cardName];
         PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
-        
+
+
         player.myAction.effectRange = spellRangeGenerator.GenerateEffectRange(card.cardRangeType, playerBehavior.PlayerCords);
         player.myAction.card = card;
 
@@ -222,6 +232,12 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void OnPrepareDirectionalCast(int id, string cardName, int dir)
     {
+        if (photonView.IsMine)
+        {
+            gridManager.SetAttackTileColor(myAction.effectRange, Color.white);
+
+        }
+
         Vector2Int direction = SetDirectionByInt(dir);
         SpellCard card = spellRangeGenerator.CardLibrary[cardName];
         PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
@@ -268,7 +284,7 @@ public class PlayerController : MonoBehaviourPun
 
         player.playerBehavior.turnCompleted = true;
         RoundManager.instance.CheckForUnreadyPlayers();
-        RoundManager.instance.DisplayAllActionInformation();
+        // RoundManager.instance.DisplayAllActionInformation();
     }
 
     public void CancelCast()
@@ -276,6 +292,8 @@ public class PlayerController : MonoBehaviourPun
         GameUI.instance.SetConfirmCastButton(false);
         GameUI.instance.SetDirectionControls(false);
         GameUI.instance.SetHandUI(false);
+
+        playerBehavior.cam.StopFollowing();
 
         if (myAction.card != null)
             gridManager.SetAttackTileColor(myAction.effectRange, Color.white);
