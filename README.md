@@ -6,7 +6,7 @@ Build Link:  https://dubbep.github.io/LSC-Prototype/
 
 <summary>Prototype Week 1</summary>
  
-# Prototype 1 Objectives Status:
+# Prototype Week 1 Objectives Status:
 
 
 ## Spell card Scriptable Object: **In progress**
@@ -42,6 +42,7 @@ The game has a turn system where each player takes an action (moving, cast spell
 Additional implementation such as attacks being interrupted and thus being removed from the queue, actions playing at a reasonable speed rather than being executed instantaneously etc.
 
 ## Player Characters: **In progress**
+
 ### What's been going well
 I’ve largely Identified the information that players need to hold and what methods they need to have to function. These methods just need to be implemented.
 
@@ -107,7 +108,7 @@ A card gacha system needs to be implemented such that when a chest is opened a r
 
 <summary>Prototype Week 2</summary>
  
-# Prototype 2 Objectives Status:
+# Prototype Week 2 Objectives Status:
 
 
 ## Spell card Scriptable Object: **Implemented**
@@ -192,9 +193,9 @@ A card gacha system needs to be implemented such that when a chest is opened a r
 
 <details>
 
-<summary>Prototype Week 2</summary>
+<summary>Prototype Week 3</summary>
  
-# Prototype 2 Objectives Status:
+# Prototype Week 3 Objectives Status:
 
 
 ## Spell card Scriptable Object: **Implemented**
