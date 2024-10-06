@@ -6,7 +6,7 @@ Build Link:  https://dubbep.github.io/LSC-Prototype/
 
 <summary>Prototype Week 1</summary>
  
-# Prototype 1 Objectives Status:
+# Prototype Week 1 Objectives Status:
 
 
 ## Spell card Scriptable Object: **In progress**
@@ -42,6 +42,7 @@ The game has a turn system where each player takes an action (moving, cast spell
 Additional implementation such as attacks being interrupted and thus being removed from the queue, actions playing at a reasonable speed rather than being executed instantaneously etc.
 
 ## Player Characters: **In progress**
+
 ### What's been going well
 I’ve largely Identified the information that players need to hold and what methods they need to have to function. These methods just need to be implemented.
 
@@ -84,7 +85,8 @@ A breadth first search system needs to be implemented so that characters will ca
 (Optional) Farther into development the grid will need to be compatible with a unique cards functionality which allows players to travers walls. The grid will need to hide certain grid spaces on top of walls until a player activates this ability, and hide these spaces once it is no longer in use.
 
 ## Create chest card gacha system: **Not Started**
-What needs to be done
+
+### What needs to be done
 
 Playeres need to be able to interact with chest objects which occupy certain spaces on the board.
 
@@ -93,11 +95,20 @@ A card gacha system needs to be implemented such that when a chest is opened a r
 </details>
 
 
+
+
+
+
+
+
+
+
+
 <details>
 
 <summary>Prototype Week 2</summary>
  
-# Prototype 2 Objectives Status:
+# Prototype Week 2 Objectives Status:
 
 
 ## Spell card Scriptable Object: **Implemented**
@@ -161,11 +172,97 @@ player must be able to interact with chest objects which occupy certain spaces o
 (Optional) Farther into development the grid will need to be compatible with a unique cards functionality which allows players to travers walls. The grid will need to hide certain grid spaces on top of walls until a player activates this ability, and hide these spaces once it is no longer in use.
 
 ## Create chest card gacha system: **Not Started**
-What needs to be done
+
+### What needs to be done
 
 Playeres need to be able to interact with chest objects which occupy certain spaces on the board.
 
 A card gacha system needs to be implemented such that when a chest is opened a random card is returned. This system needs to weigh cards by their rarity to produce expected card drop rates.
 
 </details>
+
+
+
+
+
+
+
+
+
+
+
+<details>
+
+<summary>Prototype Week 3</summary>
+ 
+# Prototype Week 3 Objectives Status:
+
+
+## Spell card Scriptable Object: **Implemented**
+
+### What's been going well
+No notable changes have been made to the structure of the cards.
+
+### What’s needs to be done
+
+More cards need to be implemented to create move variety in player actions. Cards also need to have different effect types depending on if the card is an attack spell, or passive spell, or buff spell.
+
+## Action Queue & Turn System: **Implemented**
+
+### What's been going well
+
+Players actions play out in a approprietly timed out sequence that effectively communicates the events of each round and accurately keeps track of player status each round.
+
+### What needs to be done
+
+In a larger map there needs to be more dynamic camera control. Players should be able to see an large enough space around them to understand their surroundings but not so far to make it difficult to see the details.
+
+## Player Characters: **implemented**
+### What's been going well
+
+Players are now capable of casting directional spells.
+
+### What needs to be done
+
+Players now need to be able to pickup casting crystals which act as a resource for casting spells and attacking.
+
+players need to have expandable hands of spells which change throughout playtime.
+
+players need to accurately keep track of their spell uses for each card.
+
+## Game UI: **In progress**
+
+### What's been going well
+
+the UI controls for direction casting have been implemented.
+### What needs to be done
+
+The ui needs to be cleaned up a little bit.
+
+## Movement System: **Implemented**
+
+### What's been going well
+
+no changes have been made to player movement this week.
+
+### What needs to be done
+
+A breadth first search system still needs to be implemented.
+
+players need to be able to pickup casting crystals that will be placed on the board.
+
+player must be able to interact with chest objects which occupy certain spaces on the board such as chests.
+
+(Optional) Farther into development the grid will need to be compatible with a unique cards functionality which allows players to travers walls. The grid will need to hide certain grid spaces on top of walls until a player activates this ability, and hide these spaces once it is no longer in use.
+
+## Create chest card gacha system: **Not Started**
+
+### What needs to be done
+
+Playeres need to be able to interact with chest objects which occupy certain spaces on the board.
+
+A card gacha system needs to be implemented such that when a chest is opened a random card is returned. This system needs to weigh cards by their rarity to produce expected card drop rates.
+
+</details>
+
 
