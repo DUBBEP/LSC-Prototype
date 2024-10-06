@@ -11,7 +11,8 @@ public class PlayerBehavior : MonoBehaviourPun
     private int curAttackerId;
     private Vector2Int playerCords;
     public Vector2Int PlayerCords { get { return playerCords; } }
-    private List<SpellCard> spellCards;
+    private List<GameObject> spellCards;
+    private GameObject HandContainer;
     private bool flashingDamage;
     public bool turnCompleted = false;
 
@@ -41,6 +42,7 @@ public class PlayerBehavior : MonoBehaviourPun
     {
         id = player.ActorNumber;
         photonPlayer = player;
+        castingCrystals = 3;
 
         playerController = GetComponent<PlayerController>();
         playerController.myAction.playerId = id;
@@ -48,6 +50,8 @@ public class PlayerBehavior : MonoBehaviourPun
         headerInfo.Initialize(player.NickName, maxHp);
 
         GameManager.instance.players[id - 1] = this;
+
+        HandContainer = GameObject.Find("Spell Hand UI");
 
 
         // is this not our local player?
@@ -138,6 +142,13 @@ public class PlayerBehavior : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
+    void GainCast()
+    {
+        ++castingCrystals;
+        GameUI.instance.UpdateCastingCrystalText();
+    }
+
     // set health to zero and move player off screen.
     [PunRPC]
     public void Die()
@@ -160,7 +171,7 @@ public class PlayerBehavior : MonoBehaviourPun
         }
 
     // adds selected spell card to cards this character holds
-    public void AquireSpell(SpellCard card)
+    public void AquireSpell(GameObject card)
     {
         spellCards.Add(card);
     }
@@ -169,7 +180,6 @@ public class PlayerBehavior : MonoBehaviourPun
     public void AddKill()
     {
         kills++;
-
         // update the UI
         GameUI.instance.UpdatePlayerInfoText();
     }
@@ -178,7 +188,7 @@ public class PlayerBehavior : MonoBehaviourPun
     // Removes specified card from held cards.
     public void RemoveSpell(SpellCard card)
     {
-        foreach (SpellCard x in spellCards)
+        foreach (GameObject x in spellCards)
         {
             if (card.Equals(x))
                 spellCards.Remove(x);

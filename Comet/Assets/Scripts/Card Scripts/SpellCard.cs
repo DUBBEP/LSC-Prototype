@@ -24,6 +24,15 @@ public class SpellCard : ScriptableObject
         directionalLine,
         cross,
         star,
+        laser
+    }
+
+    public enum actionType
+    {
+        move,
+        normalDamage,
+        mirror,
+        
 
     }
 

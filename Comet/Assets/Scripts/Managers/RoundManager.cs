@@ -85,11 +85,6 @@ public class RoundManager : MonoBehaviour
         state = RoundState.waitForPlayerActions;
     }
 
-    void WaitForPlayers()
-    {
-        return;
-    }
-
     IEnumerator ExecuteActions(int waitAmmount)
     {
         Debug.Log("EXECUTE ACTIONS");
@@ -98,8 +93,9 @@ public class RoundManager : MonoBehaviour
         yield return new WaitForSeconds(waitAmmount);
         foreach (Action action in roundActions)
         {
-            if (StopIfInterrupted(action))
+            if (CheckIfInterrupted(action))
                 continue;
+
 
             // show effect range if one exists
             if (action.card.cardRangeType != SpellCard.rangeType.none)
@@ -108,8 +104,10 @@ public class RoundManager : MonoBehaviour
             // focus camera player who's action this belongs to
             LookAtActivePlayer(action.playerId);
 
+
             Debug.Log("Waiting for a second");
             yield return new WaitForSecondsRealtime(waitAmmount);
+            
             if (action.card.name == "MoveCard")
             {
                 MovePlayer(action.playerId);
@@ -117,6 +115,11 @@ public class RoundManager : MonoBehaviour
                 yield return new WaitForSecondsRealtime(waitAmmount);
                 continue;
             }
+
+            PlayerBehavior player = GameManager.instance.GetPlayer(action.playerId);
+            --player.castingCrystals;
+            if (player.photonView.IsMine)
+                GameUI.instance.UpdateCastingCrystalText();
 
             DamagePlayersInRange(action);
             GridManager.instance.SetAttackTileColor(action.effectRange, Color.white);
@@ -156,7 +159,6 @@ public class RoundManager : MonoBehaviour
     {
         PlayerController player = GameManager.instance.GetPlayer(playerId).GetComponent<PlayerController>();
         player.photonView.RPC("MovePlayer", RpcTarget.All);
-
     }
 
     public void CheckForUnreadyPlayers()
@@ -216,7 +218,7 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    private bool StopIfInterrupted(Action action)
+    private bool CheckIfInterrupted(Action action)
     {
         foreach (int i in interruptedPlayers)
             if (action.playerId == i)
@@ -229,6 +231,9 @@ public class RoundManager : MonoBehaviour
     {
         Debug.Log("Action Interrupted");
 
+        PlayerBehavior player = GameManager.instance.GetPlayer(action.playerId);
+
+        GameUI.instance.ThrowNotification(player.photonPlayer.NickName + " has been interrupted");
         // display that the action was interrupted to screen
         // play any other effects related to an interrupted action
     }

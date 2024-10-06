@@ -8,6 +8,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] Vector2Int gridSize;
     [SerializeField] int unityGridSize;
 
+    public Vector2Int GridSize { get { return gridSize; } }
     public int UnityGridSize { get {  return unityGridSize; } }
 
     Dictionary<Vector2Int, Tile> grid = new Dictionary<Vector2Int, Tile>();
@@ -44,6 +45,12 @@ public class GridManager : MonoBehaviour
                 tileMaterial.material.color = Color.green;
             else
                 tileMaterial.material.color = Color.red;
+
+            if (x.containsCrystal)
+                tileMaterial.material.color = Color.cyan;
+
+            if (x.nextToChest)
+                tileMaterial.material.color = Color.yellow;
         }
     }
     public void SetAttackTileColor(List<Tile> tiles, Color color)
@@ -72,7 +79,21 @@ public class GridManager : MonoBehaviour
             grid[coordinates].walkable = true;
         }
     }
+    public void CollectCrystal(Vector2Int coordinates)
+    {
+        if (grid.ContainsKey(coordinates))
+        {
+            grid[coordinates].containsCrystal = false;
+        }
+    }
 
+    public void PlaceCrystal(Vector2Int coordinates)
+    {
+        if (grid.ContainsKey(coordinates))
+        {
+            grid[coordinates].containsCrystal = true;
+        }
+    }
     public void resetTiles()
     {
         foreach (KeyValuePair<Vector2Int, Tile> entry in grid)

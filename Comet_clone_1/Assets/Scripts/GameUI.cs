@@ -2,14 +2,17 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using Photon.Realtime;
+using System.Collections;
 
 public class GameUI : MonoBehaviour
 {
     public GameObject spellHandUI;
     public GameObject confirmCast;
     public GameObject playerControls;
-    public GameObject DirectionControls;
+    public GameObject directionControls;
+    public GameObject notifications;
 
+    public TextMeshProUGUI notificationText;
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI castingCrystalText;
     public TextMeshProUGUI playerInfoText;
@@ -65,6 +68,11 @@ public class GameUI : MonoBehaviour
 
     public void OnCastButton()
     {
+        if (player.castingCrystals <= 0)
+        {
+            ThrowNotification("Unable to cast without casting crystals");
+            return;
+        }
         player.cam.StartFollowing(player.transform);
         playerController.OnCast();
     }
@@ -108,7 +116,22 @@ public class GameUI : MonoBehaviour
 
     public void SetDirectionControls(bool toggle)
     {
-        DirectionControls.SetActive(toggle);
+        directionControls.SetActive(toggle);
     }
+
+    public void ThrowNotification(string message)
+    {
+        StartCoroutine(SetNotificationText(message));
+    }
+
+    public IEnumerator SetNotificationText(string message)
+    {
+        notifications.SetActive(true);
+        notificationText.text = message;
+        yield return new WaitForSeconds(4);
+        notificationText.text = "";
+        notifications.SetActive(false);
+    }
+
 
 }

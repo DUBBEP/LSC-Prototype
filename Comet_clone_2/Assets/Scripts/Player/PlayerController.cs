@@ -123,6 +123,14 @@ public class PlayerController : MonoBehaviourPun
     {
         transform.position = new Vector3(targetCords.x, transform.position.y, targetCords.y);
         playerBehavior.UpdateCords(targetCords);
+
+        Tile tile = GridManager.instance.GetTile(targetCords);
+
+        if (tile.nextToChest)
+            tile.chest.OpenChest(playerBehavior);
+
+        if (tile.containsCrystal)
+            tile.crystal.Collect(playerBehavior);    
     }
 
     void GenerateTravelRange(int range)
@@ -210,6 +218,9 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void OnPrepareCast(int id, string cardName)
     {
+
+
+
         if (photonView.IsMine)
         {
             gridManager.SetAttackTileColor(myAction.effectRange, Color.white);
@@ -251,6 +262,7 @@ public class PlayerController : MonoBehaviourPun
             gridManager.SetAttackTileColor(myAction.effectRange, Color.red);
         }
     }
+
     [PunRPC]
     public void SetNewDirectionOfCast(int id, int dir)
     {
@@ -275,6 +287,7 @@ public class PlayerController : MonoBehaviourPun
         PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
 
         RoundManager.instance.roundActions.Add(player.myAction);
+
 
         if (photonView.IsMine)
         {
@@ -304,9 +317,6 @@ public class PlayerController : MonoBehaviourPun
         preparingCast = false;
     }
 
-    #endregion
-
-
     Vector2Int SetDirectionByInt(int dir)
     {
 
@@ -324,4 +334,9 @@ public class PlayerController : MonoBehaviourPun
         }
         return Vector2Int.right;
     }
+
+    #endregion
+
+
+
 }

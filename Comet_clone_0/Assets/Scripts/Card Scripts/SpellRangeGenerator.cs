@@ -14,7 +14,7 @@ public class SpellRangeGenerator : MonoBehaviour
     public Dictionary<string, SpellCard> CardLibrary { get { return cardLibrary; } }
 
 
-    public SpellCard move, blazingCross, thunderSpear;
+    public SpellCard move, blazingCross, thunderSpear, laserCannon;
 
 
 
@@ -25,6 +25,7 @@ public class SpellRangeGenerator : MonoBehaviour
         cardLibrary.Add("Move", move);
         cardLibrary.Add("BlazingCross", blazingCross);
         cardLibrary.Add("ThunderSpear", thunderSpear);
+        cardLibrary.Add("LaserCannon", laserCannon);
     }
 
     public List<Tile> GenerateEffectRange(SpellCard.rangeType rangeType, Vector2Int playerCords)
@@ -46,6 +47,8 @@ public class SpellRangeGenerator : MonoBehaviour
         {
             case SpellCard.rangeType.directionalLine:
                 return GenerateDirectionalLinePattern(playerCords, direction);
+            case SpellCard.rangeType.laser:
+                return GenerateLaserPattern(playerCords, direction);
         }
 
         return null;
@@ -87,6 +90,25 @@ public class SpellRangeGenerator : MonoBehaviour
                 result.Add(gridManager.Grid[lineCords]);
             else if (!gridManager.Grid.ContainsKey(lineCords))
                 break;
+        }
+        return result;
+    }
+
+    List<Tile> GenerateLaserPattern(Vector2Int playerCords, Vector2Int direction)
+    {
+        List<Tile> result = new List<Tile>();
+
+        int maxGridLength = Mathf.Max(GridManager.instance.GridSize.x, gridManager.GridSize.y);
+
+
+        for (int i = 1; i < maxGridLength; ++i)
+        {
+            Vector2Int lineCords = playerCords + (direction * i);
+
+            if (gridManager.Grid.ContainsKey(lineCords))
+                result.Add(gridManager.Grid[lineCords]);
+            else if (!gridManager.Grid.ContainsKey(lineCords))
+                continue;
         }
         return result;
     }
