@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HandManager : MonoBehaviour
@@ -7,8 +8,8 @@ public class HandManager : MonoBehaviour
     public GameObject playerHandContainer;
     public GameObject cardDeck;
 
-    private List<GameObject> playerHand;
-    private List<GameObject> cardPool;
+    public List<GameObject> playerHand;
+    public List<GameObject> cardPool;
 
 
     public static HandManager instance;
@@ -17,11 +18,11 @@ public class HandManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (Transform child in cardDeck.transform)
-            cardPool.Add(child.gameObject);
+        for (int i = 0; i < cardDeck.transform.childCount; i++)
+            cardPool.Add(cardDeck.transform.GetChild(i).gameObject);
 
-        foreach (Transform child in playerHandContainer.transform)
-            playerHand.Add(child.gameObject);
+        for (int i = 0; i < playerHandContainer.transform.childCount; i++)
+            playerHand.Add(playerHandContainer.transform.GetChild(i).gameObject);
     }
 
     public bool AddCard(string cardName)
@@ -29,7 +30,7 @@ public class HandManager : MonoBehaviour
         // check if card is already in our hand
         foreach (GameObject card in playerHand)
         {
-            if (card.GetComponentInChildren<SpellCard>().spellName == cardName)
+            if (card.GetComponentInChildren<SpellCardDisplay>().spellCard.spellName == cardName)
             {
                 if (card.gameObject.activeSelf == false)
                 {
@@ -47,7 +48,7 @@ public class HandManager : MonoBehaviour
         // get card from card pool and add it to our hand
         foreach (GameObject card in cardPool)
         {
-            if (card.GetComponentInChildren<SpellCard>().spellName == cardName)
+            if (card.GetComponentInChildren<SpellCardDisplay>().spellCard.spellName == cardName)
             {
                 GameObject newCard = Instantiate(card, playerHandContainer.transform);
                 playerHand.Add(newCard);
@@ -63,7 +64,7 @@ public class HandManager : MonoBehaviour
     {
         foreach (GameObject card in playerHand)
         {
-            if (card.GetComponentInChildren<SpellCard>().spellName == cardName)
+            if (card.GetComponentInChildren<SpellCardDisplay>().spellCard.spellName == cardName)
             {
                 card.gameObject.SetActive(false);
                 return true;

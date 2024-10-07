@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e79e4feb8fb9a44e9923a7e0babcf47, type: 3}
+  m_Name: MagicMirror
+  m_EditorClassIdentifier: 
+  spellName: Magic Mirror
+  description: Reflect opponents attacks back at them
+  numberOfUses: 5
+  power: 0
+  castDelay: 1
+  coolDown: 1
+  cardRarity: 0
+  cardType: 0
+  cardRangeType: 0
+  cardActionType: 2

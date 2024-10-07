@@ -6,7 +6,7 @@ using UnityEngine;
 public class RandomCardGenerator : MonoBehaviour
 {
     public GameObject cardDeck;
-    public List<SpellCard> cardPool;
+    public List<SpellCardDisplay> cardPool;
 
     public static RandomCardGenerator instance;
 
@@ -14,11 +14,11 @@ public class RandomCardGenerator : MonoBehaviour
 
     private void Start()
     {
-        foreach (Transform child in cardDeck.transform)
-            cardPool.Add(child.GetComponentInChildren<SpellCard>());
+        for (int i = 0; i < cardDeck.transform.childCount; i++)
+            cardPool.Add(cardDeck.transform.GetChild(i).GetComponentInChildren<SpellCardDisplay>());
     }
 
-    public SpellCard GetRandomCard()
+    public SpellCardDisplay GetRandomCard()
     {
         int randomValue = Random.Range(0, 101);
         SpellCard.rarity rarityPull;
@@ -32,17 +32,17 @@ public class RandomCardGenerator : MonoBehaviour
         else
             rarityPull = SpellCard.rarity.legendary;
 
-        List<SpellCard> pullPool = GetCardsOfRarity(rarityPull);
+        List<SpellCardDisplay> pullPool = GetCardsOfRarity(rarityPull);
 
         randomValue = Random.Range(0, pullPool.Count);
         return pullPool[randomValue];   
     }
 
-    List<SpellCard> GetCardsOfRarity(SpellCard.rarity rarity)
+    List<SpellCardDisplay> GetCardsOfRarity(SpellCard.rarity rarity)
     {
-        List<SpellCard> cards = new List<SpellCard>();
-        foreach (SpellCard card in cardPool)
-            if (card.cardRarity == rarity)
+        List<SpellCardDisplay> cards = new List<SpellCardDisplay>();
+        foreach (SpellCardDisplay card in cardPool)
+            if (card.spellCard.cardRarity == rarity)
                 cards.Add(card);
 
         return cards;

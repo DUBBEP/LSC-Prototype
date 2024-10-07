@@ -24,7 +24,11 @@ public class SpellCard : ScriptableObject
         directionalLine,
         cross,
         star,
-        laser
+        laser,
+        hand,
+        slice,
+        wideArea
+
     }
 
     public enum actionType
@@ -32,7 +36,9 @@ public class SpellCard : ScriptableObject
         move,
         normalDamage,
         mirror,
-        
+        stun,
+        confusion,
+        heal
 
     }
 
@@ -45,7 +51,7 @@ public class SpellCard : ScriptableObject
     public int coolDown;
     public rarity cardRarity;
     public type cardType;
-    
     public rangeType cardRangeType;
+    public actionType cardActionType;
 
-}   
+}

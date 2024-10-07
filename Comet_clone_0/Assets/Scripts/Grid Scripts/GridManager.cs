@@ -108,7 +108,7 @@ public class GridManager : MonoBehaviour
     {
         Vector2Int coordinates = new Vector2Int();
 
-        coordinates.y = Mathf.RoundToInt(position.x / unityGridSize);
+        coordinates.x = Mathf.RoundToInt(position.x / unityGridSize);
         coordinates.y = Mathf.RoundToInt(position.z / unityGridSize);
 
         return coordinates;

@@ -13,17 +13,20 @@ public class Chest : MonoBehaviour
 
     private void Start()
     {
+        cords = GridManager.instance.GetCoordinatesFromPosition(transform.position);
         GetNeighbors(cords);
         isOpen = false;
 
-        tile = GridManager.instance.Grid[cords];
+        tile = GridManager.instance.GetTile(cords);
 
         tile.containsChest = true;
         tile.walkable = false;
-        tile.chest = this;
 
         foreach (Tile neighbor in neighbors)
+        {
             neighbor.nextToChest = true;
+            neighbor.chest = this;
+        }
     }
 
 
@@ -39,9 +42,10 @@ public class Chest : MonoBehaviour
         if (!player.photonView.IsMine)
             return;
         
-        SpellCard card = RandomCardGenerator.instance.GetRandomCard();
-        HandManager.instance.AddCard(card.spellName);
-
+        SpellCardDisplay card = RandomCardGenerator.instance.GetRandomCard();
+        HandManager.instance.AddCard(card.spellCard.spellName);
+        GameUI.instance.ThrowNotification("Chest Opened, spell aquired: " + card.spellCard.spellName);
+        isOpen = true;
     }
 
     void GetNeighbors(Vector2Int cords)
