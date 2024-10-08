@@ -41,10 +41,28 @@ public class Chest : MonoBehaviour
         GridManager.instance.ClearTile(occupiedTile.cords);
         if (!player.photonView.IsMine)
             return;
-        
-        SpellCardDisplay card = RandomCardGenerator.instance.GetRandomCard();
-        HandManager.instance.AddCard(card.spellCard.spellName);
+
+        SpellCardDisplay card = RollForCard(30);
         GameUI.instance.ThrowNotification("Chest Opened, spell aquired: " + card.spellCard.spellName);
+        HandManager.instance.AddCard(card.spellCard.spellName);
+    }
+
+    SpellCardDisplay RollForCard(int numOfTimes)
+    {
+        SpellCardDisplay card = RandomCardGenerator.instance.GetRandomCard();
+        for (int i = 0; i < numOfTimes; i++)
+        {
+            SpellCard pulledSpellCard = card.spellCard;
+            foreach (GameObject cardObject in HandManager.instance.playerHand)
+            {
+                SpellCard cardInHand = cardObject.GetComponentInChildren<SpellCardDisplay>().spellCard;
+
+                if (cardInHand.spellName == pulledSpellCard.spellName)
+                    break;
+                return card;
+            }
+        }
+        return card;
     }
 
     void GetNeighbors(Vector2Int cords)
