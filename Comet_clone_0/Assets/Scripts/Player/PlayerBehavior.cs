@@ -93,7 +93,9 @@ public class PlayerBehavior : MonoBehaviourPun
     public void BecomeStunned(int attackerId)
     {
         curAttackerId = attackerId;
+
         GameUI.instance.ThrowNotification("You have become stunned");
+
         photonView.RPC("SetStunned", RpcTarget.All);
     }
 
@@ -107,7 +109,10 @@ public class PlayerBehavior : MonoBehaviourPun
     public void BecomeConfused(int attackerId)
     {
         curAttackerId = attackerId;
-        GameUI.instance.ThrowNotification("You have become Confused");
+
+        if (photonView.IsMine)
+            GameUI.instance.ThrowNotification("You have become Confused");
+        
         photonView.RPC("SetConfused", RpcTarget.All);
     }
 
@@ -231,26 +236,14 @@ public class PlayerBehavior : MonoBehaviourPun
     }
 
 
-
-    void GenerateRandomAction()
+    [PunRPC]
+    void GenerateRandomAction(int playerId, string randomCardName, int randomDirection)
     {
-        SpellCard randomCard = SpellRangeGenerator.instance.CardLibrary[HandManager.instance.GetRandomCard()];
-        List<Tile> effectRange = new List<Tile>();
-
-        if (randomCard.cardRangeType == SpellCard.rangeType.move)
-        {
-            effectRange = SpellRangeGenerator.instance.GenerateEffectRange(playerCords, movementRange);
-        }
-        else if (randomCard.rangeIsDirectional)
-        {
-            Vector2Int randomDirection = new Vector2Int(Random.Range(0, 2), Random.Range(0, 2));
-            effectRange = SpellRangeGenerator.instance.GenerateEffectRange(randomCard.cardRangeType, PlayerCords, randomDirection);
-        }
+        SpellCard randomCard = SpellRangeGenerator.instance.CardLibrary[randomCardName];
+        if (randomCard.rangeIsDirectional)
+            playerController.photonView.RPC("OnPrepareDirectionalCast", RpcTarget.All, playerId, randomCardName, randomDirection);
         else if (!randomCard.rangeIsDirectional)
-        {
-            effectRange = SpellRangeGenerator.instance.GenerateEffectRange(randomCard.cardRangeType, playerCords);
-        }
-
+            playerController.photonView.RPC("OnPrepareCast", RpcTarget.All, playerId, randomCardName);
     }
 
     public void PrepForNewRound()
@@ -263,7 +256,12 @@ public class PlayerBehavior : MonoBehaviourPun
         if (isStunned)
         {
             turnCompleted = true;
-            GameUI.instance.ThrowNotification("You are stunned and unable to act this round");
+
+            if (photonView.IsMine)
+            {
+                GameUI.instance.ThrowNotification("You are stunned and unable to act this round");
+                GameUI.instance.SetPlayerControls(false);
+            }
             isStunned = false;
         }
 
@@ -276,13 +274,27 @@ public class PlayerBehavior : MonoBehaviourPun
         if (isConfused)
         {
             if (isStunned)
-                GameUI.instance.ThrowNotification("You are stunned and unable to act this round");
+            {
+                if (photonView.IsMine)
+                    GameUI.instance.ThrowNotification("You are stunned and unable to act this round");
+            }
             else
             {
-                GameUI.instance.ThrowNotification("You are confused and will act unpredictably this round");
+                if (photonView.IsMine)
+                {
+                    GameUI.instance.SetPlayerControls(false);
+                    GameUI.instance.ThrowNotification("You are confused and will act unpredictably this round");
+                    
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        string randomcardName = HandManager.instance.GetRandomCard();
+                        int randomDirection = Random.Range(1, 5);
+                        photonView.RPC("GenerateRandomAction", RpcTarget.All, id, randomcardName, randomDirection);
+                        photonView.RPC("OnConfirmCast", RpcTarget.All, id);
+                        Debug.Log(photonPlayer.NickName + " is casting a random spell: " + playerController.myAction.card.spellName); 
+                    }
+                }
 
-                if (PhotonNetwork.IsMasterClient)
-                    GenerateRandomAction();
 
             }
 

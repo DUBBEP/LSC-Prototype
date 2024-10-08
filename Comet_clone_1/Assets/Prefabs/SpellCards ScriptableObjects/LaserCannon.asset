@@ -15,10 +15,11 @@ MonoBehaviour:
   spellName: Laser Cannon
   description: Fire an unstoppable laser into the horizon.
   numberOfUses: 3
-  power: 4
+  power: 5
   castDelay: 4
   coolDown: 3
   cardRarity: 2
   cardType: 1
-  cardRangeType: 4
+  rangeIsDirectional: 1
+  cardRangeType: 5
   cardActionType: 1

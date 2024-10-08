@@ -75,10 +75,12 @@ public class RoundManager : MonoBehaviour
                 continue;
             }
 
+            if (x.photonView.IsMine && !x.isStunned && !x.isConfused)
+                GameUI.instance.SetPlayerControls(true);
+
             x.PrepForNewRound();
 
-            if (x.photonView.IsMine)
-                GameUI.instance.SetPlayerControls(true);
+
         }
 
         readyPlayers = 0;
@@ -103,6 +105,11 @@ public class RoundManager : MonoBehaviour
 
             // focus camera player who's action this belongs to
             LookAtActivePlayer(action.playerId);
+
+            if (action.card.cardActionType == SpellCard.actionType.move)
+                GameUI.instance.ThrowNotification(GameManager.instance.GetPlayer(action.playerId).photonPlayer.NickName + " moves");
+            else
+                GameUI.instance.ThrowNotification(GameManager.instance.GetPlayer(action.playerId).photonPlayer.NickName + " casts " + action.card.spellName);
 
             Debug.Log("Waiting for a second");
             yield return new WaitForSecondsRealtime(waitAmmount);
@@ -181,43 +188,59 @@ public class RoundManager : MonoBehaviour
         if (action.card.cardRangeType == SpellCard.rangeType.none)
             return;
 
-        foreach (PlayerBehavior player in GameManager.instance.players)
+        PlayerBehavior actingPlayer = GameManager.instance.GetPlayer(action.playerId);
+
+        foreach (PlayerBehavior effectedPlayer in GameManager.instance.players)
         {
-            if (player.dead)
+            if (effectedPlayer.dead)
                 continue;
 
-            Tile playerTile = GridManager.instance.Grid[player.PlayerCords];
+            Tile playerTile = GridManager.instance.Grid[effectedPlayer.PlayerCords];
             if (action.effectRange.Contains(playerTile))
             {
-                Debug.Log("Player id: " + player.id + " taking damage");
+                Debug.Log("Player id: " + effectedPlayer.id + " taking damage");
 
-                if (player.photonView.IsMine)
+                if (effectedPlayer.mirrorActive)
                 {
-                    switch (action.card.cardActionType)
-                    {
-                        case (SpellCard.actionType.normalDamage):
-                            player.photonView.RPC("TakeDamage", player.photonPlayer, action.playerId, action.card.power);
-                            break;
-                        case (SpellCard.actionType.confusion):
-                            if (action.card.power > 0)
-                                player.photonView.RPC("TakeDamage", player.photonPlayer, action.playerId, action.card.power);
-                            player.photonView.RPC("BecomeConfused", player.photonPlayer, action.playerId);
-                            break;
-                        case (SpellCard.actionType.stun):
-                            player.photonView.RPC("BecomeStunned", player.photonPlayer, action.playerId);
-                            break;
+                    GameUI.instance.ThrowNotification(effectedPlayer.photonPlayer.NickName + " reflects " + actingPlayer.photonPlayer.NickName + "'s attack!");
 
-                    }
+                    if (actingPlayer.photonView.IsMine)
+                        CallEffectFunctions(action, effectedPlayer, actingPlayer);
                 }
+                else if (effectedPlayer.photonView.IsMine)
+                    CallEffectFunctions(action, actingPlayer, effectedPlayer);
 
-                CheckForInterruptions(player.id);
+                CheckForInterruptions(effectedPlayer.id, action.card.castDelay);
             }
         }
     }
-    private void CheckForInterruptions(int playerId)
+
+    private static void CallEffectFunctions(Action action, PlayerBehavior actingPlayer, PlayerBehavior effectedPlayer)
+    {
+        switch (action.card.cardActionType)
+        {
+            case (SpellCard.actionType.normalDamage):
+                effectedPlayer.photonView.RPC("TakeDamage", effectedPlayer.photonPlayer, actingPlayer.id, action.card.power);
+                break;
+            case (SpellCard.actionType.confusion):
+                if (action.card.power > 0)
+                    effectedPlayer.photonView.RPC("TakeDamage", effectedPlayer.photonPlayer, actingPlayer.id, action.card.power);
+                effectedPlayer.photonView.RPC("BecomeConfused", effectedPlayer.photonPlayer, actingPlayer.id);
+                break;
+            case (SpellCard.actionType.stun):
+                effectedPlayer.photonView.RPC("BecomeStunned", effectedPlayer.photonPlayer, actingPlayer.id);
+                break;
+
+        }
+    }
+
+    private void CheckForInterruptions(int playerId, int spellDelay)
     {
         foreach (Action action in roundActions)
         {
+            if (action.card.castDelay <= spellDelay)
+                continue;
+
             if (playerId == action.playerId)
             {
                 interruptedPlayers.Add(action.playerId);

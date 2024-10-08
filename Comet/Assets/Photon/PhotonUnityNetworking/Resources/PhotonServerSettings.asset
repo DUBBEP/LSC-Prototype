@@ -59,6 +59,15 @@ MonoBehaviour:
   - SetNewDirectionOfCast
   - UpdateHealthBar
   - GainCast
+  - ActivateMirror
+  - BecomeConfused
+  - BecomeStunned
+  - Heal
+  - SetConfused
+  - SetStunned
+  - ToggleMirror
+  - PrepForNewRound
+  - GenerateRandomAction
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

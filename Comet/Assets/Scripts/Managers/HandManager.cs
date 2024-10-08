@@ -39,7 +39,7 @@ public class HandManager : MonoBehaviour
                 }
                 else if (card.gameObject.activeSelf == true)
                 {
-                    GameUI.instance.ThrowNotification("Card is alread held");
+                    GameUI.instance.ThrowNotification(cardName + " is alread held");
                     return false;
                 }
             }
@@ -77,6 +77,7 @@ public class HandManager : MonoBehaviour
     public string GetRandomCard()
     {
         int randomValue = Random.Range(0, playerHand.Count);
+        Debug.Log("random int is: " + randomValue);
         Debug.Log("Random Card Picked:" + playerHand[randomValue].transform.GetChild(0).name);
         return playerHand[randomValue].transform.GetChild(0).name;
     }

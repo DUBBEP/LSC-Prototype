@@ -15,10 +15,11 @@ MonoBehaviour:
   spellName: Blazing Cross
   description: Launches fire in four directions around player
   numberOfUses: 10
-  power: 5
+  power: 4
   castDelay: 3
   coolDown: 2
   cardRarity: 1
   cardType: 1
-  cardRangeType: 2
+  rangeIsDirectional: 0
+  cardRangeType: 3
   cardActionType: 1

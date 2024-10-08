@@ -15,10 +15,11 @@ MonoBehaviour:
   spellName: Spacial Slice
   description: Cut through the space in front of you
   numberOfUses: 10
-  power: 5
+  power: 4
   castDelay: 2
   coolDown: 1
   cardRarity: 0
   cardType: 0
-  cardRangeType: 6
+  rangeIsDirectional: 1
+  cardRangeType: 7
   cardActionType: 1

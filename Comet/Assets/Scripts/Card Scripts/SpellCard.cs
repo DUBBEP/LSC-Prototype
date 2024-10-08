@@ -28,7 +28,8 @@ public class SpellCard : ScriptableObject
         laser,
         hand,
         slice,
-        wideArea
+        flashbang,
+        orb
 
     }
 

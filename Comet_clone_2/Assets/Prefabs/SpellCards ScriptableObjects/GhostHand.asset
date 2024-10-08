@@ -15,10 +15,11 @@ MonoBehaviour:
   spellName: Ghost Hand
   description: Unleash devistating close range attack on opponent
   numberOfUses: 3
-  power: 9
+  power: 8
   castDelay: 1
   coolDown: 1
   cardRarity: 3
   cardType: 1
+  rangeIsDirectional: 0
   cardRangeType: 6
   cardActionType: 1

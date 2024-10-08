@@ -8,13 +8,13 @@ using UnityEngine;
 public class SpellRangeGenerator : MonoBehaviour
 {
     Vector2Int[] cardinalDirections = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
-    GridManager gridManager;
 
     Dictionary<string, SpellCard> cardLibrary = new Dictionary<string, SpellCard>();
     public Dictionary<string, SpellCard> CardLibrary { get { return cardLibrary; } }
 
 
-    public SpellCard move, blazingCross, thunderSpear, laserCannon;
+    public SpellCard move, blazingCross, thunderSpear, laserCannon, magicMirror, orbOfConfusion,
+        spacialSlice, flashBang, ghostHand;
 
 
     public static SpellRangeGenerator instance;
@@ -24,12 +24,15 @@ public class SpellRangeGenerator : MonoBehaviour
 
     void Start()
     {
-        gridManager = FindObjectOfType<GridManager>();
-
         cardLibrary.Add("Move", move);
         cardLibrary.Add("BlazingCross", blazingCross);
         cardLibrary.Add("ThunderSpear", thunderSpear);
         cardLibrary.Add("LaserCannon", laserCannon);
+        cardLibrary.Add("MagicMirror", magicMirror);
+        cardLibrary.Add("OrbOfConfusion", orbOfConfusion);
+        cardLibrary.Add("SpacialSlice", spacialSlice);
+        cardLibrary.Add("FlashBang", flashBang);
+        cardLibrary.Add("GhostHand", ghostHand);
     }
 
     public List<Tile> GenerateEffectRange(SpellCard.rangeType rangeType, Vector2Int playerCords)
@@ -40,6 +43,11 @@ public class SpellRangeGenerator : MonoBehaviour
                 return null;
             case SpellCard.rangeType.cross:
                 return GenerateCrossPattern(playerCords);
+            case SpellCard.rangeType.flashbang:
+                return GenerateTravelRange(playerCords, 5);
+            case SpellCard.rangeType.orb:
+                return GenerateTravelRange(playerCords, 4, true);
+
         }
 
         return null;
@@ -53,6 +61,10 @@ public class SpellRangeGenerator : MonoBehaviour
                 return GenerateDirectionalLinePattern(playerCords, direction);
             case SpellCard.rangeType.laser:
                 return GenerateLaserPattern(playerCords, direction);
+            case SpellCard.rangeType.hand:
+                return GenerateHandPattern(playerCords, direction);
+            case SpellCard.rangeType.slice:
+                return GenerateSlicePattern(playerCords, direction);
         }
 
         return null;
@@ -79,9 +91,9 @@ public class SpellRangeGenerator : MonoBehaviour
             {
                 Vector2Int lineCords = playerCords + direction*i;
 
-                if (gridManager.Grid.ContainsKey(lineCords))
-                    result.Add(gridManager.Grid[lineCords]);
-                else if (!gridManager.Grid.ContainsKey(lineCords))
+                if (GridManager.instance.Grid.ContainsKey(lineCords))
+                    result.Add(GridManager.instance.Grid[lineCords]);
+                else if (!GridManager.instance.Grid.ContainsKey(lineCords))
                     break;
 
             }
@@ -96,9 +108,9 @@ public class SpellRangeGenerator : MonoBehaviour
         {
             Vector2Int lineCords = playerCords + (direction*i);
 
-            if (gridManager.Grid.ContainsKey(lineCords))
-                result.Add(gridManager.Grid[lineCords]);
-            else if (!gridManager.Grid.ContainsKey(lineCords))
+            if (GridManager.instance.Grid.ContainsKey(lineCords))
+                result.Add(GridManager.instance.Grid[lineCords]);
+            else if (!GridManager.instance.Grid.ContainsKey(lineCords))
                 break;
         }
         return result;
@@ -108,17 +120,60 @@ public class SpellRangeGenerator : MonoBehaviour
     {
         List<Tile> result = new List<Tile>();
 
-        int maxGridLength = Mathf.Max(GridManager.instance.GridSize.x, gridManager.GridSize.y);
+        int maxGridLength = Mathf.Max(GridManager.instance.GridSize.x, GridManager.instance.GridSize.y);
 
 
         for (int i = 1; i < maxGridLength; ++i)
         {
             Vector2Int lineCords = playerCords + (direction * i);
 
-            if (gridManager.Grid.ContainsKey(lineCords))
-                result.Add(gridManager.Grid[lineCords]);
-            else if (!gridManager.Grid.ContainsKey(lineCords))
-                continue;
+            if (GridManager.instance.Grid.ContainsKey(lineCords))
+                result.Add(GridManager.instance.Grid[lineCords]);
+        }
+        return result;
+    }
+
+    List<Tile> GenerateHandPattern(Vector2Int playerCords, Vector2Int direction)
+    {
+        List<Tile> result = new List<Tile>();
+
+        if (GridManager.instance.Grid.ContainsKey(playerCords + direction))
+            result.Add(GridManager.instance.Grid[playerCords + direction]);
+
+        return result;
+    }
+
+    List<Tile> GenerateSlicePattern(Vector2Int playerCords, Vector2Int direction)
+    {
+        List<Tile> result = new List<Tile>();
+
+        List<Vector2Int> pattern = new List<Vector2Int>();
+
+
+
+        if (direction == Vector2Int.down || direction == Vector2Int.up)
+        {
+            pattern.Add(Vector2Int.left);
+            pattern.Add(Vector2Int.zero);
+            pattern.Add(Vector2Int.right);
+
+            foreach (Vector2Int i in pattern)
+            {
+                if (GridManager.instance.Grid.ContainsKey(playerCords + i + (direction * 2)))
+                    result.Add(GridManager.instance.Grid[playerCords + i + (direction * 2)]);
+            }
+        }
+        else if (direction == Vector2Int.left || direction == Vector2Int.right)
+        {
+            pattern.Add(Vector2Int.up);
+            pattern.Add(Vector2Int.zero);
+            pattern.Add(Vector2Int.down);
+
+            foreach (Vector2Int i in pattern)
+            {
+                if (GridManager.instance.Grid.ContainsKey(playerCords + i + (direction * 2)))
+                    result.Add(GridManager.instance.Grid[playerCords + i + (direction * 2)]);
+            }
         }
         return result;
     }
@@ -134,7 +189,7 @@ public class SpellRangeGenerator : MonoBehaviour
     }
 
 
-    List<Tile> GenerateTravelRange(Vector2Int playerCords, int range)
+    List<Tile> GenerateTravelRange(Vector2Int playerCords, int range, bool selfInflicting = false)
     {
         // take the passed range value to build the characters movement range
         // start with the players current position and check for available spots
@@ -147,8 +202,8 @@ public class SpellRangeGenerator : MonoBehaviour
         List<Tile> exploreRange = new List<Tile>();
         List<Tile> travelRange = new List<Tile>();
 
-        travelRange.Add(gridManager.Grid[playerCords]);
-        exploreRange.Add(gridManager.Grid[playerCords]);
+        travelRange.Add(GridManager.instance.Grid[playerCords]);
+        exploreRange.Add(GridManager.instance.Grid[playerCords]);
 
         // Get every tile in player movement radius
         for (int i = 0; i < range; ++i)
@@ -170,6 +225,9 @@ public class SpellRangeGenerator : MonoBehaviour
             }
         }
 
+        if (!selfInflicting)
+            travelRange.Remove(GridManager.instance.Grid[playerCords]);
+
         return travelRange;
     }
 
@@ -178,11 +236,11 @@ public class SpellRangeGenerator : MonoBehaviour
         foreach (Vector2Int direction in cardinalDirections)
         {
             Vector2Int neighborCords = tile.cords + direction;
-            if (gridManager.Grid.ContainsKey(neighborCords))
+            if (GridManager.instance.Grid.ContainsKey(neighborCords))
             {
-                if (!travelRange.Contains(gridManager.Grid[neighborCords]))
+                if (!travelRange.Contains(GridManager.instance.Grid[neighborCords]))
                 {
-                    travelRange.Add(gridManager.Grid[neighborCords]);
+                    travelRange.Add(GridManager.instance.Grid[neighborCords]);
                 }
             }
         }

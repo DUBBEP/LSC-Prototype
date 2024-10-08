@@ -21,5 +21,6 @@ MonoBehaviour:
   coolDown: 3
   cardRarity: 3
   cardType: 1
-  cardRangeType: 7
+  rangeIsDirectional: 0
+  cardRangeType: 9
   cardActionType: 4
