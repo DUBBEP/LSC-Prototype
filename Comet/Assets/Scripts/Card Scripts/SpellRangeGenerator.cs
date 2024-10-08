@@ -17,6 +17,10 @@ public class SpellRangeGenerator : MonoBehaviour
     public SpellCard move, blazingCross, thunderSpear, laserCannon;
 
 
+    public static SpellRangeGenerator instance;
+
+    private void Awake() { instance = this; }
+
 
     void Start()
     {
@@ -53,6 +57,12 @@ public class SpellRangeGenerator : MonoBehaviour
 
         return null;
     }
+
+    public List<Tile> GenerateEffectRange(Vector2Int playerCords, int range)
+    {
+        return GenerateTravelRange(playerCords, range);
+    }
+
 
 
 
@@ -121,6 +131,63 @@ public class SpellRangeGenerator : MonoBehaviour
     List<Tile> GenerateStarPattern()
     {
         return new List<Tile>();
+    }
+
+
+    List<Tile> GenerateTravelRange(Vector2Int playerCords, int range)
+    {
+        // take the passed range value to build the characters movement range
+        // start with the players current position and check for available spots
+        // in the cardinal directions. For any available spaces found, add them to
+        // the list of the spaces in the players current movement range.
+        // then check the cardinal directions of the newly added spaces and add tiles
+        // next to those ones. Repeat this process for however many times the passed range
+        // value indicates.
+
+        List<Tile> exploreRange = new List<Tile>();
+        List<Tile> travelRange = new List<Tile>();
+
+        travelRange.Add(gridManager.Grid[playerCords]);
+        exploreRange.Add(gridManager.Grid[playerCords]);
+
+        // Get every tile in player movement radius
+        for (int i = 0; i < range; ++i)
+        {
+
+            foreach (Tile x in exploreRange)
+            {
+                travelRange = ExploreNeighbors(x, travelRange);
+            }
+
+
+            // This loop does not lead to the intended effect and must be changed
+            foreach (Tile y in travelRange)
+            {
+                if (exploreRange.Contains(y))
+                    exploreRange.Remove(y);
+                else
+                    exploreRange.Add(y);
+            }
+        }
+
+        return travelRange;
+    }
+
+    List<Tile> ExploreNeighbors(Tile tile, List<Tile> travelRange)
+    {
+        foreach (Vector2Int direction in cardinalDirections)
+        {
+            Vector2Int neighborCords = tile.cords + direction;
+            if (gridManager.Grid.ContainsKey(neighborCords))
+            {
+                if (!travelRange.Contains(gridManager.Grid[neighborCords]))
+                {
+                    travelRange.Add(gridManager.Grid[neighborCords]);
+                }
+            }
+        }
+
+        return travelRange;
     }
 
     #endregion
