@@ -216,7 +216,8 @@ public class PlayerBehavior : MonoBehaviourPun
 
         playerController.photonView.RPC("RecordTargetCords", RpcTarget.All, -100, -100);
         playerController.photonView.RPC("MovePlayer", RpcTarget.All);
-
+        if (cam.Target == this.transform)
+            RoundManager.instance.StopSpectating();
 
         if (PhotonNetwork.IsMasterClient)
             GameManager.instance.CheckWinCondition();
