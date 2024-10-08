@@ -266,3 +266,82 @@ A card gacha system needs to be implemented such that when a chest is opened a r
 </details>
 
 
+
+
+
+
+<details>
+
+<summary>Prototype Week 4</summary>
+ 
+# Prototype Week 4 Objectives Status:
+
+
+## Spell card Scriptable Object: **Implemented**
+
+### What's been going well
+Several new cards have been added and implemented totaling 7 functioning cards.
+
+### What’s needs to be done
+There needs to be more cards with a better variety of utility to create more interesting and varied gameplay. The Orb Of Confusion card needs to be fixed as well.
+
+It would be ideal to have 16 cards implemented by next build.
+
+## Action Queue & Turn System: **Implemented**
+
+### What's been going well
+
+A notification system has been implemented into the turn system to describe actions as they play out.
+
+### What needs to be done
+
+Spells that have a large range should be taken into account in the camera system. players should be able to see the whole range of their attack if it is large.
+
+The notifications are difficult to read because of how fast they go by. This shoul be adjusted or changed such the the playe manually removes the text.
+
+In a larger map there needs to be more dynamic camera control. Players should be able to see an large enough space around them to understand their surroundings but not so far to make it difficult to see the details.
+
+## Player Characters: **Implemented**
+### What's been going well
+
+Players have pseudo statis affects such as being stunned or confused. As such the code for determining the effects of spells has been expanded. This system is currently convoluted and needs to be refined.
+
+### What needs to be done
+
+Players need to wait for a spells cooldown before repeated use to prevent spamming, and spells need to have a limited number of uses.
+
+## Game UI: **Implemented**
+
+### What's been going well
+The players card hand can now dynamically ad and remove cards.
+
+### What needs to be done
+The ui needs to be cleaned up a little bit.
+
+## Movement System: **Implemented**
+
+### What's been going well
+no changes have been made to player movement this week.
+
+### What needs to be done
+
+A breadth first search system still needs to be implemented.
+
+players need to be able to pickup casting crystals that will be placed on the board.
+
+player must be able to interact with chest objects which occupy certain spaces on the board such as chests.
+
+(Optional) Farther into development the grid will need to be compatible with a unique cards functionality which allows players to travers walls. The grid will need to hide certain grid spaces on top of walls until a player activates this ability, and hide these spaces once it is no longer in use.
+
+## Create chest card gacha system: **Implemented**
+
+### What's been going well
+Chests exist on the map which players are able to interact with. When a player lands on a chest they recieve a random cards which is then added to their hand.
+
+### What needs to be done
+The system often gives players repeat cards due to the small card pool. Drop rates are also un tested so rates need to be adjusted and card need to be added to make this system more rebust
+
+Instead of just giving a player a random card a menu should appear that gives the player a choice between two random cards.
+
+</details>
+
