@@ -21,3 +21,4 @@ MonoBehaviour:
   cardRarity: 1
   cardType: 1
   cardRangeType: 2
+  cardActionType: 1

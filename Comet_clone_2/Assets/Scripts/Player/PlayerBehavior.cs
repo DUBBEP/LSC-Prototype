@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviourPun
@@ -11,10 +12,11 @@ public class PlayerBehavior : MonoBehaviourPun
     private int curAttackerId;
     private Vector2Int playerCords;
     public Vector2Int PlayerCords { get { return playerCords; } }
-    private List<GameObject> spellCards;
-    private GameObject HandContainer;
     private bool flashingDamage;
     public bool turnCompleted = false;
+    public bool isConfused;
+    public bool mirrorActive;
+    public bool isStunned;
 
 
 
@@ -35,6 +37,7 @@ public class PlayerBehavior : MonoBehaviourPun
     private PlayerController playerController;
     public CameraBehavior cam;
     public HeaderInfo headerInfo;
+    public GameObject mirrorVisual;
 
 
     [PunRPC]
@@ -50,8 +53,6 @@ public class PlayerBehavior : MonoBehaviourPun
         headerInfo.Initialize(player.NickName, maxHp);
 
         GameManager.instance.players[id - 1] = this;
-
-        HandContainer = GameObject.Find("Spell Hand UI");
 
 
         // is this not our local player?
@@ -86,6 +87,48 @@ public class PlayerBehavior : MonoBehaviourPun
         GridManager.instance.ClearTile(playerCords);
         playerCords = cords;
         GridManager.instance.BlockTile(playerCords);
+    }
+
+    [PunRPC]
+    public void BecomeStunned(int attackerId)
+    {
+        curAttackerId = attackerId;
+        GameUI.instance.ThrowNotification("You have become stunned");
+        photonView.RPC("SetStunned", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void SetStunned()
+    {
+        isStunned = true;
+    }
+
+    [PunRPC]
+    public void BecomeConfused(int attackerId)
+    {
+        curAttackerId = attackerId;
+        GameUI.instance.ThrowNotification("You have become Confused");
+        photonView.RPC("SetConfused", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void SetConfused()
+    {
+        isConfused = true;
+    }
+
+    [PunRPC]
+    public void ActivateMirror()
+    {
+        mirrorActive = true;
+        photonView.RPC("ToggleMirror", RpcTarget.All, true);
+    }
+
+    [PunRPC]
+    public void ToggleMirror(bool toggle)
+    {
+        mirrorActive = toggle;
+        mirrorVisual.SetActive(toggle);
     }
 
     // pass damage value in and subtrack from player health
@@ -143,6 +186,15 @@ public class PlayerBehavior : MonoBehaviourPun
     }
 
     [PunRPC]
+    void Heal(int ammountToHeal)
+    {
+        curHp = Mathf.Clamp(curHp + ammountToHeal, 0, maxHp);
+
+        // update the health bar
+        headerInfo.photonView.RPC("UpdateHealthBar", RpcTarget.All, curHp);
+    }
+
+    [PunRPC]
     void GainCast()
     {
         ++castingCrystals;
@@ -170,12 +222,6 @@ public class PlayerBehavior : MonoBehaviourPun
                 GameManager.instance.GetPlayer(curAttackerId).photonView.RPC("AddKill", RpcTarget.All);
         }
 
-    // adds selected spell card to cards this character holds
-    public void AquireSpell(GameObject card)
-    {
-        spellCards.Add(card);
-    }
-
     [PunRPC]
     public void AddKill()
     {
@@ -185,14 +231,64 @@ public class PlayerBehavior : MonoBehaviourPun
     }
 
 
-    // Removes specified card from held cards.
-    public void RemoveSpell(SpellCard card)
+
+    void GenerateRandomAction()
     {
-        foreach (GameObject x in spellCards)
+        SpellCard randomCard = SpellRangeGenerator.instance.CardLibrary[HandManager.instance.GetRandomCard()];
+        List<Tile> effectRange = new List<Tile>();
+
+        if (randomCard.cardRangeType == SpellCard.rangeType.move)
         {
-            if (card.Equals(x))
-                spellCards.Remove(x);
+            effectRange = SpellRangeGenerator.instance.GenerateEffectRange(playerCords, movementRange);
         }
+        else if (randomCard.rangeIsDirectional)
+        {
+            Vector2Int randomDirection = new Vector2Int(Random.Range(0, 2), Random.Range(0, 2));
+            effectRange = SpellRangeGenerator.instance.GenerateEffectRange(randomCard.cardRangeType, PlayerCords, randomDirection);
+        }
+        else if (!randomCard.rangeIsDirectional)
+        {
+            effectRange = SpellRangeGenerator.instance.GenerateEffectRange(randomCard.cardRangeType, playerCords);
+        }
+
+    }
+
+    public void PrepForNewRound()
+    {
+        turnCompleted = false;
+        playerController.travelRange.Clear();
+        playerController.myAction.card = null;
+        playerController.myAction.effectRange = null;
+
+        if (isStunned)
+        {
+            turnCompleted = true;
+            GameUI.instance.ThrowNotification("You are stunned and unable to act this round");
+            isStunned = false;
+        }
+
+        if (mirrorActive)
+        {
+            photonView.RPC("ToggleMirror", RpcTarget.All, false);
+            mirrorActive = false;
+        }
+
+        if (isConfused)
+        {
+            if (isStunned)
+                GameUI.instance.ThrowNotification("You are stunned and unable to act this round");
+            else
+            {
+                GameUI.instance.ThrowNotification("You are confused and will act unpredictably this round");
+
+                if (PhotonNetwork.IsMasterClient)
+                    GenerateRandomAction();
+
+            }
+
+            isConfused = false;
+        }
+
     }
 
 }

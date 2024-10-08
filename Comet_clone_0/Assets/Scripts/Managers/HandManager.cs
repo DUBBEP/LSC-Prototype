@@ -74,4 +74,11 @@ public class HandManager : MonoBehaviour
         return false;
     }
 
+    public string GetRandomCard()
+    {
+        int randomValue = Random.Range(0, playerHand.Count);
+        Debug.Log("Random Card Picked:" + playerHand[randomValue].transform.GetChild(0).name);
+        return playerHand[randomValue].transform.GetChild(0).name;
+    }
+
 }

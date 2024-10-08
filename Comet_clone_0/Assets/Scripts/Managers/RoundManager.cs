@@ -75,7 +75,7 @@ public class RoundManager : MonoBehaviour
                 continue;
             }
 
-            x.turnCompleted = false;
+            x.PrepForNewRound();
 
             if (x.photonView.IsMine)
                 GameUI.instance.SetPlayerControls(true);
@@ -104,25 +104,10 @@ public class RoundManager : MonoBehaviour
             // focus camera player who's action this belongs to
             LookAtActivePlayer(action.playerId);
 
-
             Debug.Log("Waiting for a second");
             yield return new WaitForSecondsRealtime(waitAmmount);
-            
-            if (action.card.name == "MoveCard")
-            {
-                MovePlayer(action.playerId);
-                LookAtActivePlayer(action.playerId);
-                yield return new WaitForSecondsRealtime(waitAmmount);
-                continue;
-            }
 
-            PlayerBehavior player = GameManager.instance.GetPlayer(action.playerId);
-            --player.castingCrystals;
-            if (player.photonView.IsMine)
-                GameUI.instance.UpdateCastingCrystalText();
-
-            DamagePlayersInRange(action);
-            GridManager.instance.SetAttackTileColor(action.effectRange, Color.white);
+            ExecuteActionEffect(action);
             yield return new WaitForSecondsRealtime(waitAmmount);
         }
 
@@ -131,7 +116,37 @@ public class RoundManager : MonoBehaviour
         EndRound();
     }
 
+    void ExecuteActionEffect(Action action)
+    {
+        PlayerBehavior player = GameManager.instance.GetPlayer(action.playerId);
 
+        if (action.card.cardActionType == SpellCard.actionType.move)
+        {
+            MovePlayer(action.playerId);
+            LookAtActivePlayer(action.playerId);
+        }
+        else if (action.card.cardActionType == SpellCard.actionType.mirror)
+        {
+            player.photonView.RPC("ActivateMirror", player.photonPlayer);
+        }
+        else if (action.card.cardActionType == SpellCard.actionType.heal)
+        {
+            player.photonView.RPC("Heal", player.photonPlayer, action.card.power);
+        }
+        else
+        {
+            EffectPlayersInRange(action);
+            GridManager.instance.SetAttackTileColor(action.effectRange, Color.white);
+        }
+
+
+        if (action.card.name != "MoveCard")
+        {
+            --player.castingCrystals;
+            if (player.photonView.IsMine)
+                GameUI.instance.UpdateCastingCrystalText();
+        }
+    }
 
     void EndRound()
     {
@@ -161,32 +176,11 @@ public class RoundManager : MonoBehaviour
         player.photonView.RPC("MovePlayer", RpcTarget.All);
     }
 
-    public void CheckForUnreadyPlayers()
-    {
-        foreach (PlayerBehavior x in GameManager.instance.players)
-        {
-            if (x.turnCompleted == true || x.dead)
-            {
-                readyPlayers++;
-            }
-        }
-
-        if (readyPlayers < GameManager.instance.players.Length)
-        {
-            readyPlayers = 0;
-            return;
-        }
-
-
-        state = RoundState.executePlayerActions;
-        StartCoroutine(ExecuteActions(1));
-    }
-
-    private void DamagePlayersInRange(Action action)
+    private void EffectPlayersInRange(Action action)
     {
         if (action.card.cardRangeType == SpellCard.rangeType.none)
             return;
-        
+
         foreach (PlayerBehavior player in GameManager.instance.players)
         {
             if (player.dead)
@@ -198,13 +192,28 @@ public class RoundManager : MonoBehaviour
                 Debug.Log("Player id: " + player.id + " taking damage");
 
                 if (player.photonView.IsMine)
-                    player.photonView.RPC("TakeDamage", player.photonPlayer, action.playerId, action.card.power);
+                {
+                    switch (action.card.cardActionType)
+                    {
+                        case (SpellCard.actionType.normalDamage):
+                            player.photonView.RPC("TakeDamage", player.photonPlayer, action.playerId, action.card.power);
+                            break;
+                        case (SpellCard.actionType.confusion):
+                            if (action.card.power > 0)
+                                player.photonView.RPC("TakeDamage", player.photonPlayer, action.playerId, action.card.power);
+                            player.photonView.RPC("BecomeConfused", player.photonPlayer, action.playerId);
+                            break;
+                        case (SpellCard.actionType.stun):
+                            player.photonView.RPC("BecomeStunned", player.photonPlayer, action.playerId);
+                            break;
+
+                    }
+                }
 
                 CheckForInterruptions(player.id);
             }
         }
     }
-
     private void CheckForInterruptions(int playerId)
     {
         foreach (Action action in roundActions)
@@ -237,6 +246,26 @@ public class RoundManager : MonoBehaviour
         // display that the action was interrupted to screen
         // play any other effects related to an interrupted action
     }
+    public void CheckForUnreadyPlayers()
+    {
+        foreach (PlayerBehavior x in GameManager.instance.players)
+        {
+            if (x.turnCompleted == true || x.dead)
+            {
+                readyPlayers++;
+            }
+        }
+
+        if (readyPlayers < GameManager.instance.players.Length)
+        {
+            readyPlayers = 0;
+            return;
+        }
+
+
+        state = RoundState.executePlayerActions;
+        StartCoroutine(ExecuteActions(1));
+    }
 
     public void DisplayAllActionInformation()
     {
@@ -247,6 +276,4 @@ public class RoundManager : MonoBehaviour
             Debug.Log("Round Action card Name: " + c.card.name);
         }
     }
-
-
 }

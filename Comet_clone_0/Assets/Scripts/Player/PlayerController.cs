@@ -9,17 +9,15 @@ using UnityEngine;
 public class PlayerController : MonoBehaviourPun
 {
     bool playerIsMoving = false;
-    bool directionalCast = false;
     bool preparingCast = false;
     
     Vector2Int[] searchOrder = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
-    List<Tile> travelRange = new List<Tile>();
+    public List<Tile> travelRange = new List<Tile>();
     public Action myAction = new Action(null, null, -1);
     public Vector2Int targetCords;
 
     GridManager gridManager;
     PlayerBehavior playerBehavior;
-    SpellRangeGenerator spellRangeGenerator;
 
 
 
@@ -28,16 +26,10 @@ public class PlayerController : MonoBehaviourPun
     {
         gridManager = FindObjectOfType<GridManager>();
         playerBehavior = GetComponent<PlayerBehavior>();
-        spellRangeGenerator = FindObjectOfType<SpellRangeGenerator>();
     }
 
     private void Update()
     {
-        if (directionalCast)
-        {
-            // track mouse position here
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -84,9 +76,9 @@ public class PlayerController : MonoBehaviourPun
         if (!photonView.IsMine)
         {
             PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
-            player.GenerateTravelRange(playerBehavior.MovementRange);
+            player.travelRange = SpellRangeGenerator.instance.GenerateEffectRange(player.playerBehavior.PlayerCords, player.playerBehavior.MovementRange);
             player.myAction.effectRange = travelRange;
-            player.myAction.card = spellRangeGenerator.CardLibrary["Move"];
+            player.myAction.card = SpellRangeGenerator.instance.CardLibrary["Move"];
             return;
         }
 
@@ -105,10 +97,10 @@ public class PlayerController : MonoBehaviourPun
         }
 
         playerIsMoving = true;
-        GenerateTravelRange(playerBehavior.MovementRange);
+        travelRange = SpellRangeGenerator.instance.GenerateEffectRange(playerBehavior.PlayerCords, playerBehavior.MovementRange);
         gridManager.SetMoveTileColors(travelRange);
         myAction.effectRange = travelRange;
-        myAction.card = spellRangeGenerator.CardLibrary["Move"];
+        myAction.card = SpellRangeGenerator.instance.CardLibrary["Move"];
     }
 
     [PunRPC]
@@ -131,66 +123,6 @@ public class PlayerController : MonoBehaviourPun
 
         if (tile.containsCrystal)
             tile.crystal.Collect(playerBehavior);    
-    }
-
-    void GenerateTravelRange(int range)
-    {
-        // take the passed range value to build the characters movement range
-        // start with the players current position and check for available spots
-        // in the cardinal directions. For any available spaces found, add them to
-        // the list of the spaces in the players current movement range.
-        // then check the cardinal directions of the newly added spaces and add tiles
-        // next to those ones. Repeat this process for however many times the passed range
-        // value indicates.
-
-        List<Tile> exploreRange = new List<Tile>();
-
-        travelRange.Clear();
-        travelRange.Add(gridManager.Grid[playerBehavior.PlayerCords]);
-        exploreRange.Add(gridManager.Grid[playerBehavior.PlayerCords]);
-
-        // Get every tile in player movement radius
-        for (int i = 0; i < playerBehavior.MovementRange; ++i)
-        {
-
-            foreach (Tile x in exploreRange)
-            {
-                ExploreNeighbors(x);
-            }
-
-
-            // This loop does not lead to the intended effect and must be changed
-            foreach (Tile y in travelRange)
-            {
-                if (exploreRange.Contains(y))
-                    exploreRange.Remove(y);
-                else
-                    exploreRange.Add(y);
-            }
-        }
-
-
-
-
-    }
-
-
-
-
-
-    void ExploreNeighbors(Tile tile)
-    {
-        foreach (Vector2Int direction in searchOrder)
-        {
-            Vector2Int neighborCords = tile.cords + direction;
-            if (gridManager.Grid.ContainsKey(neighborCords))
-            {
-                if (!travelRange.Contains(gridManager.Grid[neighborCords]))
-                {
-                    travelRange.Add(gridManager.Grid[neighborCords]);
-                }
-            }
-        }
     }
 
     #endregion
@@ -226,11 +158,11 @@ public class PlayerController : MonoBehaviourPun
             gridManager.SetAttackTileColor(myAction.effectRange, Color.white);
         }
 
-        SpellCard card = spellRangeGenerator.CardLibrary[cardName];
+        SpellCard card = SpellRangeGenerator.instance.CardLibrary[cardName];
         PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
 
 
-        player.myAction.effectRange = spellRangeGenerator.GenerateEffectRange(card.cardRangeType, playerBehavior.PlayerCords);
+        player.myAction.effectRange = SpellRangeGenerator.instance.GenerateEffectRange(card.cardRangeType, playerBehavior.PlayerCords);
         player.myAction.card = card;
 
         if (photonView.IsMine)
@@ -250,10 +182,10 @@ public class PlayerController : MonoBehaviourPun
         }
 
         Vector2Int direction = SetDirectionByInt(dir);
-        SpellCard card = spellRangeGenerator.CardLibrary[cardName];
+        SpellCard card = SpellRangeGenerator.instance.CardLibrary[cardName];
         PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
 
-        player.myAction.effectRange = spellRangeGenerator.GenerateEffectRange(card.cardRangeType, playerBehavior.PlayerCords, direction);
+        player.myAction.effectRange = SpellRangeGenerator.instance.GenerateEffectRange(card.cardRangeType, playerBehavior.PlayerCords, direction);
         player.myAction.card = card;
 
         if (photonView.IsMine)
@@ -273,7 +205,7 @@ public class PlayerController : MonoBehaviourPun
 
         PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
 
-        player.myAction.effectRange = spellRangeGenerator.GenerateEffectRange(myAction.card.cardRangeType, playerBehavior.PlayerCords, direction);
+        player.myAction.effectRange = SpellRangeGenerator.instance.GenerateEffectRange(myAction.card.cardRangeType, playerBehavior.PlayerCords, direction);
 
         if (photonView.IsMine)
             gridManager.SetAttackTileColor(myAction.effectRange, Color.red);
@@ -313,7 +245,6 @@ public class PlayerController : MonoBehaviourPun
 
         myAction.card = null;
         myAction.effectRange = null;
-        directionalCast = false;
         preparingCast = false;
     }
 

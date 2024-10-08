@@ -21,6 +21,7 @@ public class SpellCard : ScriptableObject
     public enum rangeType
     {
         none,
+        move,
         directionalLine,
         cross,
         star,
@@ -51,6 +52,8 @@ public class SpellCard : ScriptableObject
     public int coolDown;
     public rarity cardRarity;
     public type cardType;
+
+    public bool rangeIsDirectional;
     public rangeType cardRangeType;
     public actionType cardActionType;
 
