@@ -60,6 +60,9 @@ public class RoundManager : MonoBehaviour
     {
         foreach (PlayerBehavior x in GameManager.instance.players)
         {
+            if (PhotonNetwork.IsMasterClient)
+                GameManager.instance.CheckWinCondition();
+
             if (x == null)
                 continue;
 
@@ -170,7 +173,7 @@ public class RoundManager : MonoBehaviour
             if (player.photonView.IsMine)
                 player.cam.StartFollowing(GameManager.instance.GetPlayer(playerId).transform);
     }
-    void StopSpectating()
+    public void StopSpectating()
     {
         foreach (PlayerBehavior player in GameManager.instance.players)
             if (player.photonView.IsMine)

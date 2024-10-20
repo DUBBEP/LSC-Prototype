@@ -68,6 +68,8 @@ MonoBehaviour:
   - ToggleMirror
   - PrepForNewRound
   - GenerateRandomAction
+  - PlayAttackAnimation
+  - PlayModelAnimation
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

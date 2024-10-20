@@ -118,6 +118,9 @@ public class PlayerController : MonoBehaviourPun
 
         Tile tile = GridManager.instance.GetTile(targetCords);
 
+        if (tile == null)
+            return;
+
         if (tile.nextToChest)
             tile.chest.OpenChest(playerBehavior);
 

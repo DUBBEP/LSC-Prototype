@@ -1,8 +1,6 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviourPun
@@ -38,6 +36,8 @@ public class PlayerBehavior : MonoBehaviourPun
     public CameraBehavior cam;
     public HeaderInfo headerInfo;
     public GameObject mirrorVisual;
+    public Animator playerModelAnimator;
+    public Animator playerAttackAnimator;
 
 
     [PunRPC]
@@ -63,7 +63,6 @@ public class PlayerBehavior : MonoBehaviourPun
         else
         {
             GameUI.instance.Initialize(this);
-            cam = GetComponentInChildren<CameraBehavior>();
             cam.transform.parent = null;
             cam.transform.position = GameManager.instance.camDefaultPos;
         }
@@ -134,6 +133,18 @@ public class PlayerBehavior : MonoBehaviourPun
     {
         mirrorActive = toggle;
         mirrorVisual.SetActive(toggle);
+    }
+
+    [PunRPC]
+    public void PlayAttackAnimation(string clip)
+    {
+        playerAttackAnimator.Play(clip);
+    }
+
+    [PunRPC]
+    public void PlayModelAnimation(string clip)
+    {
+        playerModelAnimator.Play(clip);
     }
 
     // pass damage value in and subtrack from player health
@@ -216,7 +227,8 @@ public class PlayerBehavior : MonoBehaviourPun
 
         playerController.photonView.RPC("RecordTargetCords", RpcTarget.All, -100, -100);
         playerController.photonView.RPC("MovePlayer", RpcTarget.All);
-
+        if (cam.Target == this.transform)
+            RoundManager.instance.StopSpectating();
 
         if (PhotonNetwork.IsMasterClient)
             GameManager.instance.CheckWinCondition();

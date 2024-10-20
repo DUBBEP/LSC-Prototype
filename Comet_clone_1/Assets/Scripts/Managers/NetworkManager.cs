@@ -16,7 +16,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (instance == null)
             instance = this;
         else if (instance != this)
-            gameObject.SetActive(false);
+            Destroy(this);
 
         DontDestroyOnLoad(gameObject);
     }

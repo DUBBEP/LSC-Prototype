@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,7 +41,7 @@ public class Chest : MonoBehaviour
         if (!player.photonView.IsMine)
             return;
 
-        SpellCardDisplay card = RollForCard(30);
+        SpellCardDisplay card = RollForCard(100);
         GameUI.instance.ThrowNotification("Chest Opened, spell aquired: " + card.spellCard.spellName);
         HandManager.instance.AddCard(card.spellCard.spellName);
     }
@@ -59,6 +58,8 @@ public class Chest : MonoBehaviour
 
                 if (cardInHand.spellName == pulledSpellCard.spellName)
                     break;
+
+                Debug.Log("Roll attempts before giving card: " + i);
                 return card;
             }
         }

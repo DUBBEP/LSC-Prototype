@@ -1,7 +1,6 @@
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
-using Photon.Realtime;
 using System.Collections;
 
 public class GameUI : MonoBehaviour

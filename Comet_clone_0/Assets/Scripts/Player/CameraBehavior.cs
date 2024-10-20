@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class CameraBehavior : MonoBehaviour
@@ -12,6 +9,8 @@ public class CameraBehavior : MonoBehaviour
     private bool isFollowing;
     private bool returnToDefaultPos;
     private Transform target;
+    public Transform Target { get { return target; } }
+
     private Vector3 targetPosition;
     private float verticalOffSet;
     private float defaultFOV;
