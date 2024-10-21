@@ -10,11 +10,13 @@ public class GameUI : MonoBehaviour
     public GameObject playerControls;
     public GameObject directionControls;
     public GameObject notifications;
+    public GameObject waitingPanel;
 
     public TextMeshProUGUI notificationText;
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI castingCrystalText;
-    public TextMeshProUGUI playerInfoText;
+    public TextMeshProUGUI timerText;
+    public TextMeshProUGUI unreadyPlayerList;
 
     public Image winBackGround;
     public TextMeshProUGUI winText;
@@ -41,10 +43,6 @@ public class GameUI : MonoBehaviour
     public void UpdateCastingCrystalText()
     {
         castingCrystalText.text = "<b>Crystals: </b>" + player.castingCrystals.ToString();
-    }
-    public void UpdatePlayerInfoText()
-    {
-        playerInfoText.text = "<b>Alive:</b> " + GameManager.instance.alivePlayers + "\n<b>Kills:</b> " + player.kills;
     }
 
     public void Initialize(PlayerBehavior localPlayer)
@@ -96,6 +94,37 @@ public class GameUI : MonoBehaviour
     public void OnDirectionSet(int dir)
     {
         playerController.photonView.RPC("SetNewDirectionOfCast", Photon.Pun.RpcTarget.All, player.id, dir);
+    }
+
+
+
+
+    public void SetTimerText(bool toggle)
+    {
+        timerText.gameObject.SetActive(toggle);
+    }
+
+    public void UpdateTimerText(int timeInt)
+    {
+        timerText.text = "<b>Time Left: </b>" + timeInt.ToString();
+    }
+
+    public void SetWaitingPanel(bool toggle)
+    {
+        waitingPanel.gameObject.SetActive(toggle);
+    }
+
+    public void UpdateUnreadyPlayerList()
+    {
+        unreadyPlayerList.text = string.Empty;
+        foreach (PlayerBehavior player in GameManager.instance.players)
+        {
+            if (player.turnCompleted == false && !player.dead)
+            {
+                unreadyPlayerList.text = unreadyPlayerList.text + "Waiting for " +
+                    player.photonPlayer.NickName + "...\n";
+            }
+        }
     }
 
     public void SetHandUI(bool toggle)

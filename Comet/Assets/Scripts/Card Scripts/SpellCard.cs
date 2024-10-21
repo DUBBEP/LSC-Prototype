@@ -34,6 +34,7 @@ public class SpellCard : ScriptableObject
 
     public enum actionType
     {
+        none,
         move,
         normalDamage,
         mirror,

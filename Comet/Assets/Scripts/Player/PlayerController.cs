@@ -228,6 +228,7 @@ public class PlayerController : MonoBehaviourPun
         {
             CancelCast();
             GameUI.instance.SetPlayerControls(false);
+            GameUI.instance.SetWaitingPanel(true);
         }
 
         player.playerBehavior.turnCompleted = true;

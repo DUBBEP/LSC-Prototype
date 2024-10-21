@@ -22,4 +22,4 @@ MonoBehaviour:
   cardType: 0
   rangeIsDirectional: 1
   cardRangeType: 2
-  cardActionType: 1
+  cardActionType: 2

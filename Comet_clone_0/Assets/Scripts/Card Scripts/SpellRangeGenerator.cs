@@ -13,7 +13,7 @@ public class SpellRangeGenerator : MonoBehaviour
     public Dictionary<string, SpellCard> CardLibrary { get { return cardLibrary; } }
 
 
-    public SpellCard move, blazingCross, thunderSpear, laserCannon, magicMirror, orbOfConfusion,
+    public SpellCard emptyCard, move, blazingCross, thunderSpear, laserCannon, magicMirror, orbOfConfusion,
         spacialSlice, flashBang, ghostHand;
 
 
@@ -24,6 +24,7 @@ public class SpellRangeGenerator : MonoBehaviour
 
     void Start()
     {
+        cardLibrary.Add("EmptyCard", emptyCard);
         cardLibrary.Add("Move", move);
         cardLibrary.Add("BlazingCross", blazingCross);
         cardLibrary.Add("ThunderSpear", thunderSpear);
@@ -40,7 +41,7 @@ public class SpellRangeGenerator : MonoBehaviour
         switch (rangeType)
         {
             case SpellCard.rangeType.none:
-                return null;
+                return new List<Tile>();
             case SpellCard.rangeType.cross:
                 return GenerateCrossPattern(playerCords);
             case SpellCard.rangeType.flashbang:
@@ -50,7 +51,7 @@ public class SpellRangeGenerator : MonoBehaviour
 
         }
 
-        return null;
+        return new List<Tile>();
     }
 
     public List<Tile> GenerateEffectRange(SpellCard.rangeType rangeType, Vector2Int playerCords, Vector2Int direction)

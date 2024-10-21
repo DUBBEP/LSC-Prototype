@@ -23,4 +23,4 @@ MonoBehaviour:
   cardType: 1
   rangeIsDirectional: 0
   cardRangeType: 9
-  cardActionType: 4
+  cardActionType: 5

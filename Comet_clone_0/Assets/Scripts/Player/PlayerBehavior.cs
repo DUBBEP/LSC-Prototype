@@ -77,8 +77,6 @@ public class PlayerBehavior : MonoBehaviourPun
 
         GameUI.instance.UpdateHealthText();
         GameUI.instance.UpdateCastingCrystalText();
-        GameUI.instance.UpdatePlayerInfoText();
-
     }
 
     public void UpdateCords(Vector2Int cords)
@@ -243,8 +241,6 @@ public class PlayerBehavior : MonoBehaviourPun
     public void AddKill()
     {
         kills++;
-        // update the UI
-        GameUI.instance.UpdatePlayerInfoText();
     }
 
 

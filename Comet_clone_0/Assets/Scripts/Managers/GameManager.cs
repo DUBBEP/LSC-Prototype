@@ -59,8 +59,14 @@ public class GameManager : MonoBehaviourPun
         playerObj.GetComponent<PlayerBehavior>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
 
         Invoke("SetSpawnedTrue", 0.5f);
+        photonView.RPC("StartGame", RpcTarget.All);
     }
 
+    [PunRPC]
+    void StartGame()
+    {
+        RoundManager.instance.SetUpRound();
+    }
     public PlayerBehavior GetPlayer(int playerId)
     {
         foreach (PlayerBehavior player in players)

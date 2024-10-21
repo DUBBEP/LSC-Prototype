@@ -39,6 +39,13 @@ public class RoundManager : MonoBehaviour
 
     private int readyPlayers;
 
+    [SerializeField]
+    public float roundPaceTime;
+    [SerializeField]
+    public int roundPlanningTime;
+
+    private float roundTimer;
+
 
 
     private void Awake()
@@ -49,14 +56,20 @@ public class RoundManager : MonoBehaviour
             gameObject.SetActive(false);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    void FixedUpdate()
     {
-        SetUpRound();
+        if (roundTimer > 0 && state == RoundState.waitForPlayerActions)
+        {
+            roundTimer -= Time.deltaTime;
+            GameUI.instance.UpdateTimerText((int)roundTimer);
+        }
+        else if (roundTimer <= 0 && state == RoundState.waitForPlayerActions)
+            if (PhotonNetwork.IsMasterClient)
+                ForceEndTurn();
     }
 
     #region State Implementations
-    void SetUpRound()
+    public void SetUpRound()
     {
         foreach (PlayerBehavior x in GameManager.instance.players)
         {
@@ -79,29 +92,31 @@ public class RoundManager : MonoBehaviour
             }
 
             if (x.photonView.IsMine && !x.isStunned && !x.isConfused)
+            {
                 GameUI.instance.SetPlayerControls(true);
+            }
 
             x.PrepForNewRound();
 
 
         }
 
-        readyPlayers = 0;
+        GameUI.instance.SetTimerText(true);
+        roundTimer = roundPlanningTime;
         state = RoundState.waitForPlayerActions;
     }
 
-    IEnumerator ExecuteActions(int waitAmmount)
+    IEnumerator ExecuteActions(float waitAmmount)
     {
+        GameUI.instance.SetWaitingPanel(false);
+        GameUI.instance.SetTimerText(false);
+
         Debug.Log("EXECUTE ACTIONS");
 
         roundActions = roundActions.OrderBy(x => x.card.castDelay).ToList();
         yield return new WaitForSeconds(waitAmmount);
         foreach (Action action in roundActions)
         {
-            if (CheckIfInterrupted(action))
-                continue;
-
-
             // show effect range if one exists
             if (action.card.cardRangeType != SpellCard.rangeType.none)
                 GridManager.instance.SetAttackTileColor(action.effectRange, Color.red);
@@ -109,7 +124,16 @@ public class RoundManager : MonoBehaviour
             // focus camera player who's action this belongs to
             LookAtActivePlayer(action.playerId);
 
-            if (action.card.cardActionType == SpellCard.actionType.move)
+            if (CheckIfInterrupted(action))
+            {
+                if (action.card.cardActionType == SpellCard.actionType.none)
+                    GameUI.instance.ThrowNotification(GameManager.instance.GetPlayer(action.playerId).photonPlayer.NickName + " does not act");
+                else
+                    GameUI.instance.ThrowNotification(GameManager.instance.GetPlayer(action.playerId).photonPlayer.NickName + " has been interrupted");
+                yield return new WaitForSecondsRealtime(waitAmmount);
+                continue;
+            }
+            else if (action.card.cardActionType == SpellCard.actionType.move)
                 GameUI.instance.ThrowNotification(GameManager.instance.GetPlayer(action.playerId).photonPlayer.NickName + " moves");
             else
                 GameUI.instance.ThrowNotification(GameManager.instance.GetPlayer(action.playerId).photonPlayer.NickName + " casts " + action.card.spellName);
@@ -248,7 +272,6 @@ public class RoundManager : MonoBehaviour
             {
                 interruptedPlayers.Add(action.playerId);
                 DisplayInterruption(action);
-
             }
         }
     }
@@ -274,6 +297,8 @@ public class RoundManager : MonoBehaviour
     }
     public void CheckForUnreadyPlayers()
     {
+        readyPlayers = 0;
+        GameUI.instance.UpdateUnreadyPlayerList();
         foreach (PlayerBehavior x in GameManager.instance.players)
         {
             if (x.turnCompleted == true || x.dead)
@@ -284,13 +309,27 @@ public class RoundManager : MonoBehaviour
 
         if (readyPlayers < GameManager.instance.players.Length)
         {
-            readyPlayers = 0;
             return;
         }
 
 
         state = RoundState.executePlayerActions;
-        StartCoroutine(ExecuteActions(1));
+        StartCoroutine(ExecuteActions(roundPaceTime));
+    }
+
+    public void ForceEndTurn()
+    {
+        roundTimer = 0;
+        foreach (PlayerBehavior player in GameManager.instance.players)
+        {
+            if (PhotonNetwork.IsMasterClient && player.turnCompleted == false && !player.dead)
+            {
+                interruptedPlayers.Add(player.id);
+                player.photonView.RPC("OnPrepareCast", RpcTarget.All, player.id, "EmptyCard");
+                player.photonView.RPC("OnConfirmCast", RpcTarget.All, player.id);
+            }
+        }
+        GameUI.instance.ThrowNotification("One or more players have failed to act.");
     }
 
     public void DisplayAllActionInformation()
