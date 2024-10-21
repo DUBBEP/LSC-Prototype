@@ -9,7 +9,6 @@ public class Chest : MonoBehaviour
     Tile occupiedTile;
     public List<Tile> neighbors = new List<Tile>();
 
-
     private void Start()
     {
         cords = GridManager.instance.GetCoordinatesFromPosition(transform.position);
@@ -41,30 +40,10 @@ public class Chest : MonoBehaviour
         if (!player.photonView.IsMine)
             return;
 
-        SpellCardDisplay card = RollForCard(100);
-        GameUI.instance.ThrowNotification("Chest Opened, spell aquired: " + card.spellCard.spellName);
-        HandManager.instance.AddCard(card.spellCard.spellName);
+        GameUI.instance.ThrowNotification("Chest Opened");
+        player.getsNewCard = true;
     }
 
-    SpellCardDisplay RollForCard(int numOfTimes)
-    {
-        SpellCardDisplay card = RandomCardGenerator.instance.GetRandomCard();
-        for (int i = 0; i < numOfTimes; i++)
-        {
-            SpellCard pulledSpellCard = card.spellCard;
-            foreach (GameObject cardObject in HandManager.instance.playerHand)
-            {
-                SpellCard cardInHand = cardObject.GetComponentInChildren<SpellCardDisplay>().spellCard;
-
-                if (cardInHand.spellName == pulledSpellCard.spellName)
-                    break;
-
-                Debug.Log("Roll attempts before giving card: " + i);
-                return card;
-            }
-        }
-        return card;
-    }
 
     void GetNeighbors(Vector2Int cords)
     {

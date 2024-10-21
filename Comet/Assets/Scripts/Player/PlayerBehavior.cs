@@ -12,9 +12,10 @@ public class PlayerBehavior : MonoBehaviourPun
     public Vector2Int PlayerCords { get { return playerCords; } }
     private bool flashingDamage;
     public bool turnCompleted = false;
-    public bool isConfused;
-    public bool mirrorActive;
-    public bool isStunned;
+    public bool isConfused = false;
+    public bool mirrorActive = false;
+    public bool isStunned = false;
+    public bool getsNewCard = false;
 
 
 

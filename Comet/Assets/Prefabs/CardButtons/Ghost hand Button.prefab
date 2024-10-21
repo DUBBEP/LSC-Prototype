@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7301105800279114312
+--- !u!1 &7462678311211655514
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,28 +8,28 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8192584570733947598}
-  - component: {fileID: 4232016370866855274}
+  - component: {fileID: 5944971598634819171}
+  - component: {fileID: 3569197118383796228}
   m_Layer: 5
-  m_Name: SpellCardButton
+  m_Name: Ghost hand Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &8192584570733947598
+--- !u!224 &5944971598634819171
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7301105800279114312}
+  m_GameObject: {fileID: 7462678311211655514}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 485818074904604777}
+  - {fileID: 6610985038739338028}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -37,13 +37,13 @@ RectTransform:
   m_AnchoredPosition: {x: 525, y: -100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4232016370866855274
+--- !u!114 &3569197118383796228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7301105800279114312}
+  m_GameObject: {fileID: 7462678311211655514}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -83,23 +83,23 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameUI, Assembly-CSharp
-        m_MethodName: OnCardSelected
+        m_MethodName: OnDirectionalCardSelected
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: BlazingCross
+          m_StringArgument: GhostHand
           m_BoolArgument: 0
         m_CallState: 2
---- !u!1001 &4791865295503914414
+--- !u!1001 &2270719332987549419
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 8192584570733947598}
+    m_TransformParent: {fileID: 5944971598634819171}
     m_Modifications:
     - target: {fileID: 4917324885311571399, guid: a21b8a27fd5661842996c50bdffeb9ba, type: 3}
       propertyPath: m_Pivot.x
@@ -199,19 +199,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7168942554893348458, guid: a21b8a27fd5661842996c50bdffeb9ba, type: 3}
       propertyPath: m_Name
-      value: SpellCardDisplay
+      value: GhostHand
       objectReference: {fileID: 0}
     - target: {fileID: 7481328522223884188, guid: a21b8a27fd5661842996c50bdffeb9ba, type: 3}
       propertyPath: spellCard
       value: 
-      objectReference: {fileID: 11400000, guid: c4900ab4c5ea3ad43a4fcb86c2032e77, type: 2}
+      objectReference: {fileID: 11400000, guid: 7b64325605356db4e83bfee491e44d0e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a21b8a27fd5661842996c50bdffeb9ba, type: 3}
---- !u!224 &485818074904604777 stripped
+--- !u!224 &6610985038739338028 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4917324885311571399, guid: a21b8a27fd5661842996c50bdffeb9ba, type: 3}
-  m_PrefabInstance: {fileID: 4791865295503914414}
+  m_PrefabInstance: {fileID: 2270719332987549419}
   m_PrefabAsset: {fileID: 0}
