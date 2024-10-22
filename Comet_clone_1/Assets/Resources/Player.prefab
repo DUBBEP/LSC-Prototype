@@ -198,6 +198,7 @@ MonoBehaviour:
   isConfused: 0
   mirrorActive: 0
   isStunned: 0
+  getsNewCard: 0
   castingCrystals: 0
   curHp: 10
   maxHp: 10

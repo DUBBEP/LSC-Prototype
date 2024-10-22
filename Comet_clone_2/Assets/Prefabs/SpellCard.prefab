@@ -720,7 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73ca8d46208d10141b96dc846297f0c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellCard: {fileID: 0}
+  spellCard: {fileID: 11400000, guid: 73d7b8a7208476b4ebef215ae7f0ee86, type: 2}
   spellNameText: {fileID: 5478607569541482386}
   cardDelayText: {fileID: 2532783546371184281}
   coolDownText: {fileID: 3342247554824801906}
