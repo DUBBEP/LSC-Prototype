@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothFactor: 4
-  quadrantSize: 15
+  quadrantSize: 13
   topDownOffSet: {x: 8, y: 13, z: 4}
 --- !u!1001 &4842195781376808297
 PrefabInstance:

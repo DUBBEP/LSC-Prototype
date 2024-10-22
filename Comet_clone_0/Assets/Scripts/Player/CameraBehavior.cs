@@ -33,6 +33,7 @@ public class CameraBehavior : MonoBehaviour
         _camera = GetComponent<Camera>();
         verticalOffSet = topDownOffSet.y;
         defaultFOV = _camera.fieldOfView;
+        StopFollowing();
     }
 
     public void Initialize(PlayerBehavior localPlayer)
@@ -54,7 +55,7 @@ public class CameraBehavior : MonoBehaviour
         if (returnToRestPosition)
         {
 
-            transform.position = Vector3.Lerp(transform.position, topDownOffSet + GetPlayerQuadrant(myPlayer), Time.deltaTime * smoothFactor);
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * smoothFactor);
 
             _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, targetFOV, Time.deltaTime * smoothFactor);
 
@@ -79,17 +80,17 @@ public class CameraBehavior : MonoBehaviour
         isFollowing = false;
         returnToRestPosition = true;
         target = null;
-        targetPosition = Vector3.zero;
+
+        targetPosition = topDownOffSet + GetPlayerQuadrant(myPlayer);
         targetFOV = defaultFOV;
     }
 
     public Vector3 GetPlayerQuadrant(Transform target)
     {
         Vector3 quadrant = new Vector3();
-
-        quadrant.x = Mathf.RoundToInt(target.position.x / quadrantSize);
         quadrant.z = 0;
-        quadrant.z = Mathf.RoundToInt(target.position.z / quadrantSize);
+        quadrant.x = (int)(target.position.x / quadrantSize);
+        quadrant.z = (int)(target.position.z / quadrantSize);
 
         return quadrant * quadrantSize;
     }
