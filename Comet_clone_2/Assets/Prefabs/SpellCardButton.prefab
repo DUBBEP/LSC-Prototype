@@ -199,7 +199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7168942554893348458, guid: a21b8a27fd5661842996c50bdffeb9ba, type: 3}
       propertyPath: m_Name
-      value: BlazingCross
+      value: SpellCardDisplay
       objectReference: {fileID: 0}
     - target: {fileID: 7481328522223884188, guid: a21b8a27fd5661842996c50bdffeb9ba, type: 3}
       propertyPath: spellCard

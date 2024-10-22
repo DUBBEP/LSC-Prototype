@@ -50,6 +50,7 @@ public class HandManager : MonoBehaviour
             {
                 GameObject newCard = Instantiate(card, playerHandContainer.transform);
                 playerHand.Add(newCard);
+                GameUI.instance.ThrowNotification("Card Aquired: " + cardName);
                 return true;
             }
         }

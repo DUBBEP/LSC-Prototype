@@ -18,16 +18,44 @@ public class RandomCardGenerator : MonoBehaviour
             cardPool.Add(cardDeck.transform.GetChild(i).GetComponentInChildren<SpellCardDisplay>());
     }
 
-    public SpellCardDisplay GetRandomCard()
+    public SpellCardDisplay RollForCard(int numOfTimes)
+    {
+        SpellCardDisplay card = GetRandomCard();
+        for (int i = 0; i < numOfTimes; i++)
+        {
+            SpellCard pulledSpellCard = card.spellCard;
+            foreach (GameObject cardObject in HandManager.instance.playerHand)
+            {
+                SpellCard cardInHand = cardObject.GetComponentInChildren<SpellCardDisplay>().spellCard;
+
+                Debug.Log("CardRolled: " + pulledSpellCard.spellName);
+
+
+                if (cardInHand.spellName == pulledSpellCard.spellName)
+                    card = null;
+            }
+
+            if (card != null)
+            {
+                Debug.Log("Roll attempts before giving card: " + i);
+                return card;
+            }
+        }
+        return GetRandomCard();
+    }
+
+    SpellCardDisplay GetRandomCard()
     {
         int randomValue = Random.Range(0, 101);
         SpellCard.rarity rarityPull;
 
-        if (randomValue < 50)
+        Debug.Log("Value Rolled: " + randomValue);
+
+        if (randomValue < 40)
             rarityPull = SpellCard.rarity.common;
-        else if (randomValue < 80)
+        else if (randomValue < 70)
             rarityPull = SpellCard.rarity.rare;
-        else if (randomValue < 90)
+        else if (randomValue < 85)
             rarityPull = SpellCard.rarity.epic;
         else
             rarityPull = SpellCard.rarity.legendary;

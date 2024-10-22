@@ -3,7 +3,17 @@ guid: 8f51aa67d88a48c4cafd0bd1b7ad2cca
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - emptyCard: {fileID: 11400000, guid: 73d7b8a7208476b4ebef215ae7f0ee86, type: 2}
+  - move: {fileID: 11400000, guid: bc6dd5ee94d3990469a0cb37edea0522, type: 2}
+  - blazingCross: {fileID: 11400000, guid: c4900ab4c5ea3ad43a4fcb86c2032e77, type: 2}
+  - thunderSpear: {fileID: 11400000, guid: 205abc218287320419d99475022850b0, type: 2}
+  - laserCannon: {fileID: 11400000, guid: 5c54846fae5ca354094a899a830f71c1, type: 2}
+  - magicMirror: {fileID: 11400000, guid: 4e094445cb4670b40a9a565b2f4e1e5a, type: 2}
+  - orbOfConfusion: {fileID: 11400000, guid: 9411b9be2a17c4b4c9db417bb66595dc, type: 2}
+  - spacialSlice: {fileID: 11400000, guid: 37fca67baf8119a41abc28cc91fe35fa, type: 2}
+  - flashBang: {fileID: 11400000, guid: 884b05248d283dd40847761927de7028, type: 2}
+  - ghostHand: {fileID: 11400000, guid: 7b64325605356db4e83bfee491e44d0e, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

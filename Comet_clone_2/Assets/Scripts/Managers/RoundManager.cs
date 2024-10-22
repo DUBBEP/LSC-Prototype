@@ -101,6 +101,7 @@ public class RoundManager : MonoBehaviour
 
         }
 
+        CheckForCardsAquired();
         GameUI.instance.SetTimerText(true);
         roundTimer = roundPlanningTime;
         state = RoundState.waitForPlayerActions;
@@ -261,6 +262,21 @@ public class RoundManager : MonoBehaviour
         }
     }
 
+    void CheckForCardsAquired()
+    {
+        foreach (PlayerBehavior player in GameManager.instance.players)
+        {
+            if (player == null) continue;
+
+            if (player.photonView.IsMine && player.getsNewCard)
+            {
+                GameUI.instance.SetCardSelectPanel(true);
+                GameUI.instance.GetCardSelectCards();
+                player.getsNewCard = false;
+            }
+        }
+    }
+
     private void CheckForInterruptions(int playerId, int spellDelay)
     {
         foreach (Action action in roundActions)
@@ -285,16 +301,6 @@ public class RoundManager : MonoBehaviour
         return false;
     }
 
-    private void DisplayInterruption(Action action)
-    {
-        Debug.Log("Action Interrupted");
-
-        PlayerBehavior player = GameManager.instance.GetPlayer(action.playerId);
-
-        GameUI.instance.ThrowNotification(player.photonPlayer.NickName + " has been interrupted");
-        // display that the action was interrupted to screen
-        // play any other effects related to an interrupted action
-    }
     public void CheckForUnreadyPlayers()
     {
         readyPlayers = 0;
@@ -332,6 +338,16 @@ public class RoundManager : MonoBehaviour
         GameUI.instance.ThrowNotification("One or more players have failed to act.");
     }
 
+    private void DisplayInterruption(Action action)
+    {
+        Debug.Log("Action Interrupted");
+
+        PlayerBehavior player = GameManager.instance.GetPlayer(action.playerId);
+
+        GameUI.instance.ThrowNotification(player.photonPlayer.NickName + " has been interrupted");
+        // display that the action was interrupted to screen
+        // play any other effects related to an interrupted action
+    }
     public void DisplayAllActionInformation()
     {
         foreach (Action c in roundActions)

@@ -2,6 +2,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameUI : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class GameUI : MonoBehaviour
     public GameObject directionControls;
     public GameObject notifications;
     public GameObject waitingPanel;
+    public GameObject cardSelectPanel;
+
+    public Transform cardSelectContainer;
 
     public TextMeshProUGUI notificationText;
     public TextMeshProUGUI healthText;
@@ -21,10 +25,9 @@ public class GameUI : MonoBehaviour
     public Image winBackGround;
     public TextMeshProUGUI winText;
 
-
-
     private PlayerBehavior player;
     private PlayerController playerController;
+
 
 
     public static GameUI instance;
@@ -96,8 +99,27 @@ public class GameUI : MonoBehaviour
         playerController.photonView.RPC("SetNewDirectionOfCast", Photon.Pun.RpcTarget.All, player.id, dir);
     }
 
+    public void SetCardSelectPanel(bool toggle)
+    {
+        cardSelectPanel.SetActive(toggle);
+    }
 
+    public void GetCardSelectCards()
+    {
+        List<SpellCardDisplay> cards = new List<SpellCardDisplay>();
 
+        for (int i = 0; i < cardSelectContainer.transform.childCount; i++)
+            cards.Add(cardSelectContainer.transform.GetChild(i).GetComponentInChildren<SpellCardDisplay>());
+
+        foreach (SpellCardDisplay card in cards)
+            card.spellCard = RandomCardGenerator.instance.RollForCard(10).spellCard;
+    }
+
+    public void OnNewCardSelected(SpellCardDisplay card)
+    {
+        HandManager.instance.AddCard(card.spellCard.spellName);
+        SetCardSelectPanel(false);
+    }
 
     public void SetTimerText(bool toggle)
     {
