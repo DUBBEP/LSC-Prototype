@@ -20,16 +20,15 @@ public class RandomCardGenerator : MonoBehaviour
 
     public SpellCardDisplay RollForCard(int numOfTimes)
     {
-        SpellCardDisplay card = GetRandomCard();
         for (int i = 0; i < numOfTimes; i++)
         {
+            SpellCardDisplay card = GetRandomCard();
             SpellCard pulledSpellCard = card.spellCard;
+            Debug.Log("CardRolled: " + pulledSpellCard.spellName);
+
             foreach (GameObject cardObject in HandManager.instance.playerHand)
             {
-                SpellCard cardInHand = cardObject.GetComponentInChildren<SpellCardDisplay>().spellCard;
-
-                Debug.Log("CardRolled: " + pulledSpellCard.spellName);
-
+                SpellCard cardInHand = cardObject.GetComponentInChildren<SpellCardDisplay>().spellCard
 
                 if (cardInHand.spellName == pulledSpellCard.spellName)
                     card = null;
