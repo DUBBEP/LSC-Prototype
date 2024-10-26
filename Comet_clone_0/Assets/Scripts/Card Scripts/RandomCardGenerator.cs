@@ -30,8 +30,6 @@ public class RandomCardGenerator : MonoBehaviour
             {
                 SpellCard cardInHand = cardObject.GetComponentInChildren<SpellCardDisplay>().spellCard;
 
-
-
                 if (cardInHand.spellName == pulledSpellCard.spellName)
                     card = null;
             }
