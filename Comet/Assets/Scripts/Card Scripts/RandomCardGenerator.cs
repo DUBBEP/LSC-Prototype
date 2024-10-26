@@ -28,9 +28,7 @@ public class RandomCardGenerator : MonoBehaviour
 
             foreach (GameObject cardObject in HandManager.instance.playerHand)
             {
-                SpellCard cardInHand = cardObject.GetComponentInChildren<SpellCardDisplay>().spellCard;
-
-
+                SpellCard cardInHand = cardObject.GetComponentInChildren<SpellCardDisplay>().spellCard
 
                 if (cardInHand.spellName == pulledSpellCard.spellName)
                     card = null;
