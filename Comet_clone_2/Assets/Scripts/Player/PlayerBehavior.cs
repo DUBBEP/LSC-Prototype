@@ -64,10 +64,15 @@ public class PlayerBehavior : MonoBehaviourPun
         else
         {
             GameUI.instance.Initialize(this);
+<<<<<<< HEAD
             cam.Initialize(this);
             cam.transform.parent = null;
             cam.transform.position = GameManager.instance.camDefaultPos;
 
+=======
+            cam.transform.parent = null;
+            cam.transform.position = GameManager.instance.camDefaultPos;
+>>>>>>> parent of 3c48487 (Removed Clones)
         }
     }
 

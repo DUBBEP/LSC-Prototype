@@ -1,5 +1,3 @@
-using Photon.Realtime;
-using System;
 using UnityEngine;
 
 public class CameraBehavior : MonoBehaviour
@@ -9,35 +7,21 @@ public class CameraBehavior : MonoBehaviour
     public float smoothFactor = 4;
 
     private bool isFollowing;
-    private bool returnToRestPosition;
+    private bool returnToDefaultPos;
     private Transform target;
     public Transform Target { get { return target; } }
-    private Transform myPlayer;
 
-
-    [SerializeField]
-    private int quadrantSize;
-
-
-
-    public Vector3 topDownOffSet;
     private Vector3 targetPosition;
     private float verticalOffSet;
     private float defaultFOV;
     private float targetFOV;
-    
 
     // Start is called before the first frame update
     void Start()
     {
         _camera = GetComponent<Camera>();
-        verticalOffSet = topDownOffSet.y;
+        verticalOffSet = GameManager.instance.camDefaultPos.y;
         defaultFOV = _camera.fieldOfView;
-    }
-
-    public void Initialize(PlayerBehavior localPlayer)
-    {
-        myPlayer = localPlayer.transform;
     }
 
     // Update is called once per frame
@@ -51,23 +35,21 @@ public class CameraBehavior : MonoBehaviour
 
         }
 
-        if (returnToRestPosition)
+        if (returnToDefaultPos)
         {
-
-            transform.position = Vector3.Lerp(transform.position, topDownOffSet + GetPlayerQuadrant(myPlayer), Time.deltaTime * smoothFactor);
+            transform.position = Vector3.Lerp(transform.position, GameManager.instance.camDefaultPos, Time.deltaTime * smoothFactor);
 
             _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, targetFOV, Time.deltaTime * smoothFactor);
 
         }
     }
 
-    
 
     public void StartFollowing(Transform targetTransform)
     {
         Debug.Log("Start Following");
         isFollowing = true;
-        returnToRestPosition = false;
+        returnToDefaultPos = false;
         target = targetTransform;
         targetPosition = new Vector3(target.position.x, verticalOffSet, target.position.z - 1);
         targetFOV = 45;
@@ -77,20 +59,9 @@ public class CameraBehavior : MonoBehaviour
     public void StopFollowing()
     {
         isFollowing = false;
-        returnToRestPosition = true;
+        returnToDefaultPos = true;
         target = null;
         targetPosition = Vector3.zero;
         targetFOV = defaultFOV;
-    }
-
-    public Vector3 GetPlayerQuadrant(Transform target)
-    {
-        Vector3 quadrant = new Vector3();
-
-        quadrant.x = Mathf.RoundToInt(target.position.x / quadrantSize);
-        quadrant.z = 0;
-        quadrant.z = Mathf.RoundToInt(target.position.z / quadrantSize);
-
-        return quadrant * quadrantSize;
     }
 }

@@ -64,10 +64,8 @@ public class PlayerBehavior : MonoBehaviourPun
         else
         {
             GameUI.instance.Initialize(this);
-            cam.Initialize(this);
             cam.transform.parent = null;
             cam.transform.position = GameManager.instance.camDefaultPos;
-
         }
     }
 

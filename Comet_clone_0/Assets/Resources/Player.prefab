@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 5264168986296018594}
   - component: {fileID: 4595630046056805712}
   m_Layer: 0
-  m_Name: Player Camera
+  m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -497,8 +497,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothFactor: 4
-  quadrantSize: 15
-  topDownOffSet: {x: 8, y: 13, z: 4}
 --- !u!1001 &4842195781376808297
 PrefabInstance:
   m_ObjectHideFlags: 0
