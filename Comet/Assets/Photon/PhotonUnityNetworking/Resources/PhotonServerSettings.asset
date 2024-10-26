@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: 
+    AppIdRealtime: 31e14801-8326-43f7-81e4-24aeacf5ad96
     AppIdFusion: 
     AppIdChat: 
     AppIdVoice: 
@@ -36,6 +36,41 @@ MonoBehaviour:
   RpcList:
   - ClickRpc
   - DestroyRpc
+  - ChangeScene
+  - ImInGame
+  - Initialize
+  - SpawnPlayer
+  - UpdateLobbyUI
+  - TakeDamage
+  - WinGame
+  - AddKill
+  - DamageFlash
+  - Die
+  - OnConfirmCast
+  - OnPrepareCast
+  - CancelCast
+  - OnMove
+  - MovePlayer
+  - RecordTargetCords
+  - SetStartLocations
+  - OnPepareDirectionalCast
+  - OnPrepareDirectionalCast
+  - SetDirectionOfCast
+  - SetNewDirectionOfCast
+  - UpdateHealthBar
+  - GainCast
+  - ActivateMirror
+  - BecomeConfused
+  - BecomeStunned
+  - Heal
+  - SetConfused
+  - SetStunned
+  - ToggleMirror
+  - PrepForNewRound
+  - GenerateRandomAction
+  - PlayAttackAnimation
+  - PlayModelAnimation
+  - StartGame
   DisableAutoOpenWizard: 1
-  ShowSettings: 0
-  DevRegionSetOnce: 0
+  ShowSettings: 1
+  DevRegionSetOnce: 1
