@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviourPun
 
         if (playerIsMoving)
         {
-            playerBehavior.cam.StopFollowing();
+            playerBehavior.cam.RestAtPlayerQuadrant();
             playerIsMoving = false;
             gridManager.SetAttackTileColor(travelRange, Color.white);
             return;
@@ -242,7 +242,7 @@ public class PlayerController : MonoBehaviourPun
         GameUI.instance.SetDirectionControls(false);
         GameUI.instance.SetHandUI(false);
 
-        playerBehavior.cam.StopFollowing();
+        playerBehavior.cam.RestAtPlayerQuadrant();
 
         if (myAction.card != null)
             gridManager.SetAttackTileColor(myAction.effectRange, Color.white);

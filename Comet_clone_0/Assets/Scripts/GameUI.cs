@@ -13,6 +13,10 @@ public class GameUI : MonoBehaviour
     public GameObject notifications;
     public GameObject waitingPanel;
     public GameObject cardSelectPanel;
+    public GameObject followCamButton;
+    public GameObject freeCamButton;
+    public GameObject freeCamControls;
+
 
     public Transform cardSelectContainer;
 
@@ -119,6 +123,28 @@ public class GameUI : MonoBehaviour
     {
         HandManager.instance.AddCard(card.spellCard.spellName);
         SetCardSelectPanel(false);
+    }
+
+    public void OnSetFreeCam()
+    {
+        player.cam.SetCamMode(CameraBehavior.cameraMode.freeCam);
+
+        freeCamButton.SetActive(false);
+        followCamButton.SetActive(true);
+        freeCamControls.SetActive(true);
+
+        ThrowNotification("Camera Mode: Free Cam");
+    }
+
+    public void OnSetFollowCam()
+    {
+        player.cam.SetCamMode(CameraBehavior.cameraMode.followCam);
+
+        freeCamButton.SetActive(true);
+        followCamButton.SetActive(false);
+        freeCamControls.SetActive(false);
+
+        ThrowNotification("Camera Mode: Follow Cam");
     }
 
     public void SetTimerText(bool toggle)

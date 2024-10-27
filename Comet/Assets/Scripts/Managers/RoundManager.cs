@@ -64,8 +64,7 @@ public class RoundManager : MonoBehaviour
             GameUI.instance.UpdateTimerText((int)roundTimer);
         }
         else if (roundTimer <= 0 && state == RoundState.waitForPlayerActions)
-            if (PhotonNetwork.IsMasterClient)
-                ForceEndTurn();
+            ForceEndTurn();
     }
 
     #region State Implementations
@@ -202,7 +201,7 @@ public class RoundManager : MonoBehaviour
     {
         foreach (PlayerBehavior player in GameManager.instance.players)
             if (player.photonView.IsMine)
-                player.cam.StopFollowing();
+                player.cam.RestAtPlayerQuadrant();
     }
 
     void MovePlayer(int playerId)
@@ -325,12 +324,14 @@ public class RoundManager : MonoBehaviour
 
     public void ForceEndTurn()
     {
+        Debug.Log("Forcing end turn");
         roundTimer = 0;
         foreach (PlayerBehavior player in GameManager.instance.players)
         {
+            Debug.Log("checking: " + player.photonPlayer.NickName);
+            interruptedPlayers.Add(player.id);
             if (PhotonNetwork.IsMasterClient && player.turnCompleted == false && !player.dead)
             {
-                interruptedPlayers.Add(player.id);
                 player.photonView.RPC("OnPrepareCast", RpcTarget.All, player.id, "EmptyCard");
                 player.photonView.RPC("OnConfirmCast", RpcTarget.All, player.id);
             }
