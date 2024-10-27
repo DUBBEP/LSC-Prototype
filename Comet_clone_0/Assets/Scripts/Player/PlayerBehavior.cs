@@ -64,9 +64,14 @@ public class PlayerBehavior : MonoBehaviourPun
         else
         {
             GameUI.instance.Initialize(this);
+<<<<<<< HEAD
             cam.myPlayer = transform;
             cam.transform.parent = null;
             cam.Invoke("RestAtPlayerQuadrant", 0.1f);
+=======
+            cam.transform.parent = null;
+            cam.transform.position = GameManager.instance.camDefaultPos;
+>>>>>>> 06666ae0623eb485cd3bb362254f535f4aa2747e
         }
     }
 

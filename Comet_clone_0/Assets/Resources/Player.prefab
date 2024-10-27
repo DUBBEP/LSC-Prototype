@@ -198,13 +198,20 @@ MonoBehaviour:
   isConfused: 0
   mirrorActive: 0
   isStunned: 0
+<<<<<<< HEAD
   getsNewCard: 0
+=======
+>>>>>>> 06666ae0623eb485cd3bb362254f535f4aa2747e
   castingCrystals: 0
   curHp: 10
   maxHp: 10
   kills: 0
   dead: 0
+<<<<<<< HEAD
   movementRange: 6
+=======
+  movementRange: 3
+>>>>>>> 06666ae0623eb485cd3bb362254f535f4aa2747e
   mr: {fileID: 1815884624987576313}
   cam: {fileID: 4595630046056805712}
   headerInfo: {fileID: 77368935806423238}
@@ -497,11 +504,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smoothFactor: 4
+<<<<<<< HEAD
   myPlayer: {fileID: 0}
   rotationPivot: {fileID: 0}
   panSpeed: 0.15
   quadrantSize: 9
   camOffSet: {x: 0, y: 13, z: 0}
+=======
+>>>>>>> 06666ae0623eb485cd3bb362254f535f4aa2747e
 --- !u!1001 &4842195781376808297
 PrefabInstance:
   m_ObjectHideFlags: 0
