@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1815884624987576313}
   - component: {fileID: 2329872058325329631}
   - component: {fileID: 7035530224502335218}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 13b61d43dd898ef499d566a64425f94c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -534,6 +534,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeaderInfo
       objectReference: {fileID: 0}
+    - target: {fileID: 2149747019568882880, guid: 7e94611eb2dbf1e4988171b7e3734880, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3163409886600610452, guid: 7e94611eb2dbf1e4988171b7e3734880, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3392848158165767971, guid: 7e94611eb2dbf1e4988171b7e3734880, type: 3}
       propertyPath: m_IgnoreReversedGraphics
       value: 1
@@ -541,6 +549,14 @@ PrefabInstance:
     - target: {fileID: 4286350406807642871, guid: 7e94611eb2dbf1e4988171b7e3734880, type: 3}
       propertyPath: m_SortingLayerID
       value: 92156083
+      objectReference: {fileID: 0}
+    - target: {fileID: 6419070666989824674, guid: 7e94611eb2dbf1e4988171b7e3734880, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6616088195611697421, guid: 7e94611eb2dbf1e4988171b7e3734880, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7977425513685965705, guid: 7e94611eb2dbf1e4988171b7e3734880, type: 3}
       propertyPath: m_Pivot.x

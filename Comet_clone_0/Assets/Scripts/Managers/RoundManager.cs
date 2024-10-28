@@ -31,11 +31,11 @@ public class RoundManager : MonoBehaviour
     public List<Action> roundActions = new List<Action>();
     private List<int> interruptedPlayers = new List<int>();
 
+
     private RoundState state;
     public RoundState State { get { return state; } }
 
 
-    public static RoundManager instance;
 
     private int readyPlayers;
 
@@ -47,7 +47,7 @@ public class RoundManager : MonoBehaviour
     private float roundTimer;
 
 
-
+    public static RoundManager instance;
     private void Awake()
     {
         if (instance == null)
@@ -96,7 +96,7 @@ public class RoundManager : MonoBehaviour
             }
 
             x.PrepForNewRound();
-
+            GameUI.instance.turnOrderUI.gameObject.SetActive(false);
 
         }
 
@@ -110,6 +110,10 @@ public class RoundManager : MonoBehaviour
     {
         GameUI.instance.SetWaitingPanel(false);
         GameUI.instance.SetTimerText(false);
+        GameUI.instance.turnOrderUI.DisplayTurnOrder(roundActions);
+        yield return new WaitForSeconds(waitAmmount * 2);
+        GameUI.instance.turnOrderUI.ReturnToRestPosition();
+
 
         Debug.Log("EXECUTE ACTIONS");
 
@@ -291,7 +295,7 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    private bool CheckIfInterrupted(Action action)
+    public bool CheckIfInterrupted(Action action)
     {
         foreach (int i in interruptedPlayers)
             if (action.playerId == i)

@@ -33,6 +33,7 @@ public class GameUI : MonoBehaviour
     private PlayerController playerController;
 
 
+    public TurnOrderUI turnOrderUI;
 
     public static GameUI instance;
 
