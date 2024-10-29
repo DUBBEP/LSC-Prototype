@@ -180,7 +180,7 @@ public class RoundManager : MonoBehaviour
 
         if (action.card.name != "MoveCard")
         {
-            --player.castingCrystals;
+            --player.curCastingCrystals;
             if (player.photonView.IsMine)
                 GameUI.instance.UpdateCastingCrystalText();
         }

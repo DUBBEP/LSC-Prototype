@@ -199,12 +199,13 @@ MonoBehaviour:
   mirrorActive: 0
   isStunned: 0
   getsNewCard: 0
-  castingCrystals: 0
+  startingCrystalAmmount: 6
+  curCastingCrystals: 0
   curHp: 10
   maxHp: 10
   kills: 0
   dead: 0
-  movementRange: 6
+  movementRange: 4
   mr: {fileID: 1815884624987576313}
   cam: {fileID: 4595630046056805712}
   headerInfo: {fileID: 77368935806423238}

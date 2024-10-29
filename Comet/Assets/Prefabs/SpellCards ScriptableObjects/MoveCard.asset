@@ -16,7 +16,7 @@ MonoBehaviour:
   description: moves player
   numberOfUses: 100
   power: 0
-  castDelay: 0
+  castDelay: 2
   coolDown: 0
   cardRarity: 0
   cardType: 0

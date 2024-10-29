@@ -20,7 +20,8 @@ public class PlayerBehavior : MonoBehaviourPun
 
 
     [Header("Stats")]
-    public int castingCrystals;
+    public int startingCrystalAmmount;
+    public int curCastingCrystals;
     public int curHp;
     public int maxHp;
     public int kills;
@@ -46,7 +47,7 @@ public class PlayerBehavior : MonoBehaviourPun
     {
         id = player.ActorNumber;
         photonPlayer = player;
-        castingCrystals = 3;
+        curCastingCrystals = startingCrystalAmmount;
 
         playerController = GetComponent<PlayerController>();
         playerController.myAction.playerId = id;
@@ -213,7 +214,7 @@ public class PlayerBehavior : MonoBehaviourPun
     [PunRPC]
     void GainCast()
     {
-        ++castingCrystals;
+        ++curCastingCrystals;
         GameUI.instance.UpdateCastingCrystalText();
     }
 

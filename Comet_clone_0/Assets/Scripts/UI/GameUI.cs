@@ -50,7 +50,7 @@ public class GameUI : MonoBehaviour
     }
     public void UpdateCastingCrystalText()
     {
-        castingCrystalText.text = "<b>Crystals: </b>" + player.castingCrystals.ToString();
+        castingCrystalText.text = "<b>Crystals: </b>" + player.curCastingCrystals.ToString();
     }
 
     public void Initialize(PlayerBehavior localPlayer)
@@ -73,7 +73,7 @@ public class GameUI : MonoBehaviour
 
     public void OnCastButton()
     {
-        if (player.castingCrystals <= 0)
+        if (player.curCastingCrystals <= 0)
         {
             ThrowNotification("Unable to cast without casting crystals");
             return;
