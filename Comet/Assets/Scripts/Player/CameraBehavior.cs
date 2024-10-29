@@ -51,6 +51,7 @@ public class CameraBehavior : MonoBehaviour
     {
         if (camMode != cameraMode.followCam)
         {
+
             xPanInput = Input.GetAxis("Horizontal");
             yPanInput = Input.GetAxis("Vertical");
         }
@@ -94,7 +95,25 @@ public class CameraBehavior : MonoBehaviour
 
     void UpdateFreeCam()
     {
-        transform.position = new Vector3(transform.position.x + xPanInput * panSpeed, transform.position.y, transform.position.z + yPanInput * panSpeed);
+        float xPos;
+        float yPos;
+
+        if (transform.position.x + xPanInput * panSpeed > GridManager.instance.GridSize.x)
+            xPos = GridManager.instance.GridSize.x;
+        else if (transform.position.x + xPanInput * panSpeed < 0)
+            xPos = 0;
+        else
+            xPos = transform.position.x + xPanInput * panSpeed;
+
+        if (transform.position.z + yPanInput * panSpeed > GridManager.instance.GridSize.y)
+            yPos = GridManager.instance.GridSize.y;
+        else if (transform.position.z + xPanInput * panSpeed < 0)
+            yPos = 0;
+        else
+            yPos = transform.position.z + yPanInput * panSpeed;
+
+        Vector3 newPos = new Vector3(xPos, transform.position.y, yPos);
+        transform.position = newPos;
     }
 
 
