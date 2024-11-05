@@ -405,6 +405,9 @@ Create player classes which provide unique benefits and abilities.
 
 </details>
 
+
+<details>
+
 <summary>Vertical Slice Week 4</summary>
  
 # Vertical Slice Week 4 Objectives Status:
