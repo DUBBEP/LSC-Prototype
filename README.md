@@ -313,15 +313,10 @@ Players need to wait for a spells cooldown before repeated use to prevent spammi
 ## Game UI: **Implemented**
 
 ### What's been going well
-The players card hand can now dynamically ad and remove cards.
+The players card hand can now dynamically add and remove cards.
 
 ### What needs to be done
 The ui needs to be cleaned up a little bit.
-
-## Movement System: **Implemented**
-
-### What's been going well
-no changes have been made to player movement this week.
 
 ### What needs to be done
 
@@ -345,3 +340,85 @@ Instead of just giving a player a random card a menu should appear that gives th
 
 </details>
 
+
+
+<details>
+
+<summary>Vertical Slice Week 1 & 2</summary>
+ 
+# Vertical Slice Week 1 & 2 Objectives Status:
+
+## Additions:
+
+### UI
+A wait timer now exists which limits the ammount of time players can take during their planning phase. There is also a new UI element which displays the players who have yet to finish their turn.
+
+### Chests
+A card selection screen when a chest is opened which provides the player with a choice of what card to aquire.
+
+### Models
+Models have been implemented for the casting crystals and chests.
+
+### Camera
+The camera now tracks to the general quadrant that the player is located on in the map.
+
+
+## Plans
+Implement a free camera mode that gives player direct control over the camera.
+Implement UI elements to inform the player on the basic funtionality of the game.
+Implement UI to display the turn order.
+Create a new map model.
+Create player piece models.
+Add effects to spells so that they have visuals or animations.
+Add sound effects to the attacks.
+Create player classes which provide unique benefits and abilities.
+
+</details>
+
+
+
+
+<details>
+
+<summary>Vertical Slice Week 3</summary>
+ 
+# Vertical Slice Week 3 Objectives Status:
+
+## Additions:
+
+### UI
+Info screen, and turn order UI element have been implemeneted.
+
+### Models
+The map layout has been expanded and blocked out. Once the mesh is exported the map geometry will be created.
+
+### Camera
+The free camera mode has been implemented.
+
+
+## Plans
+Create a new map model.
+Create player piece models.
+Add effects to spells so that they have visuals or animations.
+Add sound effects to the attacks.
+Create player classes which provide unique benefits and abilities.
+
+</details>
+
+<summary>Vertical Slice Week 4</summary>
+ 
+# Vertical Slice Week 4 Objectives Status:
+
+## Additions:
+
+### Models
+The new map model has been created and imported into the game scene. A simple player piece model has been created as well.
+
+### Visual Effects
+Particle effects and animations for each attack have been created. A script to play these animations during the game has been implemented as well.
+
+## Plans
+Add sound effects to the attacks.
+Create player classes which provide unique benefits and abilities.
+
+</details>
