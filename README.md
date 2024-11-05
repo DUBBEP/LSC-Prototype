@@ -266,10 +266,6 @@ A card gacha system needs to be implemented such that when a chest is opened a r
 </details>
 
 
-
-
-
-
 <details>
 
 <summary>Prototype Week 4</summary>
@@ -364,10 +360,10 @@ The camera now tracks to the general quadrant that the player is located on in t
 
 
 ## Plans
-Implement a free camera mode that gives player direct control over the camera.
-Implement UI elements to inform the player on the basic funtionality of the game.
-Implement UI to display the turn order.
-Create a new map model.
+Implement a free camera mode that gives player direct control over the camera. \n
+Implement UI elements to inform the player on the basic funtionality of the game. \n
+Implement UI to display the turn order. \n
+Create a new map model. \n
 Create player piece models.
 Add effects to spells so that they have visuals or animations.
 Add sound effects to the attacks.
