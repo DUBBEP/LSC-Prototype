@@ -360,13 +360,20 @@ The camera now tracks to the general quadrant that the player is located on in t
 
 
 ## Plans
-Implement a free camera mode that gives player direct control over the camera. \n
-Implement UI elements to inform the player on the basic funtionality of the game. \n
-Implement UI to display the turn order. \n
-Create a new map model. \n
+Implement a free camera mode that gives player direct control over the camera.
+
+Implement UI elements to inform the player on the basic funtionality of the game.
+
+Implement UI to display the turn order.
+
+Create a new map model.
+
 Create player piece models.
+
 Add effects to spells so that they have visuals or animations.
+
 Add sound effects to the attacks.
+
 Create player classes which provide unique benefits and abilities.
 
 </details>
@@ -394,9 +401,13 @@ The free camera mode has been implemented.
 
 ## Plans
 Create a new map model.
+
 Create player piece models.
+
 Add effects to spells so that they have visuals or animations.
+
 Add sound effects to the attacks.
+
 Create player classes which provide unique benefits and abilities.
 
 </details>
@@ -418,6 +429,7 @@ Particle effects and animations for each attack have been created. A script to p
 
 ## Plans
 Add sound effects to the attacks.
+
 Create player classes which provide unique benefits and abilities.
 
 </details>
