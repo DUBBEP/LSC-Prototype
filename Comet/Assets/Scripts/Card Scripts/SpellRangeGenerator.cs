@@ -1,6 +1,7 @@
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -179,26 +180,55 @@ public class SpellRangeGenerator : MonoBehaviour
         return result;
     }
 
-    List<Tile> GenerateCirclepattern()
+    List<Tile> GenerateCirclepattern(Vector2Int playerCords, Vector2Int direction)
     {
-        return new List<Tile>();
+        List<Tile> result = new();
+
+        Vector2Int center = playerCords + (direction * 3);
+
+        foreach (Vector2Int dir in cardinalDirections)
+        {
+            List<Tile> side = GenerateSlicePattern(center, dir);
+
+            foreach (Tile tile in side)
+                result.Add(tile);
+        }
+        return result;
     }
 
-    List<Tile> GenerateStarPattern()
+    List<Tile> GenerateXPattern(Vector2Int playerCords)
     {
-        return new List<Tile>();
-    }
+        List<Tile> result = new();
 
+        for (int i = 0; i < cardinalDirections.Length; i++)
+        {
+            Vector2Int currentDirection = cardinalDirections[i];
+
+            if (i == 0)
+                currentDirection += Vector2Int.up;
+            else if (i == 1)
+                currentDirection += Vector2Int.down;
+            else if (i == 2)
+                currentDirection += Vector2Int.left;
+            else if (i == 3)
+                currentDirection += Vector2Int.right;
+
+            for ( int j = 1; j < 7; ++j)
+            {
+                if (!GridManager.instance.Grid.ContainsKey(playerCords + currentDirection * j))
+                    break;
+
+                Tile diagonalCenter = GridManager.instance.Grid[playerCords + currentDirection * j];
+                result.Add(diagonalCenter);
+
+                result = ExploreNeighbors(diagonalCenter, result);
+            }
+        }
+        return result;
+    }
 
     List<Tile> GenerateTravelRange(Vector2Int playerCords, int range, bool selfInflicting = false)
     {
-        // take the passed range value to build the characters movement range
-        // start with the players current position and check for available spots
-        // in the cardinal directions. For any available spaces found, add them to
-        // the list of the spaces in the players current movement range.
-        // then check the cardinal directions of the newly added spaces and add tiles
-        // next to those ones. Repeat this process for however many times the passed range
-        // value indicates.
 
         List<Tile> exploreRange = new List<Tile>();
         List<Tile> travelRange = new List<Tile>();
@@ -215,8 +245,6 @@ public class SpellRangeGenerator : MonoBehaviour
                 travelRange = ExploreNeighbors(x, travelRange);
             }
 
-
-            // This loop does not lead to the intended effect and must be changed
             foreach (Tile y in travelRange)
             {
                 if (exploreRange.Contains(y))

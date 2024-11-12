@@ -43,7 +43,6 @@ public class SpellCard : ScriptableObject
         stun,
         confusion,
         heal
-
     }
 
 
