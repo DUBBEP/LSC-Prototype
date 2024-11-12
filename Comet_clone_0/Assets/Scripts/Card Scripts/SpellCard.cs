@@ -30,8 +30,8 @@ public class SpellCard : ScriptableObject
         hand,
         slice,
         flashbang,
-        orb
-
+        orb,
+        disk,
     }
 
     public enum actionType

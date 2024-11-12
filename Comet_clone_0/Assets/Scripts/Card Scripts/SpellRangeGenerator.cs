@@ -49,6 +49,8 @@ public class SpellRangeGenerator : MonoBehaviour
                 return GenerateTravelRange(playerCords, 5);
             case SpellCard.rangeType.orb:
                 return GenerateTravelRange(playerCords, 4, true);
+            case SpellCard.rangeType.star:
+                return GenerateXPattern(playerCords);
 
         }
 
@@ -67,6 +69,8 @@ public class SpellRangeGenerator : MonoBehaviour
                 return GenerateHandPattern(playerCords, direction);
             case SpellCard.rangeType.slice:
                 return GenerateSlicePattern(playerCords, direction);
+            case SpellCard.rangeType.disk:
+                return GenerateCirclepattern(playerCords, direction);
         }
 
         return null;
@@ -215,13 +219,12 @@ public class SpellRangeGenerator : MonoBehaviour
 
             for ( int j = 1; j < 7; ++j)
             {
-                if (!GridManager.instance.Grid.ContainsKey(playerCords + currentDirection * j))
-                    break;
+                Vector2Int diagonalCenter = playerCords + currentDirection * j;
 
-                Tile diagonalCenter = GridManager.instance.Grid[playerCords + currentDirection * j];
-                result.Add(diagonalCenter);
+                if (GridManager.instance.Grid.ContainsKey(diagonalCenter))
+                    result.Add(GridManager.instance.Grid[diagonalCenter]);
 
-                result = ExploreNeighbors(diagonalCenter, result);
+                result = ExploreNeighbors(GridManager.instance.Grid[diagonalCenter], result);
             }
         }
         return result;
