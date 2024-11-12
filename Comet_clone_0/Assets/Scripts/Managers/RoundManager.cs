@@ -252,15 +252,15 @@ public class RoundManager : MonoBehaviourPun
             Tile playerTile = GridManager.instance.Grid[effectedPlayer.PlayerCords];
             if (action.effectRange.Contains(playerTile))
             {
-                Debug.Log("Player id: " + effectedPlayer.id + " taking damage");
-
                 if (effectedPlayer.mirrorActive)
                 {
                     GameUI.instance.ThrowNotification(effectedPlayer.photonPlayer.NickName + " reflects " + actingPlayer.photonPlayer.NickName + "'s attack!");
 
+                    // acting player gets hit
                     if (actingPlayer.photonView.IsMine)
                         CallEffectFunctions(action, effectedPlayer, actingPlayer);
                 }
+                // effected player gets hit
                 else if (effectedPlayer.photonView.IsMine)
                     CallEffectFunctions(action, actingPlayer, effectedPlayer);
 
@@ -282,6 +282,8 @@ public class RoundManager : MonoBehaviourPun
                 effectedPlayer.photonView.RPC("BecomeConfused", effectedPlayer.photonPlayer, actingPlayer.id);
                 break;
             case (SpellCard.actionType.stun):
+                if (action.card.power > 0)
+                    effectedPlayer.photonView.RPC("TakeDamage", effectedPlayer.photonPlayer, actingPlayer.id, action.card.power);
                 effectedPlayer.photonView.RPC("BecomeStunned", effectedPlayer.photonPlayer, actingPlayer.id);
                 break;
 
@@ -376,14 +378,5 @@ public class RoundManager : MonoBehaviourPun
         PlayerBehavior player = GameManager.instance.GetPlayer(action.playerId);
 
         GameUI.instance.ThrowNotification(player.photonPlayer.NickName + " has been interrupted");
-    }
-    public void DisplayAllActionInformation()
-    {
-        foreach (Action c in roundActions)
-        {
-            Debug.Log("Round Action Player Id: " + c.playerId);
-            Debug.Log("Round Action Effect Range Size: " + c.effectRange.Count);
-            Debug.Log("Round Action card Name: " + c.card.name);
-        }
     }
 }

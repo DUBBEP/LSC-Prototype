@@ -161,7 +161,6 @@ public class PlayerBehavior : MonoBehaviourPun
 
         // Update HealthBar and text
         headerInfo.photonView.RPC("UpdateHealthBar", RpcTarget.All, curHp);
-        GameUI.instance.UpdateHealthText();
 
 
         // flash the player red
@@ -209,6 +208,7 @@ public class PlayerBehavior : MonoBehaviourPun
 
         // update the health bar
         headerInfo.photonView.RPC("UpdateHealthBar", RpcTarget.All, curHp);
+        GameUI.instance.UpdateHealthText();
     }
 
     [PunRPC]
