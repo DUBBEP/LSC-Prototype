@@ -132,7 +132,7 @@ public class PlayerController : MonoBehaviourPun
     #region Cast Functions
     public void OnCast()
     {
-        // display the Players list of cards to the screen
+        GameUI.instance.ToggleHandUI();
         if (preparingCast)
         {
             CancelCast();
@@ -146,7 +146,6 @@ public class PlayerController : MonoBehaviourPun
         }
 
         preparingCast = true;
-        GameUI.instance.SetHandUI(true);
     }
 
     [PunRPC]
@@ -232,7 +231,6 @@ public class PlayerController : MonoBehaviourPun
     {
         GameUI.instance.SetConfirmCastButton(false);
         GameUI.instance.SetDirectionControls(false);
-        GameUI.instance.SetHandUI(false);
 
         playerBehavior.cam.RestAtPlayerQuadrant();
 
