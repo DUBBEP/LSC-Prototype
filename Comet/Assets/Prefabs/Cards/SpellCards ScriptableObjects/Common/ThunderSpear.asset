@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: ThunderSpear
   description: Hurl Lightning at opponent
-  numberOfUses: 10
+  numberOfUses: 5
   power: 3
   castDelay: 3
   coolDown: 1

@@ -110,8 +110,7 @@ public class PlayerBehavior : MonoBehaviourPun
     {
         curAttackerId = attackerId;
 
-        if (photonView.IsMine)
-            GameUI.instance.ThrowNotification("You have become Confused");
+        GameUI.instance.ThrowNotification("You have become Confused");
         
         photonView.RPC("SetConfused", RpcTarget.All);
     }
@@ -119,6 +118,7 @@ public class PlayerBehavior : MonoBehaviourPun
     [PunRPC]
     void SetConfused()
     {
+        Debug.Log("Setting Confused true");
         isConfused = true;
     }
 
@@ -251,6 +251,7 @@ public class PlayerBehavior : MonoBehaviourPun
     void GenerateRandomAction(int playerId, string randomCardName, int randomDirection)
     {
         SpellCard randomCard = SpellRangeGenerator.instance.CardLibrary[randomCardName];
+        Debug.Log("In Generate Random Action, Card: " + randomCard.spellName);
         if (randomCard.rangeIsDirectional)
             playerController.photonView.RPC("OnPrepareDirectionalCast", RpcTarget.All, playerId, randomCardName, randomDirection);
         else if (!randomCard.rangeIsDirectional)
@@ -265,6 +266,13 @@ public class PlayerBehavior : MonoBehaviourPun
         playerController.myAction.effectRange = null;
         playerController.myAction.direction = Vector2Int.zero;
 
+        CheckIfStunned();
+        DisableMirror();
+        CheckIfConfused();
+    }
+
+    private void CheckIfStunned()
+    {
         if (isStunned)
         {
             turnCompleted = true;
@@ -276,43 +284,35 @@ public class PlayerBehavior : MonoBehaviourPun
             }
             isStunned = false;
         }
+    }
 
+    private void DisableMirror()
+    {
         if (mirrorActive)
         {
             photonView.RPC("ToggleMirror", RpcTarget.All, false);
             mirrorActive = false;
         }
-
-        if (isConfused)
-        {
-            if (isStunned)
-            {
-                if (photonView.IsMine)
-                    GameUI.instance.ThrowNotification("You are stunned and unable to act this round");
-            }
-            else
-            {
-                if (photonView.IsMine)
-                {
-                    GameUI.instance.SetPlayerControls(false);
-                    GameUI.instance.ThrowNotification("You are confused and will act unpredictably this round");
-                    
-                    if (PhotonNetwork.IsMasterClient)
-                    {
-                        string randomcardName = HandManager.instance.GetRandomCard();
-                        int randomDirection = Random.Range(1, 5);
-                        photonView.RPC("GenerateRandomAction", RpcTarget.All, id, randomcardName, randomDirection);
-                        photonView.RPC("OnConfirmCast", RpcTarget.All, id);
-                        Debug.Log(photonPlayer.NickName + " is casting a random spell: " + playerController.myAction.card.spellName); 
-                    }
-                }
-
-
-            }
-
-            isConfused = false;
-        }
-
     }
 
+    private void CheckIfConfused()
+    {
+        if (isConfused)
+        {
+            if (photonView.IsMine)
+            {
+                GameUI.instance.SetPlayerControls(false);
+                GameUI.instance.ThrowNotification("You are confused and will act unpredictably this round");
+            }
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                string randomcardName = HandManager.instance.GetRandomCard();
+                int randomDirection = Random.Range(1, 5);
+                photonView.RPC("GenerateRandomAction", RpcTarget.All, id, randomcardName, randomDirection);
+                playerController.photonView.RPC("OnConfirmCast", RpcTarget.All, id);
+            }
+            isConfused = false;
+        }
+    }
 }

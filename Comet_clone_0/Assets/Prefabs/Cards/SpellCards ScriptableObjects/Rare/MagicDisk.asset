@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: Magic Disk
   description: Summon a magic disk to slice through a wide area.
-  numberOfUses: 10
+  numberOfUses: 4
   power: 5
   castDelay: 3
   coolDown: 2

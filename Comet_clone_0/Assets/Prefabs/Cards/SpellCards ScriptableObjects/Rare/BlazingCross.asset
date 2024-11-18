@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: Blazing Cross
   description: Launches fire in four directions around player
-  numberOfUses: 10
+  numberOfUses: 5
   power: 4
   castDelay: 4
   coolDown: 2

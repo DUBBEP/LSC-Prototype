@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e79e4feb8fb9a44e9923a7e0babcf47, type: 3}
-  m_Name: BlazingCross
+  m_Name: Teleport
   m_EditorClassIdentifier: 
-  spellName: Blazing Cross
-  description: Launches fire in four directions around player
-  numberOfUses: 5
-  power: 4
-  castDelay: 4
-  coolDown: 2
-  cardRarity: 1
+  spellName: Teleport
+  description: Travel to any location on the board.
+  numberOfUses: 1
+  power: 0
+  castDelay: 5
+  coolDown: 0
+  cardRarity: 2
   cardType: 1
   rangeIsDirectional: 0
-  cardRangeType: 3
-  cardActionType: 2
-  visualEffect: {fileID: 8127094018603672293, guid: a25852b9c6330684cacb0b0021a3d303, type: 3}
+  cardRangeType: 11
+  cardActionType: 1
+  visualEffect: {fileID: 0}

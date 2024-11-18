@@ -32,6 +32,7 @@ public class SpellCard : ScriptableObject
         flashbang,
         orb,
         disk,
+        wholeMap
     }
 
     public enum actionType

@@ -50,6 +50,7 @@ public class HandManager : MonoBehaviour
             {
                 GameObject newCard = Instantiate(card, playerHandContainer.transform);
                 playerHand.Add(newCard);
+                CardUseTracker.instance.UpdateCardUseTracker(playerHand);
                 GameUI.instance.ThrowNotification("Card Aquired: " + cardName);
                 return true;
             }
@@ -73,6 +74,17 @@ public class HandManager : MonoBehaviour
         return false;
     }
 
+    public SpellCardDisplay GetCard(string cardName)
+    {
+        foreach (GameObject card in playerHand)
+        {
+            SpellCard spellCard = card.GetComponentInChildren<SpellCardDisplay>().spellCard;
+            if (spellCard.spellName == cardName)
+                return card.GetComponentInChildren<SpellCardDisplay>();
+        }
+        return null;
+    }
+
     public string GetRandomCard()
     {
         int randomValue = Random.Range(0, playerHand.Count);
@@ -80,5 +92,4 @@ public class HandManager : MonoBehaviour
         Debug.Log("Random Card Picked:" + playerHand[randomValue].transform.GetChild(0).name);
         return playerHand[randomValue].transform.GetChild(0).name;
     }
-
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: Cosmic Star
   description: Fires out a beam of light in all four diagonals surrounding the player.
-  numberOfUses: 10
+  numberOfUses: 3
   power: 3
   castDelay: 2
   coolDown: 2

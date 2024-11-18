@@ -75,6 +75,7 @@ public class RoundManager : MonoBehaviourPun
 
     public void SetUpRound()
     {
+        roundActions.Clear();
         foreach (PlayerBehavior x in GameManager.instance.players)
         {
             if (PhotonNetwork.IsMasterClient)
@@ -115,7 +116,6 @@ public class RoundManager : MonoBehaviourPun
 
     IEnumerator ExecuteActions(float waitAmmount)
     {
-
         GameUI.instance.SetWaitingPanel(false);
         GameUI.instance.SetTimerText(false);
         GameUI.instance.turnOrderUI.DisplayTurnOrder(roundActions);
@@ -150,8 +150,8 @@ public class RoundManager : MonoBehaviourPun
                 GameUI.instance.ThrowNotification(playerName + " casts " + action.card.spellName);
 
             // show effect range if one exists
-            if (action.card.cardRangeType != SpellCard.rangeType.none)
-                GridManager.instance.SetAttackTileColor(action.effectRange, Color.red);
+            if (action.card.cardRangeType != SpellCard.rangeType.none && action.card.cardActionType != SpellCard.actionType.move)
+                GridManager.instance.SetTileColor(action.effectRange, Color.red);
 
             if (action.card.visualEffect != null)
             {
@@ -198,7 +198,7 @@ public class RoundManager : MonoBehaviourPun
         else
         {
             EffectPlayersInRange(action);
-            GridManager.instance.SetAttackTileColor(action.effectRange, Color.white);
+            GridManager.instance.SetTileColor(action.effectRange, Color.white);
         }
 
 
@@ -331,6 +331,8 @@ public class RoundManager : MonoBehaviourPun
 
     public void CheckForUnreadyPlayers()
     {
+        if (state != RoundState.waitForPlayerActions) return;
+
         readyPlayers = 0;
         GameUI.instance.UpdateUnreadyPlayerList();
         foreach (PlayerBehavior x in GameManager.instance.players)
@@ -341,14 +343,14 @@ public class RoundManager : MonoBehaviourPun
             }
         }
 
-        if (readyPlayers < GameManager.instance.players.Length)
+        if (readyPlayers >= GameManager.instance.players.Length)
         {
-            return;
+            state = RoundState.executePlayerActions;
+            StartCoroutine(ExecuteActions(roundPaceTime));
         }
 
 
-        state = RoundState.executePlayerActions;
-        StartCoroutine(ExecuteActions(roundPaceTime));
+
     }
 
     [PunRPC]

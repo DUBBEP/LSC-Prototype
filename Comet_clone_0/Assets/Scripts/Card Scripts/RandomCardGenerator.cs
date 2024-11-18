@@ -74,5 +74,4 @@ public class RandomCardGenerator : MonoBehaviour
 
         return cards;
     }
-
 }

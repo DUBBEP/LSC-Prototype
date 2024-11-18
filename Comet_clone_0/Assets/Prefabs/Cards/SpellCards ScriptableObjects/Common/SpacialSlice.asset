@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: Spacial Slice
   description: Cut through the space in front of you
-  numberOfUses: 10
+  numberOfUses: 6
   power: 4
   castDelay: 2
   coolDown: 1

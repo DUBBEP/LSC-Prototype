@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: Heal
   description: Heals Caster for 3 health points
-  numberOfUses: 10
+  numberOfUses: 3
   power: 3
   castDelay: 6
   coolDown: 2

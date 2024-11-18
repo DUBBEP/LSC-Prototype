@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: FlashBang
   description: Unleash blinding explosion to disorient opponents
-  numberOfUses: 10
+  numberOfUses: 5
   power: 0
   castDelay: 2
   coolDown: 2

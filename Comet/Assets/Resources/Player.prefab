@@ -110,7 +110,7 @@ MonoBehaviour:
   kills: 0
   dead: 0
   movementRange: 4
-  mr: {fileID: 0}
+  mr: {fileID: 9142308045848705400}
   cam: {fileID: 4595630046056805712}
   headerInfo: {fileID: 77368935806423238}
   mirrorVisual: {fileID: 7109291869248604859}
@@ -563,6 +563,11 @@ PrefabInstance:
 --- !u!4 &377796936629886691 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 55677424e56fa474cbdc832904526547, type: 3}
+  m_PrefabInstance: {fileID: 194935932249667848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &9142308045848705400 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -264430861247414160, guid: 55677424e56fa474cbdc832904526547, type: 3}
   m_PrefabInstance: {fileID: 194935932249667848}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4842195781376808297

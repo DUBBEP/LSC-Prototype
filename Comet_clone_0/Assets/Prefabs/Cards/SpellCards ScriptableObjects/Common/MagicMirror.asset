@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spellName: Magic Mirror
   description: Reflect opponents attacks back at them
-  numberOfUses: 5
+  numberOfUses: 4
   power: 0
   castDelay: 2
   coolDown: 1

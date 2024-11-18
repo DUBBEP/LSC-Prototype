@@ -1,9 +1,6 @@
-using Photon.Realtime;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-
+using System.Linq;
 
 
 public class SpellRangeGenerator : MonoBehaviour
@@ -15,7 +12,7 @@ public class SpellRangeGenerator : MonoBehaviour
 
 
     public SpellCard emptyCard, move, blazingCross, thunderSpear, laserCannon, magicMirror, orbOfConfusion,
-        spacialSlice, flashBang, ghostHand;
+        spacialSlice, flashBang, ghostHand, cosmicStar, magicDisk, heal, fullHeal, teleport;
 
 
     public static SpellRangeGenerator instance;
@@ -35,6 +32,11 @@ public class SpellRangeGenerator : MonoBehaviour
         cardLibrary.Add("SpacialSlice", spacialSlice);
         cardLibrary.Add("FlashBang", flashBang);
         cardLibrary.Add("GhostHand", ghostHand);
+        cardLibrary.Add("CosmicStar", cosmicStar);
+        cardLibrary.Add("MagicDisk", magicDisk);
+        cardLibrary.Add("Heal", heal);
+        cardLibrary.Add("FullHeal", fullHeal);
+        cardLibrary.Add("Teleport", teleport);
     }
 
     public List<Tile> GenerateEffectRange(SpellCard.rangeType rangeType, Vector2Int playerCords)
@@ -51,6 +53,8 @@ public class SpellRangeGenerator : MonoBehaviour
                 return GenerateTravelRange(playerCords, 4, true);
             case SpellCard.rangeType.star:
                 return GenerateXPattern(playerCords);
+            case SpellCard.rangeType.wholeMap:
+                return WholeMapRange();
 
         }
 
@@ -222,9 +226,11 @@ public class SpellRangeGenerator : MonoBehaviour
                 Vector2Int diagonalCenter = playerCords + currentDirection * j;
 
                 if (GridManager.instance.Grid.ContainsKey(diagonalCenter))
+                {
                     result.Add(GridManager.instance.Grid[diagonalCenter]);
+                    result = ExploreNeighbors(GridManager.instance.Grid[diagonalCenter], result);
+                }
 
-                result = ExploreNeighbors(GridManager.instance.Grid[diagonalCenter], result);
             }
         }
         return result;
@@ -278,6 +284,11 @@ public class SpellRangeGenerator : MonoBehaviour
         }
 
         return travelRange;
+    }
+
+    List<Tile> WholeMapRange()
+    {
+        return GridManager.instance.Grid.Values.ToList();
     }
 
     #endregion

@@ -124,7 +124,6 @@ public class CameraBehavior : MonoBehaviour
         if ((transform.position - targetPosition).magnitude > 0.05f)
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * smoothFactor);
 
-
         if (isFollowing)
             _camera.fieldOfView = Mathf.Lerp(_camera.fieldOfView, targetFOV, Time.deltaTime * smoothFactor);
         else
@@ -146,19 +145,12 @@ public class CameraBehavior : MonoBehaviour
         target = null;
 
         Vector3 playerQuadrant = GetPlayerQuadrant(myPlayer);
-        Debug.Log("player Quadrant" + playerQuadrant);
-
-
         targetPosition = new Vector3(playerQuadrant.x, camOffSet.y, playerQuadrant.z); ;
-
-        Debug.Log("Target Position" + targetPosition);
         targetFOV = defaultFOV;
     }
 
     public Vector3 GetPlayerQuadrant(Transform target)
     {
-
-
         Vector3 quadrant = new Vector3();
         quadrant.z = 0;
 
@@ -167,13 +159,10 @@ public class CameraBehavior : MonoBehaviour
         else
             quadrant.x = (Mathf.Min((int)(target.position.x / quadrantSize), (GridManager.instance.GridSize.x / quadrantSize) - 1) * quadrantSize) + (quadrantSize / 2);
 
-
         if (target.position.z / quadrantSize <= 1)
             quadrant.z = 4;
         else
             quadrant.z = (Mathf.Min((int)(target.position.z / quadrantSize), (GridManager.instance.GridSize.y / quadrantSize) - 0.75f) * quadrantSize) + (quadrantSize / 3);
-
-
         return quadrant;
     }
 

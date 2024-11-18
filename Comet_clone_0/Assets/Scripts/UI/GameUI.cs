@@ -181,9 +181,9 @@ public class GameUI : MonoBehaviourPun
         }
     }
 
-    public void ToggleHandUI()
+    public void SetHandUI(bool toggle)
     {
-        spellHandUI.SetActive(!spellHandUI.activeSelf);
+        spellHandUI.SetActive(toggle);
     }
 
     public void SetConfirmCastButton(bool toggle)

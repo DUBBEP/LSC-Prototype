@@ -11084,7 +11084,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1289970791}
-  m_Father: {fileID: 504157237}
+  m_Father: {fileID: 1652557990}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -13525,7 +13525,6 @@ RectTransform:
   m_Children:
   - {fileID: 1378824602}
   - {fileID: 1652557990}
-  - {fileID: 425455544}
   - {fileID: 122070077}
   - {fileID: 2032033864}
   m_Father: {fileID: 808096685}
@@ -43849,6 +43848,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 425455544}
   - {fileID: 162848807}
   - {fileID: 277069066}
   m_Father: {fileID: 504157237}
@@ -50567,6 +50567,7 @@ GameObject:
   - component: {fileID: 1885531154}
   - component: {fileID: 1885531156}
   - component: {fileID: 1885531155}
+  - component: {fileID: 1885531157}
   m_Layer: 0
   m_Name: _GameManager
   m_TagString: Untagged
@@ -50596,6 +50597,11 @@ MonoBehaviour:
   spacialSlice: {fileID: 11400000, guid: 37fca67baf8119a41abc28cc91fe35fa, type: 2}
   flashBang: {fileID: 11400000, guid: 884b05248d283dd40847761927de7028, type: 2}
   ghostHand: {fileID: 11400000, guid: 7b64325605356db4e83bfee491e44d0e, type: 2}
+  cosmicStar: {fileID: 11400000, guid: c8b1c852df0602346bc7f1ebdb784807, type: 2}
+  magicDisk: {fileID: 11400000, guid: 6b8505e9e2442764495d18e537553d5d, type: 2}
+  heal: {fileID: 11400000, guid: ee9058d32bdb39e4eba6bdcc42be7779, type: 2}
+  fullHeal: {fileID: 11400000, guid: 45ffe224dd71b8c4095ad949964b0b5a, type: 2}
+  teleport: {fileID: 11400000, guid: 8244793931d824942b6afe890176bd48, type: 2}
 --- !u!114 &1885531150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50736,6 +50742,18 @@ MonoBehaviour:
   cardDeck: {fileID: 1537096268}
   playerHand: []
   cardPool: []
+--- !u!114 &1885531157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885531147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1ace78c3d34d794d8b0023a74e42a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1888571259
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58171,6 +58189,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 808096685}
     m_Modifications:
+    - target: {fileID: 232080660247439026, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1885531150}
+    - target: {fileID: 232080660247439026, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnCardSelected
+      objectReference: {fileID: 0}
+    - target: {fileID: 232080660247439026, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Teleport
+      objectReference: {fileID: 0}
+    - target: {fileID: 1445588908463885773, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_Name
+      value: Heal Button
+      objectReference: {fileID: 0}
     - target: {fileID: 1525392208910190049, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
       propertyPath: m_Name
       value: CardDeck
@@ -58191,18 +58225,82 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1885531150}
+    - target: {fileID: 4278421668403092847, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1885531150}
+    - target: {fileID: 4278421668403092847, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnDirectionalCardSelected
+      objectReference: {fileID: 0}
+    - target: {fileID: 4278421668403092847, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: MagicDisk
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048231290397632352, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1885531150}
+    - target: {fileID: 5048231290397632352, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnCardSelected
+      objectReference: {fileID: 0}
+    - target: {fileID: 5048231290397632352, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: FullHeal
+      objectReference: {fileID: 0}
     - target: {fileID: 5438232068569692990, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1885531150}
+    - target: {fileID: 5826747725420416999, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1885531150}
+    - target: {fileID: 5826747725420416999, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnCardSelected
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826747725420416999, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Heal
+      objectReference: {fileID: 0}
     - target: {fileID: 6583381554738887650, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1885531150}
+    - target: {fileID: 7182919962877684762, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_Name
+      value: FullHeal
+      objectReference: {fileID: 0}
+    - target: {fileID: 7539855898853663989, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1885531150}
+    - target: {fileID: 7539855898853663989, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnCardSelected
+      objectReference: {fileID: 0}
     - target: {fileID: 7668119777902886060, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1885531150}
+    - target: {fileID: 8316423116000752843, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_Name
+      value: Full Heal Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 8957229252175773704, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1885531150}
+    - target: {fileID: 8957229252175773704, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnCardSelected
+      objectReference: {fileID: 0}
+    - target: {fileID: 8957229252175773704, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: CosmicStar
+      objectReference: {fileID: 0}
     - target: {fileID: 9088982535372351248, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -58284,7 +58382,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5697312844579750611, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0eac7fde2442b554b9d50c2d7c7dc92d, type: 3}
