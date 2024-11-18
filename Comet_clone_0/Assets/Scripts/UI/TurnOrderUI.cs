@@ -23,6 +23,7 @@ public class TurnOrderUI : MonoBehaviour
         DisplayPanelInCenter();
 
         int skippedPlayers = 0;
+        int currentPlayerIndex = 0;
 
         for (int i = 0; i < RoundManager.instance.roundActions.Count; i++)
         {
@@ -36,11 +37,13 @@ public class TurnOrderUI : MonoBehaviour
 
             string actionName = (playerAction.card.cardActionType == SpellCard.actionType.move) ? "Move" : "Cast Spell";
 
-            playerList[i - skippedPlayers].SetActive(true);
-            playerList[i - skippedPlayers].transform.Find("PlayerNameText").GetComponent<TextMeshProUGUI>().text
+            currentPlayerIndex = i - skippedPlayers;
+
+            playerList[currentPlayerIndex].SetActive(true);
+            playerList[currentPlayerIndex].transform.Find("PlayerNameText").GetComponent<TextMeshProUGUI>().text
                 = GameManager.instance.GetPlayer(playerAction.playerId).photonPlayer.NickName;
-            playerList[i - skippedPlayers].transform.Find("ActionNameText").GetComponent<TextMeshProUGUI>().text = actionName;
-            playerList[i - skippedPlayers].transform.Find("SpeedText").GetComponent<TextMeshProUGUI>().text = playerAction.card.castDelay.ToString();
+            playerList[currentPlayerIndex].transform.Find("ActionNameText").GetComponent<TextMeshProUGUI>().text = actionName;
+            playerList[currentPlayerIndex].transform.Find("SpeedText").GetComponent<TextMeshProUGUI>().text = playerAction.card.castDelay.ToString();
         }
     }
 
@@ -54,8 +57,8 @@ public class TurnOrderUI : MonoBehaviour
     {
         if (returnToRest)
         {
-            Vector3 newPos = Vector2.Lerp(rectTransform.anchoredPosition, restingPosition, lerpSmoothFactor);
-            Vector3 newScale = Vector3.Lerp(rectTransform.localScale, Vector3.one * 0.5f, lerpSmoothFactor);
+            Vector3 newPos = Vector3.Lerp(rectTransform.anchoredPosition, restingPosition, Time.deltaTime * lerpSmoothFactor);
+            Vector3 newScale = Vector3.Lerp(rectTransform.localScale, Vector3.one * 0.5f, Time.deltaTime * lerpSmoothFactor);
             
             rectTransform.anchoredPosition = newPos;
             rectTransform.localScale = newScale;
