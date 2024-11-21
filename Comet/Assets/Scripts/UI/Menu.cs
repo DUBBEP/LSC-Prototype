@@ -99,6 +99,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         SetScreen(lobbyBrowserScreen);
     }
 
+    public void OnExitInfoScreen()
+    {
+        SetScreen(titleScreen);
+    }
+
         // CREATE ROOM SCREEN
     public void OnCreateButton (TMP_InputField roomNameInput)
     {

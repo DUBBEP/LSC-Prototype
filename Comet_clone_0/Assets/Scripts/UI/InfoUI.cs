@@ -21,6 +21,8 @@ public class InfoUI : MonoBehaviour
     [SerializeField]
     private GameObject generalInfoScreen;
 
+    bool generalScreen = true;
+
     public void OnSetElementDescription(GameObject description)
     {
         useCountDescription.SetActive(false);
@@ -49,6 +51,20 @@ public class InfoUI : MonoBehaviour
         {
             cardInfoScreen.SetActive(true);
             generalInfoScreen.SetActive(false);
+        }
+    }
+
+    public void SetSwitchButtonText(TextMeshProUGUI buttonText)
+    {
+        if (generalScreen)
+        {
+            buttonText.text = "General";
+            generalScreen = false;
+        }
+        else
+        {
+            buttonText.text = "Card Info";
+            generalScreen = true;
         }
     }
 }

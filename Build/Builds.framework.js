@@ -2078,13 +2078,13 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  4772432: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
- 4772493: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
- 4772557: function() {return Module.webglContextAttributes.powerPreference;},  
- 4772615: function() {Module['emscripten_get_now_backup'] = performance.now;},  
- 4772670: function($0) {performance.now = function() { return $0; };},  
- 4772718: function($0) {performance.now = function() { return $0; };},  
- 4772766: function() {performance.now = Module['emscripten_get_now_backup'];}
+  4772448: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
+ 4772509: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
+ 4772573: function() {return Module.webglContextAttributes.powerPreference;},  
+ 4772631: function() {Module['emscripten_get_now_backup'] = performance.now;},  
+ 4772686: function($0) {performance.now = function() { return $0; };},  
+ 4772734: function($0) {performance.now = function() { return $0; };},  
+ 4772782: function() {performance.now = Module['emscripten_get_now_backup'];}
 };
 
 
