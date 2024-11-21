@@ -676,15 +676,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: General Info
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 280efbfeebaf57f42975de059419197f, type: 2}
+  m_sharedMaterial: {fileID: 6431941746880886749, guid: 280efbfeebaf57f42975de059419197f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4289769648
+  m_fontColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2730,8 +2730,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 305.5112, y: -53.575}
-  m_SizeDelta: {x: 540, y: 585.75}
+  m_AnchoredPosition: {x: 183.2797, y: -21.913}
+  m_SizeDelta: {x: 290.5593, y: 312.82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &723361504
 MonoBehaviour:
@@ -2765,15 +2765,15 @@ MonoBehaviour:
     crystals are the resource required to cast spells. Every spell costs one to use.
     Casting crystals can be found littered about the board. '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 280efbfeebaf57f42975de059419197f, type: 2}
+  m_sharedMaterial: {fileID: 6431941746880886749, guid: 280efbfeebaf57f42975de059419197f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4289769648
+  m_fontColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2790,8 +2790,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3317,8 +3317,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1350.2, y: 821.4}
+  m_AnchoredPosition: {x: 0.000030518, y: 0.0030961}
+  m_SizeDelta: {x: 799.5, y: 450.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &896610771
 GameObject:
@@ -4167,10 +4167,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2129624961}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 199.08376, y: -0.0013885}
-  m_SizeDelta: {x: 398.426, y: 450.23}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 199.08376, y: -0.0013885498}
+  m_SizeDelta: {x: 398.426, y: 0.23001099}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1113854372
 MonoBehaviour:
@@ -6243,8 +6243,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -308.40475, y: -53.575}
-  m_SizeDelta: {x: 540, y: 585.75}
+  m_AnchoredPosition: {x: -198.7897, y: -21.9105}
+  m_SizeDelta: {x: 343.1321, y: 312.8195}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1917914490
 MonoBehaviour:
@@ -6286,15 +6286,15 @@ MonoBehaviour:
     on the action they take and second by how quickly they completed their set-up
     phase in real time.'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 280efbfeebaf57f42975de059419197f, type: 2}
+  m_sharedMaterial: {fileID: 6431941746880886749, guid: 280efbfeebaf57f42975de059419197f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4289769648
+  m_fontColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6311,8 +6311,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6395,8 +6395,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.000030517578, y: -0.00010681152}
+  m_SizeDelta: {x: -0.000061035, y: 0.0002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1919637515
 MonoBehaviour:
@@ -6411,7 +6411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.5882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6805,7 +6805,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LCS
+  m_text: LSC
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 19e9e71e55984684b97830e938df2be8, type: 2}
   m_sharedMaterial: {fileID: -7110444656208061112, guid: 19e9e71e55984684b97830e938df2be8, type: 2}
