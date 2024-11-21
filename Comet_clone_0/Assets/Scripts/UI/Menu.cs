@@ -8,6 +8,8 @@ using Photon.Realtime;
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
     [Header("Screens")]
+    public GameObject infoScreen;
+    public GameObject titleScreen;
     public GameObject mainScreen;
     public GameObject createRoomScreen;
     public GameObject lobbyScreen;
@@ -54,6 +56,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     void SetScreen (GameObject screen)
     {
         // diable all other screns
+        infoScreen.SetActive(false);
+        titleScreen.SetActive(false);
         mainScreen.SetActive(false);
         createRoomScreen.SetActive(false);
         lobbyScreen.SetActive(false);
@@ -67,7 +71,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
 
     // called when the back button is pressed
-    public void OnBackButton ()
+    public void OnBackButton()
     {
         SetScreen(mainScreen);
     }
@@ -96,14 +100,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
 
         // CREATE ROOM SCREEN
-
     public void OnCreateButton (TMP_InputField roomNameInput)
     {
         NetworkManager.instance.CreateRoom(roomNameInput.text);
     }
 
         // LOBBY SCREEN
-
     public override void OnJoinedRoom ()
     {
         SetScreen(lobbyScreen);
@@ -129,6 +131,21 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         // set the room info text
         roomInfoText.text = "<b>Room Name</b>\n" + PhotonNetwork.CurrentRoom.Name;
+    }
+
+    public void OnPlayButton()
+    {
+        SetScreen(mainScreen);
+    }
+
+    public void OnQuitButton()
+    {
+        Application.Quit();
+    }
+
+    public void OnInfoScreen()
+    {
+        SetScreen(infoScreen);
     }
 
     public void OnStartGameButton()
