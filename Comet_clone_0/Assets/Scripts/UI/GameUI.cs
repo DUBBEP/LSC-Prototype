@@ -126,8 +126,20 @@ public class GameUI : MonoBehaviourPun
 
     public void OnNewCardSelected(SpellCardDisplay card)
     {
-        HandManager.instance.AddCard(card.spellCard.spellName);
-        SetCardSelectPanel(false);
+        if (HandManager.instance.AddCard(card.spellCard.spellName) > 1)
+        {
+            HandManager.instance.ForceCardRemoval(card.spellCard.spellName);
+        }
+        else
+        {
+            SetCardSelectPanel(false);
+        }
+
+    }
+
+    public void OnRemoveCard(SpellCardDisplay card)
+    {
+        HandManager.instance.RemoveCard(card.spellCard.spellName);
     }
 
     public void OnSetFreeCam()

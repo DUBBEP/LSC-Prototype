@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HandManager : MonoBehaviour
@@ -8,6 +9,11 @@ public class HandManager : MonoBehaviour
 
     public GameObject playerHandContainer;
     public GameObject cardDeck;
+    public GameObject cardRemovalList;
+
+    public GameObject cardRemovalscreenContainer;
+    public List<GameObject> removeCardPool;
+
 
     public List<GameObject> playerHand;
     public List<GameObject> cardPool;
@@ -24,10 +30,16 @@ public class HandManager : MonoBehaviour
 
         for (int i = 0; i < playerHandContainer.transform.childCount; i++)
             playerHand.Add(playerHandContainer.transform.GetChild(i).gameObject);
+
+        for (int i = 0; i < cardRemovalList.transform.childCount; i++)
+            removeCardPool.Add(cardRemovalList.transform.GetChild(i).gameObject);
     }
 
-    public bool AddCard(string cardName)
+    public int AddCard(string cardName)
     {
+        // if cards in hand meets or exceeds limit
+        if (playerHand.Count >= cardLimit) return 2;
+
 
         // check if card is already in our hand
         foreach (GameObject card in playerHand)
@@ -37,12 +49,12 @@ public class HandManager : MonoBehaviour
                 if (card.gameObject.activeSelf == false)
                 {
                     card.gameObject.SetActive(true);
-                    return true;
+                    return 1;
                 }
                 else if (card.gameObject.activeSelf == true)
                 {
                     GameUI.instance.ThrowNotification(cardName + " is alread held");
-                    return false;
+                    return 0;
                 }
             }
         }
@@ -56,12 +68,12 @@ public class HandManager : MonoBehaviour
                 playerHand.Add(newCard);
                 CardUseTracker.instance.UpdateCardUseTracker(playerHand);
                 GameUI.instance.ThrowNotification("Card Aquired: " + cardName);
-                return true;
+                return 1;
             }
         }
 
         Debug.Log("Card does not exist");
-        return false;
+        return 0;
     }
 
     public bool RemoveCard(string cardName)
@@ -98,5 +110,8 @@ public class HandManager : MonoBehaviour
     }
 
 
+    public void ForceCardRemoval(string newCard)
+    {
 
+    } 
 }
