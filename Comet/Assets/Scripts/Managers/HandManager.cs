@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class HandManager : MonoBehaviour
 {
+    [SerializeField]
+    private int cardLimit;
+
     public GameObject playerHandContainer;
     public GameObject cardDeck;
 
@@ -25,6 +28,7 @@ public class HandManager : MonoBehaviour
 
     public bool AddCard(string cardName)
     {
+
         // check if card is already in our hand
         foreach (GameObject card in playerHand)
         {
@@ -92,4 +96,7 @@ public class HandManager : MonoBehaviour
         Debug.Log("Random Card Picked:" + playerHand[randomValue].transform.GetChild(0).name);
         return playerHand[randomValue].transform.GetChild(0).name;
     }
+
+
+
 }
