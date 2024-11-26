@@ -116,6 +116,7 @@ public class RoundManager : MonoBehaviourPun
 
     IEnumerator ExecuteActions(float waitAmmount)
     {
+        GameUI.instance.OnSetFollowCam();
         GameUI.instance.SetWaitingPanel(false);
         GameUI.instance.SetTimerText(false);
         GameUI.instance.turnOrderUI.DisplayTurnOrder(roundActions);
@@ -299,7 +300,7 @@ public class RoundManager : MonoBehaviourPun
             if (player.photonView.IsMine && player.getsNewCard)
             {
                 GameUI.instance.SetCardSelectPanel(true);
-                GameUI.instance.GetCardSelectCards();
+                GameUI.instance.GetCardSelectableCards();
                 player.getsNewCard = false;
             }
         }

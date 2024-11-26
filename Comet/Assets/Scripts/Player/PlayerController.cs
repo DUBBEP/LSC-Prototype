@@ -166,6 +166,10 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void OnPrepareCast(int id, string cardName)
     {
+        if (photonView.IsMine)
+            gridManager.SetTileColor(myAction.effectRange, Color.white);
+
+
         SpellCard card = SpellRangeGenerator.instance.CardLibrary[cardName];
         PlayerController player = GameManager.instance.GetPlayer(id).GetComponent<PlayerController>();
 
@@ -175,8 +179,6 @@ public class PlayerController : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
-            gridManager.SetTileColor(myAction.effectRange, Color.white);
-
             if (card.spellName != "Teleport")
                 gridManager.SetTileColor(myAction.effectRange, Color.red);
             else

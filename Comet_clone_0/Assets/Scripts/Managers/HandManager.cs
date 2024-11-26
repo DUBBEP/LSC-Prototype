@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class HandManager : MonoBehaviour
 {
+    [Header("Card Deck")]
+    public GameObject cardDeck;
+    public List<GameObject> cardPool;
+
+    [Header("Card Removal")]
+    public GameObject cardRemovalDeck;
+    public List<GameObject> removeCardPool;
+    public GameObject cardRemoveButtonsContainer;
+    public GameObject newCardContainer;
+
+    [Header("Player Hand")]
+    public GameObject playerHandContainer;
+    public List<GameObject> playerHand;
+    
     [SerializeField]
     private int cardLimit;
 
-    public GameObject playerHandContainer;
-    public GameObject cardDeck;
-    public GameObject cardRemovalList;
-
-    public GameObject cardRemovalscreenContainer;
-    public List<GameObject> removeCardPool;
-
-
-    public List<GameObject> playerHand;
-    public List<GameObject> cardPool;
-
+    private string lastCardSelected;
 
     public static HandManager instance;
 
@@ -31,12 +35,14 @@ public class HandManager : MonoBehaviour
         for (int i = 0; i < playerHandContainer.transform.childCount; i++)
             playerHand.Add(playerHandContainer.transform.GetChild(i).gameObject);
 
-        for (int i = 0; i < cardRemovalList.transform.childCount; i++)
-            removeCardPool.Add(cardRemovalList.transform.GetChild(i).gameObject);
+        for (int i = 0; i < cardRemovalDeck.transform.childCount; i++)
+            removeCardPool.Add(cardRemovalDeck.transform.GetChild(i).gameObject);
     }
 
     public int AddCard(string cardName)
     {
+        lastCardSelected = cardName;
+
         // if cards in hand meets or exceeds limit
         if (playerHand.Count >= cardLimit) return 2;
 
@@ -82,12 +88,19 @@ public class HandManager : MonoBehaviour
         {
             if (card.GetComponentInChildren<SpellCardDisplay>().spellCard.spellName == cardName)
             {
-                card.gameObject.SetActive(false);
+                playerHand.Remove(card);
+                Destroy(card);
+                CardUseTracker.instance.UpdateCardUseTracker(playerHand);
                 return true;
             }
         }
-
         return false;
+    }
+
+    public void SwapWithLastcardSelected(string oldCard)
+    {
+        RemoveCard(oldCard);
+        AddCard(lastCardSelected);
     }
 
     public SpellCardDisplay GetCard(string cardName)
@@ -104,14 +117,44 @@ public class HandManager : MonoBehaviour
     public string GetRandomCard()
     {
         int randomValue = Random.Range(0, playerHand.Count);
-        Debug.Log("random int is: " + randomValue);
-        Debug.Log("Random Card Picked:" + playerHand[randomValue].transform.GetChild(0).name);
         return playerHand[randomValue].transform.GetChild(0).name;
     }
 
-
-    public void ForceCardRemoval(string newCard)
+    public void UpdateCardRemovePanel(string newCard)
     {
+        lastCardSelected = newCard;
+        ClearRemovalButtons();
+        //prepare card removal panel
+        foreach (GameObject card in playerHand)
+        {
+            SpellCard cardInHand = card.GetComponentInChildren<SpellCardDisplay>().spellCard;
+            foreach (GameObject cardRemoveButton in removeCardPool)
+            {
+                SpellCard removeButtonCounterpart = cardRemoveButton.GetComponentInChildren<SpellCardDisplay>().spellCard;
 
-    } 
+                if (cardInHand.spellName == removeButtonCounterpart.spellName)
+                {
+                    Instantiate(cardRemoveButton, cardRemoveButtonsContainer.transform);
+                }
+            }
+        }
+
+        foreach (GameObject cardRemoveButton in removeCardPool)
+        {
+            if (cardRemoveButton.GetComponentInChildren<SpellCardDisplay>().spellCard.spellName == newCard)
+            {
+                Instantiate(cardRemoveButton, newCardContainer.transform);
+            }
+        }
+    }
+
+    private void ClearRemovalButtons()
+    {
+        for (int i = 0; i < cardRemoveButtonsContainer.transform.childCount; i++)
+        {
+            Destroy(cardRemoveButtonsContainer.transform.GetChild(i).gameObject);
+        }
+
+        Destroy(newCardContainer.transform.GetChild(0).gameObject);
+    }
 }

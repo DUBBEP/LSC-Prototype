@@ -14,6 +14,7 @@ public class GameUI : MonoBehaviourPun
     public GameObject notifications;
     public GameObject waitingPanel;
     public GameObject cardSelectPanel;
+    public GameObject cardRemovePanel;
     public GameObject followCamButton;
     public GameObject freeCamButton;
     public GameObject freeCamControls;
@@ -108,9 +109,10 @@ public class GameUI : MonoBehaviourPun
     public void SetCardSelectPanel(bool toggle)
     {
         cardSelectPanel.SetActive(toggle);
+        SetPlayerControls(false);
     }
 
-    public void GetCardSelectCards()
+    public void GetCardSelectableCards()
     {
         List<SpellCardDisplay> cards = new List<SpellCardDisplay>();
 
@@ -128,18 +130,29 @@ public class GameUI : MonoBehaviourPun
     {
         if (HandManager.instance.AddCard(card.spellCard.spellName) > 1)
         {
-            HandManager.instance.ForceCardRemoval(card.spellCard.spellName);
+
+            HandManager.instance.UpdateCardRemovePanel(card.spellCard.spellName);
+            SetCardRemovalPanel(true);
+            SetCardSelectPanel(false);
         }
         else
         {
             SetCardSelectPanel(false);
+            SetPlayerControls(true);
         }
 
     }
 
     public void OnRemoveCard(SpellCardDisplay card)
     {
-        HandManager.instance.RemoveCard(card.spellCard.spellName);
+        HandManager.instance.SwapWithLastcardSelected(card.spellCard.spellName);
+        SetCardRemovalPanel(false);
+        SetPlayerControls(true);
+    }
+
+    public void SetCardRemovalPanel(bool toggle)
+    {
+        cardRemovePanel.SetActive(toggle);
     }
 
     public void OnSetFreeCam()
