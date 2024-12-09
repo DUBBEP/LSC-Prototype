@@ -112,6 +112,7 @@ public class RoundManager : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
             roundTimer = roundPlanningTime;
         state = RoundState.waitForPlayerActions;
+        CheckForUnreadyPlayers();
     }
 
     IEnumerator ExecuteActions(float waitAmmount)
@@ -163,8 +164,7 @@ public class RoundManager : MonoBehaviourPun
                 else
                     action.card.visualEffect.Play(GameManager.instance.GetPlayer(action.playerId).transform.position, action.direction);
 
-                while (action.card.visualEffect.AnimatorIsPlaying())
-                    yield return new WaitForNextFrameUnit();
+                yield return new WaitForSeconds(waitAmmount * 1.5f);
             }
 
             Debug.Log("Waiting for a second");
