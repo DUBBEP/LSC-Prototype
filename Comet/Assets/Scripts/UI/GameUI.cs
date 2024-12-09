@@ -48,11 +48,11 @@ public class GameUI : MonoBehaviourPun
 
     public void UpdateHealthText()
     {
-        healthText.text = "<b>Health: </b>" + player.curHp.ToString();
+        healthText.text = player.curHp.ToString();
     }
     public void UpdateCastingCrystalText()
     {
-        castingCrystalText.text = "<b>Crystals: </b>" + player.curCastingCrystals.ToString();
+        castingCrystalText.text = player.curCastingCrystals.ToString();
     }
 
     public void Initialize(PlayerBehavior localPlayer)
@@ -185,7 +185,7 @@ public class GameUI : MonoBehaviourPun
     [PunRPC]
     public void UpdateTimerText(int timeInt)
     {
-        timerText.text = "<b>Time Left: </b>" + timeInt.ToString();
+        timerText.text = timeInt.ToString();
     }
 
     public void SetWaitingPanel(bool toggle)
@@ -198,7 +198,7 @@ public class GameUI : MonoBehaviourPun
         unreadyPlayerList.text = string.Empty;
         foreach (PlayerBehavior player in GameManager.instance.players)
         {
-            if (player.turnCompleted == false && !player.dead)
+            if (player != null && player.turnCompleted == false && !player.dead)
             {
                 unreadyPlayerList.text = unreadyPlayerList.text + "Waiting for " +
                     player.photonPlayer.NickName + "...\n";

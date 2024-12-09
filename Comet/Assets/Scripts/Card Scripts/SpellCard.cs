@@ -61,5 +61,7 @@ public class SpellCard : ScriptableObject
     public rangeType cardRangeType;
     public actionType cardActionType;
 
+    public Sprite cardArt;
+
     public SpellVisualEffect visualEffect;
 }

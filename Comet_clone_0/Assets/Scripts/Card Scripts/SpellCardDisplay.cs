@@ -16,7 +16,7 @@ public class SpellCardDisplay : MonoBehaviour
     public TextMeshProUGUI powerText;
     public TextMeshProUGUI cardTypeText;
     public TextMeshProUGUI cardRarityText;
-    public TextMeshProUGUI descriptionText;
+    public Image cardArtDisplay;
 
     void Start()
     {
@@ -32,6 +32,6 @@ public class SpellCardDisplay : MonoBehaviour
         powerText.text = spellCard.power.ToString();
         cardTypeText.text = spellCard.cardType.ToString()[0].ToString().ToUpper();
         cardRarityText.text = spellCard.cardRarity.ToString()[0].ToString().ToUpper();
-        descriptionText.text = spellCard.description.ToString();
+        cardArtDisplay.sprite = spellCard.cardArt;
     }
 }

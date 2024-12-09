@@ -23,4 +23,5 @@ MonoBehaviour:
   rangeIsDirectional: 1
   cardRangeType: 10
   cardActionType: 2
+  cardArt: {fileID: 21300000, guid: 9a67f52cc7457674a8bf5a2d354c1299, type: 3}
   visualEffect: {fileID: -805115699343682459, guid: c27bd3b208c85864282f46d5143aed30, type: 3}

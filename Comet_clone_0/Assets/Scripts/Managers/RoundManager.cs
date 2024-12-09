@@ -338,6 +338,7 @@ public class RoundManager : MonoBehaviourPun
         GameUI.instance.UpdateUnreadyPlayerList();
         foreach (PlayerBehavior x in GameManager.instance.players)
         {
+            if (x == null) { continue; }
             if (x.turnCompleted == true || x.dead)
             {
                 readyPlayers++;
