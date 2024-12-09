@@ -222,7 +222,7 @@ public class RoundManager : MonoBehaviourPun
     void LookAtActivePlayer(int playerId)
     {
         foreach (PlayerBehavior player in GameManager.instance.players)
-            if (player.photonView.IsMine)
+            if (player.photonView.IsMine && !player.dead)
                 player.cam.StartFollowing(GameManager.instance.GetPlayer(playerId).transform);
     }
     public void StopSpectating()

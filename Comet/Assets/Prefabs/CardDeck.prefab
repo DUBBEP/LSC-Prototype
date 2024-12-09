@@ -56,6 +56,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9088982535372351248}
     m_Modifications:
+    - target: {fileID: 1365291893251072052, guid: 77c26555f3f223543aa05ec3317687ff, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     - target: {fileID: 2852266066200540063, guid: 77c26555f3f223543aa05ec3317687ff, type: 3}
       propertyPath: m_Name
       value: Teleport Button
@@ -162,6 +166,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flash Bang Button
       objectReference: {fileID: 0}
+    - target: {fileID: 1482050365903385552, guid: 2bb03562ad166864cb4ebf798a1d8c49, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     - target: {fileID: 8701416522684993002, guid: 2bb03562ad166864cb4ebf798a1d8c49, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -264,6 +272,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Magic Disk Button
       objectReference: {fileID: 0}
+    - target: {fileID: 1482050365903385552, guid: b9f86a7a6d8f96c46addce5ee6d92a4c, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     - target: {fileID: 8701416522684993002, guid: b9f86a7a6d8f96c46addce5ee6d92a4c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -362,6 +374,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9088982535372351248}
     m_Modifications:
+    - target: {fileID: 1365291893251072052, guid: 432d88d066b199b4b83a6563ad3eedf9, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     - target: {fileID: 2852266066200540063, guid: 432d88d066b199b4b83a6563ad3eedf9, type: 3}
       propertyPath: m_Name
       value: Laser Cannon Button
@@ -548,6 +564,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spacial Slice Button
       objectReference: {fileID: 0}
+    - target: {fileID: 8989213644982095762, guid: 3b86b65c488582944be40cd039f5fc16, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -566,6 +586,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9088982535372351248}
     m_Modifications:
+    - target: {fileID: 1365291893251072052, guid: 24a9c40935807134c8ba0324bef01d5e, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     - target: {fileID: 2852266066200540063, guid: 24a9c40935807134c8ba0324bef01d5e, type: 3}
       propertyPath: m_Name
       value: Full Heal
@@ -752,6 +776,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4564941179770016386, guid: bb6bc069efa1e824a8ef3f3da965d4d3, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     - target: {fileID: 8902185493857128616, guid: bb6bc069efa1e824a8ef3f3da965d4d3, type: 3}
       propertyPath: m_Name
       value: Thunder Spear Button
@@ -774,6 +802,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9088982535372351248}
     m_Modifications:
+    - target: {fileID: 830744379683812461, guid: d222ffde960309846952e41f64e47f06, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     - target: {fileID: 830744379683812461, guid: d222ffde960309846952e41f64e47f06, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -968,6 +1000,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Magic Mirror Button
       objectReference: {fileID: 0}
+    - target: {fileID: 6866778311877544172, guid: 47ffb3d02b32b694e841d121dee24576, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -989,6 +1025,10 @@ PrefabInstance:
     - target: {fileID: 866589517363207720, guid: b53b600934ad00948808bbdbece84cfc, type: 3}
       propertyPath: m_Name
       value: Cosmic Star Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 1482050365903385552, guid: b53b600934ad00948808bbdbece84cfc, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
       objectReference: {fileID: 0}
     - target: {fileID: 8701416522684993002, guid: b53b600934ad00948808bbdbece84cfc, type: 3}
       propertyPath: m_Pivot.x
@@ -1172,6 +1212,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3567932888016666213, guid: 310a434384cdc084f96ae73fe30e61ef, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     - target: {fileID: 7104557558042395751, guid: 310a434384cdc084f96ae73fe30e61ef, type: 3}
       propertyPath: m_Name
       value: Blazing Cross Button
@@ -1274,6 +1318,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4564941179770016386, guid: f70e3d8d3475da441b2622ce15caeb24, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     - target: {fileID: 8902185493857128616, guid: f70e3d8d3475da441b2622ce15caeb24, type: 3}
       propertyPath: m_Name
       value: Heal
@@ -1296,6 +1344,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9088982535372351248}
     m_Modifications:
+    - target: {fileID: 3569197118383796228, guid: 28bab3ad30b2a9841aafa8ddb0ab513d, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.8235294
+      objectReference: {fileID: 0}
     - target: {fileID: 5944971598634819171, guid: 28bab3ad30b2a9841aafa8ddb0ab513d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

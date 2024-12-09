@@ -62,7 +62,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.9372549}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -219,7 +219,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 73d7b8a7208476b4ebef215ae7f0ee86, type: 2}
     - target: {fileID: 7806498162460051614, guid: a21b8a27fd5661842996c50bdffeb9ba, type: 3}
       propertyPath: m_Color.a
-      value: 0.8784314
+      value: 0.94509804
       objectReference: {fileID: 0}
     - target: {fileID: 8096762751947171641, guid: a21b8a27fd5661842996c50bdffeb9ba, type: 3}
       propertyPath: m_AnchoredPosition.y
