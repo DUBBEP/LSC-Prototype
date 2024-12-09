@@ -4602,7 +4602,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &893895669
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4716,7 +4716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &896610772
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5609,6 +5609,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1548898129}
         m_TargetAssemblyTypeName: InfoUI, Assembly-CSharp
         m_MethodName: ToggleInfoScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1323854295}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: OnInfoScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8621,23 +8633,22 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<b>Objective</b>
 
-    The player main objective is to eliminate all other
-    players on the board.
+    The main objective is to eliminate all other players
+    on the board.
 
 
     <b>Game Flow</b>
 
-    The game executes in rounds.
-    Each round has a set-up phase where players will choose how to act. When every
-    player is ready their actions will play out in the execution phase.
+    Each round has a set-up phase where
+    players will choose how to act. When every player is ready their actions will
+    play out.
 
 
-    <b>Turn
-    Order</b>
+    <b>Turn Order</b>
 
-    The order players act each round is determined first by the delay
-    on the action they take and second by how quickly they completed their set-up
-    phase in real time.'
+    The order players act each round is determined
+    first by the delay on the action they took and second by how quickly they were
+    able to confirm their action.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 280efbfeebaf57f42975de059419197f, type: 2}
   m_sharedMaterial: {fileID: 6431941746880886749, guid: 280efbfeebaf57f42975de059419197f, type: 2}
